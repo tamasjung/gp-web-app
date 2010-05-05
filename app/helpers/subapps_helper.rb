@@ -1,0 +1,2 @@
+module SubappsHelper
+end
