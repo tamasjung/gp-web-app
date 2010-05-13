@@ -1,0 +1,70 @@
+!radius = 15px
+
+!grid_logo = "grid_logo.png"
+
+=rounded
+  border-radius = !radius
+  -moz-border-radius = !radius
+  -webkit-border-radius = !radius
+
+=embed(!w = 0px)
+  :text-shadow #fff 1px 1px 0px
+
+
+#header
+  :margin-top 0.2em
+  //:height = 50px
+  +embed
+  :text-align left
+  :font-style italic
+  :font-size 2em
+  :margin-bottom 0.2em
+  img
+    +rounded
+    :float left
+  #title
+    +rounded
+    
+    :margin-left 320px
+    :padding-top 0.4em
+#sidebar
+  +rounded
+  +embed
+  :background= image_url(!grid_logo)
+  :background-repeat repeat-y
+  :height 500px
+  //:margin-top -5px
+  :padding-top 25px
+  :text-align center
+  
+.bp 
+  background: #ede9e4
+  
+.notice 
+  +rounded
+  background: #ffdeb4
+
+.dashboard
+  +rounded
+  :border-left 1px solid #ccc
+  //:background yellow
+  :padding 10px
+  
+.remote_module
+  +rounded
+  :padding 6px
+  :border 1px solid #ddd 
+  
+  margin: 5px
+  background: #eee
+
+table tr.even
+  background: yellow
+  
+
+
+  
+  
+
+  
+

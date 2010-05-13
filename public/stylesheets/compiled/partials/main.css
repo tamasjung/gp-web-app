@@ -1,0 +1,13 @@
+/* line 5, ../../../../app/stylesheets/partials/main.sass */
+#sidebar {
+  background: url('/images/grid_logo.png?1273491600');
+  background-repeat: repeat-y;
+  display: block; }
+
+/* line 10, ../../../../app/stylesheets/partials/main.sass */
+.bp {
+  background: #ede9e4; }
+
+/* line 13, ../../../../app/stylesheets/partials/main.sass */
+.notice {
+  background: #ffdeb4; }

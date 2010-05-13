@@ -8,7 +8,7 @@
 @import blueprint/modules/scaffolding.sass
 
 // To generate css equivalent to the blueprint css but with your configuration applied, uncomment:
-// +blueprint
+//+blueprint
 
 //Recommended Blueprint configuration with scoping and semantic layout:
 +blueprint-typography("body.bp")
@@ -38,3 +38,5 @@ body.three-col
     !content_columns = ceil(2 * !blueprint_grid_columns / 3)
     // true means it's the last column in the row
     +column(!content_columns, true)
+
+@import partials/main

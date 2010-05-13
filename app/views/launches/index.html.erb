@@ -7,7 +7,7 @@
     <th>State</th>
   </tr>
 
-<% @launches.each do |launch| %>
+<% @launches.each_with_index do |launch, idx| %>
   <tr>
     <td><%=h launch.name %></td>
     <td><%=h launch.settings %></td>

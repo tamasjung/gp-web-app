@@ -9,13 +9,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100505191948) do
+ActiveRecord::Schema.define(:version => 20100513160850) do
 
   create_table "jobs", :force => true do |t|
     t.string   "address"
     t.string   "state"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "launch_id"
   end
 
   create_table "launches", :force => true do |t|
@@ -24,12 +25,21 @@ ActiveRecord::Schema.define(:version => 20100505191948) do
     t.string   "state"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "start_time"
+    t.datetime "finish_time"
+    t.integer  "subapp_id"
   end
 
   create_table "people", :force => true do |t|
     t.string   "nick"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "people_launches", :force => true do |t|
+  end
+
+  create_table "people_subapps", :force => true do |t|
   end
 
   create_table "subapps", :force => true do |t|

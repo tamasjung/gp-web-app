@@ -1,12 +1,12 @@
-<h1>Listing subapps</h1>
+<h3>Listing apps</h3>
 
 <table>
   <tr>
     <th>Name</th>
   </tr>
 
-<% @subapps.each do |subapp| %>
-  <tr>
+<% @subapps.each_with_index do |subapp, idx| %>
+  <tr <%= (idx % 2 == 0) ? "class='even'" : ''%> >
     <td><%=h subapp.name %></td>
     <td><%= link_to 'Show', subapp %></td>
     <td><%= link_to 'Edit', edit_subapp_path(subapp) %></td>

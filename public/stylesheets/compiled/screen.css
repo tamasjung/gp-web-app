@@ -75,7 +75,7 @@ body.bp {
   line-height: 1.5;
   font-family: Helvetica Neue, Arial, Helvetica, sans-serif;
   color: #333333;
-  font-size: 75%; }
+  font-size: 112.5%; }
   /* line 53, ../../../../../../../../../../opt/local/lib/ruby/gems/1.8/gems/compass-0.8.17/frameworks/blueprint/stylesheets/blueprint/modules/_typography.sass */
   body.bp h1 {
     font-weight: normal;
@@ -454,3 +454,70 @@ body.three-col #content {
   /* line 101, ../../../../../../../../../../opt/local/lib/ruby/gems/1.8/gems/compass-0.8.17/frameworks/blueprint/stylesheets/blueprint/modules/_grid.sass */
   * html body.three-col #content {
     overflow-x: hidden; }
+
+/* line 14, ../../../app/stylesheets/partials/_main.sass */
+#header {
+  margin-top: 0.2em;
+  text-shadow: #fff 1px 1px 0px;
+  text-align: left;
+  font-style: italic;
+  font-size: 2em;
+  margin-bottom: 0.2em; }
+  /* line 22, ../../../app/stylesheets/partials/_main.sass */
+  #header img {
+    border-radius: 15px;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    float: left; }
+  /* line 25, ../../../app/stylesheets/partials/_main.sass */
+  #header #title {
+    border-radius: 15px;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    margin-left: 320px;
+    padding-top: 0.4em; }
+
+/* line 30, ../../../app/stylesheets/partials/_main.sass */
+#sidebar {
+  border-radius: 15px;
+  -moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
+  text-shadow: #fff 1px 1px 0px;
+  background: url('/images/grid_logo.png?1273491600');
+  background-repeat: repeat-y;
+  height: 500px;
+  padding-top: 25px;
+  text-align: center; }
+
+/* line 40, ../../../app/stylesheets/partials/_main.sass */
+.bp {
+  background: #ede9e4; }
+
+/* line 43, ../../../app/stylesheets/partials/_main.sass */
+.notice {
+  border-radius: 15px;
+  -moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
+  background: #ffdeb4; }
+
+/* line 47, ../../../app/stylesheets/partials/_main.sass */
+.dashboard {
+  border-radius: 15px;
+  -moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
+  border-left: 1px solid #ccc;
+  padding: 10px; }
+
+/* line 53, ../../../app/stylesheets/partials/_main.sass */
+.remote_module {
+  border-radius: 15px;
+  -moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
+  padding: 6px;
+  border: 1px solid #ddd;
+  margin: 5px;
+  background: #eee; }
+
+/* line 61, ../../../app/stylesheets/partials/_main.sass */
+table tr.even {
+  background: yellow; }
