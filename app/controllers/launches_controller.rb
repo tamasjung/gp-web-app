@@ -24,6 +24,7 @@ class LaunchesController < ApplicationController
   # GET /launches/new
   # GET /launches/new.xml
   def new
+    @subapp = Subapp.find params[:subapp_id]
     @launch = Launch.new
 
     respond_to do |format|

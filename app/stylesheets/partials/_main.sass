@@ -6,27 +6,32 @@
   border-radius = !radius
   -moz-border-radius = !radius
   -webkit-border-radius = !radius
+  
+=bracket
+  +rounded
+  :border-left 1px solid #ccc
 
 =embed(!w = 0px)
   :text-shadow #fff 1px 1px 0px
-
+=shadowed
+  :text-shadow rgb(217, 217, 217) 3px 3px 0px
 
 #header
-  :margin-top 0.2em
+  :margin-top 0.6em
   //:height = 50px
-  +embed
+  +shadowed
   :text-align left
-  :font-style italic
+
   :font-size 2em
   :margin-bottom 0.2em
   img
     +rounded
     :float left
   #title
-    +rounded
-    
-    :margin-left 320px
+    :margin-left 157px
     :padding-top 0.4em
+    :color #999
+    
 #sidebar
   +rounded
   +embed
@@ -38,7 +43,11 @@
   :text-align center
   
 .bp 
-  background: #ede9e4
+  background: #fcfcfc
+  
+body.bp
+  :color #666666
+  
   
 .notice 
   +rounded
@@ -58,9 +67,8 @@
   margin: 5px
   background: #eee
 
-table tr.even
-  background: yellow
-  
+
+
 
 
   

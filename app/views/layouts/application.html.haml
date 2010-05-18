@@ -14,14 +14,15 @@
       #header
         =link_to image_tag("niif_honlap_logoN_gray.png"), :controller => :dashboard
         #title
-          Grid portál
+          =":Grid:Portál"
       #sidebar
         %h2
-          sidebar        
+          (((())))       
       #content
-        .notice 
-          = flash[:notice]
+        -if flash[:notice]
+          .notice 
+            = flash[:notice]
         = yield 
       #footer
-        foooo
+        ="-----"
 

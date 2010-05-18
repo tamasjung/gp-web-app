@@ -455,29 +455,26 @@ body.three-col #content {
   * html body.three-col #content {
     overflow-x: hidden; }
 
-/* line 14, ../../../app/stylesheets/partials/_main.sass */
+/* line 19, ../../../app/stylesheets/partials/_main.sass */
 #header {
-  margin-top: 0.2em;
-  text-shadow: #fff 1px 1px 0px;
+  margin-top: 0.6em;
+  text-shadow: rgb(217, 217, 217) 3px 3px 0px;
   text-align: left;
-  font-style: italic;
   font-size: 2em;
   margin-bottom: 0.2em; }
-  /* line 22, ../../../app/stylesheets/partials/_main.sass */
+  /* line 27, ../../../app/stylesheets/partials/_main.sass */
   #header img {
     border-radius: 15px;
     -moz-border-radius: 15px;
     -webkit-border-radius: 15px;
     float: left; }
-  /* line 25, ../../../app/stylesheets/partials/_main.sass */
+  /* line 30, ../../../app/stylesheets/partials/_main.sass */
   #header #title {
-    border-radius: 15px;
-    -moz-border-radius: 15px;
-    -webkit-border-radius: 15px;
-    margin-left: 320px;
-    padding-top: 0.4em; }
+    margin-left: 157px;
+    padding-top: 0.4em;
+    color: #999; }
 
-/* line 30, ../../../app/stylesheets/partials/_main.sass */
+/* line 35, ../../../app/stylesheets/partials/_main.sass */
 #sidebar {
   border-radius: 15px;
   -moz-border-radius: 15px;
@@ -489,18 +486,22 @@ body.three-col #content {
   padding-top: 25px;
   text-align: center; }
 
-/* line 40, ../../../app/stylesheets/partials/_main.sass */
+/* line 45, ../../../app/stylesheets/partials/_main.sass */
 .bp {
-  background: #ede9e4; }
+  background: #fcfcfc; }
 
-/* line 43, ../../../app/stylesheets/partials/_main.sass */
+/* line 48, ../../../app/stylesheets/partials/_main.sass */
+body.bp {
+  color: #666666; }
+
+/* line 52, ../../../app/stylesheets/partials/_main.sass */
 .notice {
   border-radius: 15px;
   -moz-border-radius: 15px;
   -webkit-border-radius: 15px;
   background: #ffdeb4; }
 
-/* line 47, ../../../app/stylesheets/partials/_main.sass */
+/* line 56, ../../../app/stylesheets/partials/_main.sass */
 .dashboard {
   border-radius: 15px;
   -moz-border-radius: 15px;
@@ -508,7 +509,7 @@ body.three-col #content {
   border-left: 1px solid #ccc;
   padding: 10px; }
 
-/* line 53, ../../../app/stylesheets/partials/_main.sass */
+/* line 62, ../../../app/stylesheets/partials/_main.sass */
 .remote_module {
   border-radius: 15px;
   -moz-border-radius: 15px;
@@ -517,7 +518,3 @@ body.three-col #content {
   border: 1px solid #ddd;
   margin: 5px;
   background: #eee; }
-
-/* line 61, ../../../app/stylesheets/partials/_main.sass */
-table tr.even {
-  background: yellow; }
