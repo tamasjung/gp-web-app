@@ -1,17 +1,31 @@
-!radius = 15px
+$default_radius : 15px
+$selected_background_color : #ddd
+$selected_background_color : #ddd
+$selected_border_color : #888
+$unselected_border_color : #eee
 
-!grid_logo = "grid_logo.png"
 
-=rounded
-  border-radius = !radius
-  -moz-border-radius = !radius
-  -webkit-border-radius = !radius
+$grid_logo = "grid_logo.png"
+
+=rounded($radius : $default_radius)
+  border-radius = $radius
+  -moz-border-radius = $radius
+  -webkit-border-radius = $radius
+  
+=rounded_top($radius : $default_radius)
+  border-top-right-radius = $radius
+  border-top-left-radius = $radius
+  -moz-border-top-right-radius = $radius
+  -moz-border-top-left-radius = $radius
+  -webkit-border-top-right-radius = $radius
+  -webkit-border-top-left-radius = $radius
+
   
 =bracket
   +rounded
   :border-left 1px solid #ccc
 
-=embed(!w = 0px)
+=embed($w : 0px)
   :text-shadow #fff 1px 1px 0px
 =shadowed
   :text-shadow rgb(217, 217, 217) 3px 3px 0px
@@ -19,7 +33,8 @@
 #header
   :margin-top 0.6em
   //:height = 50px
-  +shadowed
+  //+shadowed
+  +embed
   :text-align left
 
   :font-size 2em
@@ -35,7 +50,7 @@
 #sidebar
   +rounded
   +embed
-  :background= image_url(!grid_logo)
+  :background= image_url($grid_logo)
   :background-repeat repeat-y
   :height 500px
   //:margin-top -5px
@@ -43,11 +58,16 @@
   :text-align center
   
 .bp 
-  background: #fcfcfc
-  
+  //background: #fcfcfc
+  background: #eaeaea
+    
 body.bp
   :color #666666
   
+.page_title
+  +rounded
+  padding: 8px
+  background-color: #ddd
   
 .notice 
   +rounded
@@ -66,7 +86,66 @@ body.bp
   
   margin: 5px
   background: #eee
+  
+.tabpanel
+  :display block
+  :clear both
+  //:border-left solid 1px #888  
+  :padding 10px
+  +rounded(10px)
+  :margin none
+  :background-color $selected_background_color
+  
 
+  
+#container ul.subsection_tabs
+  
+  :list-style-type none
+  :list-style-image none
+  :list-style-position outside
+  :display block
+  :height 100%
+  :margin 0px
+  :margin-left 0.7em
+  
+  .tab
+    :display block
+    float: left
+    :margin 5px
+    :margin-bottom 0px
+    a
+      display: block
+      text-decoration: none
+      margin: 2px
+      margin-bottom: 0px
+      padding: 2px
+      padding-right: 10px
+      padding-left: 10px
+      color: #aaa
+      :background-color $unselected_border_color
+      +rounded_top(7px)
+      
+      //+rounded(20px)
+
+      &.active
+        +rounded_top(7px)
+        :background-color $selected_background_color
+        //border-bottom: solid 2px #f1f1f1
+        //border-style: dotted
+        //:border-style dashed
+        
+        color: #888
+        //+rounded(0px)
+        +embed
+
+        
+      
+input
+  //+rounded(1px)
+  inherit
+      
+  
+      
 
 
 

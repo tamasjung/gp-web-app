@@ -2,6 +2,12 @@
 
 one:
   name: MyString
+  input_partial: MyText
+  settings: MyText
+  executable: MyText
 
 two:
   name: MyString
+  input_partial: MyText
+  settings: MyText
+  executable: MyText

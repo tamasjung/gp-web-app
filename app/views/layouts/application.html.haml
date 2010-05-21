@@ -9,6 +9,7 @@
     /
       [if IE]>
       = stylesheet_link_tag 'compiled/ie.css', :media => 'screen, projection'
+    = javascript_include_tag :all, :recursive => true
   %body.bp.three-col
     #container
       #header
@@ -16,8 +17,8 @@
         #title
           =":Grid:Portál"
       #sidebar
-        %h2
-          (((())))       
+        %h5
+          ((((sidebar))))       
       #content
         -if flash[:notice]
           .notice 

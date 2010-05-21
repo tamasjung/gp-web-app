@@ -9,7 +9,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100513160850) do
+ActiveRecord::Schema.define(:version => 20100518203455) do
+
+  create_table "application_files", :force => true do |t|
+    t.string   "name"
+    t.boolean  "is_executable"
+    t.binary   "bytes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "input_files", :force => true do |t|
+    t.string   "name"
+    t.binary   "bytes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "jobs", :force => true do |t|
     t.string   "address"
@@ -44,6 +59,9 @@ ActiveRecord::Schema.define(:version => 20100513160850) do
 
   create_table "subapps", :force => true do |t|
     t.string   "name"
+    t.text     "input_partial"
+    t.text     "settings"
+    t.text     "executable"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -1,4 +1,4 @@
-class CreateSubapps < ActiveRecord::Migration
+class CreateSubappsOld < ActiveRecord::Migration
   def self.up
     create_table :subapps do |t|
       t.string :name
