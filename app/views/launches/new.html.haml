@@ -1,20 +1,72 @@
 %h3
   =":New launch of" 
-  =@subapp.name
+  %span.subapp_name
+    =@subapp.name
   
 
--form_for @launch do |f|
-  = f.error_messages
-  %p
-    = f.label :name
-    %br
-    = f.text_field :name
-  %p
-    = f.label :settings
-    %br
-    = f.text_area :settings
+    %ul#launch_tabs.subsection_tabs
+      %li.tab
+        %a{ :href => "#partial" }
+          partial
+      %li.tab
+        %a{ :href => "#settings" }
+          settings
+    #partial.tabpanel
+      %form#partial_form.tab_in_tab
+        %ul#k3tabs
+          %li.tab
+            %a{:href => "#model_params"}
+              
+          %li.tab
+            %a{:href => "#indikator_parametek"}
+              Indicator parameters
+          %li.tab
+            %a{:href => "#integrator_params"}
+              Integrator parameters
+          %li.tab
+            %a{:href => "#kezdofeltetelek"}
+              Initial constraints
+        #model_params.tabpanel
+          .prop_row
+            .label
+              efdf
+            .field
+              = f.text_field :name, :size => 40
+        #indikator_parametek.tabpanel
+          indikator_parametek
+          
+        #integrator_params.tabpanel
+          
+          integrator_params
+          integrator_params
+          integrator_params
+          integrator_params
+        #kezdofeltetelek.tabpanel
+          kezdofeltetelek
+        %script
+          !="//new Control.Tabs('k3tabs');"
+
+        
+
+    #settings.tabpanel
+      -form_for @launch do |f|
+        = f.error_messages
+        .prop_row
+          .label
+            = f.label :name 
+          .field
+            = f.text_field :name, :size => 40
+        .prop_row
+          .label
+            = f.label :settings 
+          .field
+            = f.text_field :settings, :size => 40
+        = f.submit 'Create'
+      
+
     
-  %p
-    = f.submit 'Create'
   
 = link_to 'Back', launches_path
+
+%script
+  !="new Control.Tabs('launch_tabs');"
