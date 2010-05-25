@@ -17,8 +17,9 @@
         #title
           =":Grid:Portál"
       #sidebar
-        %h5
-          ((((sidebar))))       
+        .place_holder
+          ="...sidebar..."
+      
       #content
         -if flash[:notice]
           .notice 
@@ -26,4 +27,7 @@
         = yield 
       #footer
         ="-----"
+        #version
+          commit version:
+          =@git_version
 

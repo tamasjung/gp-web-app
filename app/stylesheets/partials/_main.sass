@@ -1,6 +1,6 @@
+
 $default_radius : 15px
-$selected_background_color : #ddd
-$selected_background_color : #ddd
+$selected_background_color : #eee
 $selected_border_color : #888
 $unselected_border_color : #eee
 
@@ -44,8 +44,9 @@ $grid_logo = "grid_logo.png"
     :float left
   #title
     :margin-left 157px
-    :padding-top 0.4em
+    :padding-top 25px
     :color #999
+  :clear both
     
 #sidebar
   +rounded
@@ -53,16 +54,23 @@ $grid_logo = "grid_logo.png"
   :background= image_url($grid_logo)
   :background-repeat repeat-y
   :height 500px
-  //:margin-top -5px
   :padding-top 25px
-  :text-align center
+  >.place_holder
+    :padding 20px
+  
+#footer 
+  #version
+    font-size: 0.9em
+    :color lightblue
+    +embed
+    :padding-top 20px
+    
   
 .bp 
-  //background: #fcfcfc
   background: #eaeaea
     
-body.bp
-  :color #666666
+
+  
   
 .page_title
   +rounded
@@ -90,64 +98,84 @@ body.bp
 .tabpanel
   :display block
   :clear both
-  //:border-left solid 1px #888  
   :padding 10px
-  +rounded(10px)
+  +rounded(3px)
   :margin none
   :background-color $selected_background_color
 
   
 .tab_in_tab
-  background-color: lighten($selected_background_color, 20%)
+  background-color: lighten($selected_background_color, 3%)
+  +rounded(3px)
+
+.group
+  :margin 8px
+  :padding 10px
+  .group_title
+    :background-color #EFF2B2
+    +rounded(5px)
+    padding: 3px
+    margin: 3px
+  
 
   
+.tab_in_tab .tabpanel
+  background: inherit
  
 #container ul.subsection_tabs
-  
+
   :list-style-type none
   :list-style-image none
   :list-style-position outside
   :display block
   :height 100%
   :margin 0px
-  :margin-left 0.7em
+  :margin-left 0.4em
+  :margin-top 1em
   
   .tab
     :display block
     float: left
-    :margin 5px
+    :margin 0px
     :margin-bottom 0px
     a
       display: block
       text-decoration: none
-      margin: 2px
+      margin: 0px
       margin-bottom: 0px
       padding: 2px
       padding-right: 10px
       padding-left: 10px
       color: #aaa
       :background-color $unselected_border_color
+      :background image_url("grad_100_50.png")
       +rounded_top(7px)
       
-      //+rounded(20px)
+      
 
       &.active
-        +rounded_top(7px)
         :background-color $selected_background_color
-        //border-bottom: solid 2px #f1f1f1
-        //border-style: dotted
-        //:border-style dashed
+        :background-image none
         
         color: #888
-        //+rounded(0px)
         +embed
 
-        
+.prop_row
+  :clear both
+  .label
+    :text-align right
+    :padding-right 30px
+    +column(3, true)
+    :color grey
+  .field
+    +column(12, true)
+    input[type="text"]
+      +column(7)
       
 input
-  //+rounded(1px)
   inherit
-      
+  
+
       
 
     
