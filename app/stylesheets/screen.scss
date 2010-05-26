@@ -45,4 +45,6 @@ body.three-col {
     // true means it's the last column in the row
     @include column($content-columns, true); } }
 
-@import "partials/main"
+@import "partials/main";
+
+@import "partials/new_main";

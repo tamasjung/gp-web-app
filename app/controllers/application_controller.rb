@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
   
   before_filter :init
+  before_filter :login_check, :except => [:login_index, :login_create]
+  
   
   def init
     @git_version = @@git_version
@@ -21,4 +23,10 @@ class ApplicationController < ActionController::Base
   # filter_parameter_logging :password
   
 
+  def login_check
+    unless cookies[:nick] 
+      session[:return_to] = request.request_uri
+      redirect_to :controller => :login, :action => :login_index
+    end
+  end
 end

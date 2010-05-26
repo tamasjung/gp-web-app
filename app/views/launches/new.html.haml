@@ -32,11 +32,15 @@
         Model parameters
         
       :javascript 
+        
       
         function mu_calc(){
           try{
             var m0 = parseFloat($F('m0'));
-            $('mu').value = m0 / (m0 + parseFloat($F('m1')));
+            var m1 = parseFloat($F('m1'));
+            if(m0 || m1){
+              $('mu').value = m0 / (m0 + m1);
+            }
           }
           catch(err){
             $('mu').value = ""
@@ -150,7 +154,7 @@
         .label
           length of integration
         .field
-          %input{:type => "text", :id=>"length"}
+          %input{:type => "text", :id=>"tmax"}
           
     #kezdofeltetelek.tabpanel.group
       .group_title
@@ -278,6 +282,40 @@
 :javascript
   two_or_three_dim();
   lci_or_me();
+  
+  
+  
+  function clComponent(value){
+    
+  }
+  
+  function clArg(clName, inputName){
+    if(inputName == null){
+      inputName = clName;
+    }
+    var result = "";
+    var value = $(inputName).value;
+    if(value){
+      result += " -" + clName + " " + value;
+    }
+    
+    return result;
+  }
+  
+  
+  
+  function buildCommandLine(){
+    var res = "";
+    res += clArg('mu');
+    res += clArg('Navg', 'navg');
+    return res;
+  }
+  
+  $('partial').select('input').each(function(e){
+    e.observe('change', function(){
+      debug(buildCommandLine());
+    })
+  });
     
 
 #settings.tabpanel

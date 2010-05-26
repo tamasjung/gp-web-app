@@ -18,7 +18,8 @@
           =":Grid:Portál"
       #sidebar
         .place_holder
-          ="...sidebar..."
+          %input{:type => "button", :value => "debug", :onClick => "debug_window.open()"}
+            
       
       #content
         -if flash[:notice]
@@ -30,4 +31,23 @@
         #version
           commit version:
           =@git_version
+          
+#main_debug.debug{:title => "DEBUG"}
+  
+:javascript
+  var debug_window = window_factory($('main_debug'), 
+    {'position' : [20, 300], 
+    'fade' : true, 
+    'resizable' : true, 
+    'min-width' : 300, 
+    'min-height' : 100
+    });  
+  //debug_window.open();
+  
+  function debug(str){
+    $('main_debug').down('.window_contents').update(str);
+  }
+  
+  
+  
 
