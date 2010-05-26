@@ -129,17 +129,17 @@
         .label
           &xi;
         .field
-          %input{:type => "text", :id=>"xi1"}
-          %input{:type => "text", :id=>"xi2"}
-          %input{:type => "text", :id=>"xi3"}
-          %input{:type => "text", :id=>"xi4"}
-          %input{:type => "text", :id=>"xi5"}
-          %input{:type => "text", :id=>"xi6"}
+          %input{:type => "text", :id=>"xi1", :value => 0}
+          %input{:type => "text", :id=>"xi2", :value => 0}
+          %input{:type => "text", :id=>"xi3", :value => 0}
+          %input{:type => "text", :id=>"xi4", :value => 0}
+          %input{:type => "text", :id=>"xi5", :value => 0}
+          %input{:type => "text", :id=>"xi6", :value => 0}
       .prop_row
         .label
           Navg
         .field
-          %input{:type => "text", :id => "navg"}
+          %input{:type => "text", :id => "Navg"}
           
       
     #integrator_params.tabpanel.group
@@ -154,7 +154,7 @@
         .label
           length of integration
         .field
-          %input{:type => "text", :id=>"tmax"}
+          %input{:type => "text", :id=>"Tmax"}
           
     #kezdofeltetelek.tabpanel.group
       .group_title
@@ -182,112 +182,108 @@
             %input{:type => "text", :id=>"e1_n"}
           %td
             %input{:type => "text", :id=>"e1_d"}
-          
-          %tr
-            %td
-              w1
-            %td
-              %input{:type => "text", :id=>"w1_start"}
-            %td
-              %input{:type => "text", :id=>"w1_end"}
-            %td
-              %input{:type => "text", :id=>"w1_n"}
-            %td
-              %input{:type => "text", :id=>"w1_d"}
+        
+        %tr
+          %td
+            w1
+          %td
+            %input{:type => "text", :id=>"w1_start"}
+          %td
+            %input{:type => "text", :id=>"w1_end"}
+          %td
+            %input{:type => "text", :id=>"w1_n"}
+          %td
+            %input{:type => "text", :id=>"w1_d"}
 
-          %tr
-            %td
-              M1
-            %td
-              %input{:type => "text", :id=>"M1_start"}
-            %td
-              %input{:type => "text", :id=>"M1_end"}
-            %td
-              %input{:type => "text", :id=>"M1_n"}
-            %td
-              %input{:type => "text", :id=>"M1_d"}
+        %tr
+          %td
+            M1
+          %td
+            %input{:type => "text", :id=>"M1_start"}
+          %td
+            %input{:type => "text", :id=>"M1_end"}
+          %td
+            %input{:type => "text", :id=>"M1_n"}
+          %td
+            %input{:type => "text", :id=>"M1_d"}
 
-            %tr
-              %td
-                a
-              %td
-                %input{:type => "text", :id=>"a_start"}
-              %td
-                %input{:type => "text", :id=>"a_end"}
-              %td
-                %input{:type => "text", :id=>"a_n"}
-              %td
-                %input{:type => "text", :id=>"a_d"}
+        %tr
+          %td
+            a
+          %td
+            %input{:type => "text", :id=>"a_start"}
+          %td
+            %input{:type => "text", :id=>"a_end"}
+          %td
+            %input{:type => "text", :id=>"a_n"}
+          %td
+            %input{:type => "text", :id=>"a_d"}
 
-            %tr
-              %td
-                e
-              %td
-                %input{:type => "text", :id=>"e_start"}
-              %td
-                %input{:type => "text", :id=>"e_end"}
-              %td
-                %input{:type => "text", :id=>"e_n"}
-              %td
-                %input{:type => "text", :id=>"e_d"}
+        %tr
+          %td
+            e
+          %td
+            %input{:type => "text", :id=>"e_start"}
+          %td
+            %input{:type => "text", :id=>"e_end"}
+          %td
+            %input{:type => "text", :id=>"e_n"}
+          %td
+            %input{:type => "text", :id=>"e_d"}
 
-            %tr{:id => "i_tr"}
-              %td
-                i
-              %td
-                %input{:type => "text", :id=>"i_start"}
-              %td
-                %input{:type => "text", :id=>"i_end"}
-              %td
-                %input{:type => "text", :id=>"i_n"}
-              %td
-                %input{:type => "text", :id=>"i_d"}
+        %tr{:id => "i_tr"}
+          %td
+            i
+          %td
+            %input{:type => "text", :id=>"i_start"}
+          %td
+            %input{:type => "text", :id=>"i_end"}
+          %td
+            %input{:type => "text", :id=>"i_n"}
+          %td
+            %input{:type => "text", :id=>"i_d"}
 
-            %tr
-              %td
-                w
-              %td
-                %input{:type => "text", :id=>"w_start"}
-              %td
-                %input{:type => "text", :id=>"w_end"}
-              %td
-                %input{:type => "text", :id=>"w_n"}
-              %td
-                %input{:type => "text", :id=>"w_d"}
+        %tr
+          %td
+            w
+          %td
+            %input{:type => "text", :id=>"w_start"}
+          %td
+            %input{:type => "text", :id=>"w_end"}
+          %td
+            %input{:type => "text", :id=>"w_n"}
+          %td
+            %input{:type => "text", :id=>"w_d"}
 
-            %tr{:id => "O_tr"}
-              %td
-                O
-              %td
-                %input{:type => "text", :id=>"O_start"}
-              %td
-                %input{:type => "text", :id=>"O_end"}
-              %td
-                %input{:type => "text", :id=>"O_n"}
-              %td
-                %input{:type => "text", :id=>"O_d"}
+        %tr{:id => "O_tr"}
+          %td
+            O
+          %td
+            %input{:type => "text", :id=>"O_start"}
+          %td
+            %input{:type => "text", :id=>"O_end"}
+          %td
+            %input{:type => "text", :id=>"O_n"}
+          %td
+            %input{:type => "text", :id=>"O_d"}
 
-            %tr
-              %td
-                M
-              %td
-                %input{:type => "text", :id=>"M_start"}
-              %td
-                %input{:type => "text", :id=>"M_end"}
-              %td
-                %input{:type => "text", :id=>"M_n"}
-              %td
-                %input{:type => "text", :id=>"M_d"}
+        %tr
+          %td
+            M
+          %td
+            %input{:type => "text", :id=>"M_start"}
+          %td
+            %input{:type => "text", :id=>"M_end"}
+          %td
+            %input{:type => "text", :id=>"M_n"}
+          %td
+            %input{:type => "text", :id=>"M_d"}
 
 :javascript
   two_or_three_dim();
   lci_or_me();
-  
-  
-  
-  function clComponent(value){
     
-  }
+
   
   function clArg(clName, inputName){
     if(inputName == null){
@@ -302,12 +298,79 @@
     return result;
   }
   
-  
-  
+  function buildInitalCondComp(cid){
+    var result = {}
+    var start = $(cid + "_start").value;
+    var end = $(cid + "_end").value;
+    var n = $(cid + "_n").value;
+    var d = $(cid + "_d").value;
+    if(end){
+      result['cl'] = "$" + cid;
+      if(n && d){
+        throw 'N and D are mutual';
+      }
+      if(n){
+        result['alg'] = 'divide';
+        result['n'] = n;
+      }
+      else if(d){
+        result['alg'] = 'step'
+        result['d'] = d
+      }
+      else{
+        throw ('Missing N or D for ' + cid) ;
+      }    
+      result['end'] = end
+    }
+    else{
+      if(n || d){
+        throw 'Missing end';
+      }
+      result['cl'] = start;
+    }
+    return result;
+    
+  }
+   
   function buildCommandLine(){
     var res = "";
+    var iterators = [];
+    var is_3D = true;
     res += clArg('mu');
-    res += clArg('Navg', 'navg');
+    res += clArg('Navg');
+    res += clArg('Tmax');
+    var xiArray = [];
+    for(var i = 1; i <= 6; i++){
+      xiArray.push($('xi' + i).value);
+    }
+    
+    res += " -xi " + "[" + xiArray.join(',') + "]"
+    
+    var ic = $w("e1 w1 M1 a e w M");
+    icVal = {}
+    if(is_3D){
+      ic.push('i');
+      ic.push('O');
+    }
+    ic.each(function(e){
+      comp = buildInitalCondComp(e);
+      icVal[e] = comp['cl'];
+      if(comp.size > 1){
+        iterators.push(comp);
+      }
+    });
+    res += " -P1[1," + [icVal['e1'], icVal['w1'], icVal['M']].join(',') + "]"
+    
+    var p2Array = $w("a e i w O M");
+    if(!is_3D){
+      p2Array.remove(4);
+      p2Array.remove(2);
+    }
+    
+    res += "- P2[" + p2Array.map(function(s){
+      return icVal[s];
+    }).join(',') + "]"; 
+    
     return res;
   }
   
