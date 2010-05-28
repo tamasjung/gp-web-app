@@ -398,7 +398,7 @@
         p2Array = p2Array.without('i', 'O');
       }
     
-      res += "- P2[" + p2Array.map(function(s){
+      res += " -P2[" + p2Array.map(function(s){
         return icVal[s];
       }).join(',') + "]"; 
     }
@@ -406,7 +406,7 @@
       //TODO
     }
     if(iterators.length > 0){
-      res += "-grid " + iterators.map(function(e){
+      res += " -grid " + iterators.map(function(e){
         return e.idx + "[" + [e.end, e.d].join(',') + "]"
       }).join(',');
     }
