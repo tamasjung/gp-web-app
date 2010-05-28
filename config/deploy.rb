@@ -14,7 +14,7 @@
 
 # be sure to change these
 set :user, 'griduser' 
-set :domain, '10.0.0.35' 
+set :domain, 'sl-grid.interface.hu' 
 set :application, 'gp-web-app'
 # file paths
 #set :repository, "#{user}@#{git_repo_host}:git/#{application}.git" 

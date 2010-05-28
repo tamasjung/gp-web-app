@@ -16,7 +16,7 @@ class LoginController < ApplicationController
       flash[:notice] = "Welcome #{@person.nick}"
       redirect_to session[:return_to]
       session[:return_to] = nil
-      cookies[:nick] = @person.nick
+      cookies[:nick] = { :value	=> @person.nick, :expires => 90.days.from_now}
     else
       flash[:error] = 'Bad secret key'
       render :action => :index

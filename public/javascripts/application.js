@@ -1,6 +1,21 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
+function whichKey(event){
+  
+  return (event.which ? String.fromCharCode(event.which) : null);//TODO IE
+}
+
+function radio_value(group_name){
+  var result = null;
+  $$('input[type=radio][name=' + group_name + ']').each(function(r){
+    if(r.checked){
+      result = r.value;
+    }
+  });
+  return result;
+}
+
 function builder(container_id){
   $(container_id);
 }
