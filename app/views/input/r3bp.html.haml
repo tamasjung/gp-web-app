@@ -1,0 +1,410 @@
+%form#partial_form.tab_in_tab
+  %ul#k3tabs
+    / %li.tab
+    /   %a{:href => "#model_params"}
+    /     Model parameters
+    / %li.tab
+    /   %a{:href => "#indikator_parametek"}
+    /     Indicator parameters
+    / %li.tab
+    /   %a{:href => "#integrator_params"}
+    /     Integrator parameters
+    / %li.tab
+    /   %a{:href => "#kezdofeltetelek"}
+    /     Initial constraints
+    /     
+  #model_params.tabpanel.group
+    .group_title
+      Model parameters
+      
+    :javascript 
+      
+    
+      function mu_calc(){
+        try{
+          var m0 = parseFloat($F('m0'));
+          var m1 = parseFloat($F('m1'));
+          if(m0 || m1){
+            $('mu').value = m1 / (m0 + m1);
+          }
+        }
+        catch(err){
+          $('mu').value = ""
+        }
+      }
+      
+      function resetMs(){
+        $('m0').value = $('m1').value = "";
+      }
+      
+      function two_or_three_dim(){
+        var cond = $('dimension_2d').checked;
+        if(cond){
+          $('xi5').hide();
+          $('xi6').hide();
+          $('i_tr').hide();
+          $('O_tr').hide();
+        }
+        else{
+          $('xi5').show();
+          $('xi6').show();
+          $('i_tr').show();
+          $('O_tr').show();
+        }
+      }
+      
+      function lci_or_me(){
+        var cond = $('type_lci').checked;
+        if(cond){
+          $('xi').show();
+        }
+        else{
+          $('xi').hide();
+        }
+      }
+      
+    .prop_row
+      .label
+        &mu; 
+        = " = m<sub>1</sub>/(m<sub>0</sub> + m<sub>1</sub>)"
+      .field
+        %input{:type => "text", :id=>"mu", :onKeyUp=>"resetMs()"}
+
+    .prop_row
+      .label
+        m<sub>0</sub>
+      .field
+        %input{:type => "text", :id=>"m0", :onKeyUp=>"mu_calc()"}
+
+    .prop_row
+      .label
+        m<sub>1</sub>
+      .field
+        %input{:type => "text", :id=>"m1", :onKeyUp=>"mu_calc()"}
+        
+    .prop_row
+      .label
+        dimension
+      .field
+        %input{:type => "radio", :id=>"dimension_2d", :name => "dimension_radio", :checked=>"true", :value => "2D", :onClick => 'two_or_three_dim()'}
+          2D
+        %input{:type => "radio", :id=>"dimension_3d", :name => "dimension_radio", :value => "3D", :onClick => 'two_or_three_dim()'}
+          3D
+        
+    .prop_row
+      .label
+        centre
+      .field
+        %input{:type => "radio", :id=>"centre_astro", :name => "centre_radio", :checked=>"true", :value => "ac"}
+          astrocentric
+        %input{:type => "radio", :id=>"centre_bari", :name => "centre_radio", :value => "bc"}
+          baricentric
+
+    .prop_row
+      .label
+        change origin
+      .field
+        %input{:type => "checkbox", :id=>"CO"}
+    
+
+  #indikator_parametek.tabpanel.group
+    .group_title
+      Indicator parameters
+    .prop_row
+      .label
+        type
+      .field
+        %input{:type => "radio", :id=>"type_lci", :name => "type_radio", :checked=>"true", :value => "lci", :onClick => 'lci_or_me()'}
+          LCI
+        %input{:type => "radio", :id=>"type_me", :name => "type_radio", :checked=>"true", :value => "me", :onClick => 'lci_or_me()'}
+          ME
+    #xi.prop_row
+      .label
+        &xi;
+      .field
+        %input{:type => "text", :id=>"xi1", :value => 0}
+        %input{:type => "text", :id=>"xi2", :value => 0}
+        %input{:type => "text", :id=>"xi3", :value => 0}
+        %input{:type => "text", :id=>"xi4", :value => 0}
+        %input{:type => "text", :id=>"xi5", :value => 0}
+        %input{:type => "text", :id=>"xi6", :value => 0}
+    .prop_row
+      .label
+        N<sub>avg</sub>
+      .field
+        %input{:type => "text", :id => "Navg"}
+        
+    
+  #integrator_params.tabpanel.group
+    .group_title
+      Integrator parameters
+    .prop_row
+      .label
+        &epsilon;
+      .field
+        %input{:type => "text", :id=>"epsilon"}
+    .prop_row
+      .label
+        T<sub>max</sub>
+      .field
+        %input{:type => "text", :id=>"Tmax"}
+        
+  #kezdofeltetelek.tabpanel.group
+    .group_title
+      Initial condition
+    %table#initial-conditions
+      %tr
+        %th
+          &nbsp;
+        %th
+          start
+        %th
+          end
+        %th
+          N
+        %th
+          D
+      %tr
+        %td
+          e<sub>1</sub>
+        %td
+          %input{:type => "text", :id=>"e1_start", :value=>"0"}
+        %td
+          %input{:type => "text", :id=>"e1_end"}
+        %td
+          %input{:type => "text", :id=>"e1_n"}
+        %td
+          %input{:type => "text", :id=>"e1_d"}
+      
+      %tr
+        %td
+          &omega;<sub>1</sub>
+        %td
+          %input{:type => "text", :id=>"w1_start", :value=>"0"}
+        %td
+          %input{:type => "text", :id=>"w1_end"}
+        %td
+          %input{:type => "text", :id=>"w1_n"}
+        %td
+          %input{:type => "text", :id=>"w1_d"}
+
+      %tr
+        %td{:style => "border-bottom: solid 1px lightgrey"}
+          M<sub>1</sub>
+        %td
+          %input{:type => "text", :id=>"M1_start", :value=>"0"}
+        %td
+          %input{:type => "text", :id=>"M1_end"}
+        %td
+          %input{:type => "text", :id=>"M1_n"}
+        %td
+          %input{:type => "text", :id=>"M1_d"}
+
+      %tr
+        %td
+          a
+        %td
+          %input{:type => "text", :id=>"a_start", :value=>"0"}
+        %td
+          %input{:type => "text", :id=>"a_end"}
+        %td
+          %input{:type => "text", :id=>"a_n"}
+        %td
+          %input{:type => "text", :id=>"a_d"}
+
+      %tr
+        %td
+          e
+        %td
+          %input{:type => "text", :id=>"e_start", :value=>"0"}
+        %td
+          %input{:type => "text", :id=>"e_end"}
+        %td
+          %input{:type => "text", :id=>"e_n"}
+        %td
+          %input{:type => "text", :id=>"e_d"}
+
+      %tr{:id => "i_tr"}
+        %td
+          i
+        %td
+          %input{:type => "text", :id=>"i_start", :value=>"0"}
+        %td
+          %input{:type => "text", :id=>"i_end"}
+        %td
+          %input{:type => "text", :id=>"i_n"}
+        %td
+          %input{:type => "text", :id=>"i_d"}
+
+      %tr
+        %td
+          &omega;
+        %td
+          %input{:type => "text", :id=>"w_start", :value=>"0"}
+        %td
+          %input{:type => "text", :id=>"w_end"}
+        %td
+          %input{:type => "text", :id=>"w_n"}
+        %td
+          %input{:type => "text", :id=>"w_d"}
+
+      %tr{:id => "O_tr"}
+        %td
+          &Omega;
+        %td
+          %input{:type => "text", :id=>"O_start", :value=>"0"}
+        %td
+          %input{:type => "text", :id=>"O_end"}
+        %td
+          %input{:type => "text", :id=>"O_n"}
+        %td
+          %input{:type => "text", :id=>"O_d"}
+
+      %tr
+        %td
+          M
+        %td
+          %input{:type => "text", :id=>"M_start", :value=>"0"}
+        %td
+          %input{:type => "text", :id=>"M_end"}
+        %td
+          %input{:type => "text", :id=>"M_n"}
+        %td
+          %input{:type => "text", :id=>"M_d"}
+
+:javascript
+  two_or_three_dim();
+  lci_or_me();
+
+  $('initial-conditions').select('input').invoke('setStyle', 'max-width: 120px  ');//or IFrame?
+
+  function initial_condtition_change(event){
+
+    if(!/(\w|\d)/.test(whichKey(event))){
+      return;
+    }
+    var id = event.element().id;
+    var id_arr = id.split("_");
+    var prefix = id_arr[0];
+    var field = id_arr[1];
+    if(field == 'd'){
+      $(prefix + "_n").value = "";
+    }
+  
+    var start = $(prefix + "_start").value;
+    var end = $(prefix + "_end").value;
+    var n = $(prefix + "_n").value;
+    var d = $(prefix + "_d").value;
+    if(start && end && n){
+      $(prefix + "_d").value = (end - start)/n;
+    }
+  }
+
+  $('initial-conditions').select('input').each(function(i){
+    i.observe('keyup', initial_condtition_change);
+  });
+  
+  var errors = {};
+
+
+
+  function clArg(clName, inputName){
+    if(inputName == null){
+      inputName = clName;
+    }
+    var result = "";
+    var value = $(inputName).value;
+    if(value){
+      result += " -" + clName + " " + value;
+    }
+  
+    return result;
+  }
+
+  function buildInitalCondComp(cid){
+    var result = {}
+    var start = $(cid + "_start").value;
+    var end = $(cid + "_end").value;
+    var n = $(cid + "_n").value;
+    var d = $(cid + "_d").value;
+    if(end){
+      if(d){
+        result.d = d
+      } 
+      result.end = end
+    }
+  
+    result.cl = start;
+
+    return result;
+  }
+ 
+  function buildCommandLine(){
+    var res = "";
+    var iterators = [];
+    var is_3D = radio_value('dimension_radio') == '3D';
+    res += clArg('mu');
+    res += clArg('Navg');
+    res += clArg('eps', 'epsilon')
+    res += clArg('Tmax');
+    res += " -" + radio_value('centre_radio');
+    if($('CO').checked){
+      res += " -CO";
+    }
+  
+    if(radio_value('type_radio') == 'lci'){
+      var xiArray = [];
+      for(var i = 1; i <= 6; i++){
+        xiArray.push($('xi' + i).value);
+      }    
+      res += " -xi " + "[" + xiArray.join(',') + "]"
+    }
+  
+  
+    try{
+      var ic_full = $w("e1 w1 M1 a e i w O M");
+      var ic = ic_full.clone();
+      icVal = {}
+      if(!is_3D){
+        ic = ic.without('i', 'O');
+      }
+      ic.each(function(e, idx){
+        comp = buildInitalCondComp(e);
+        icVal[e] = comp.cl;
+        if(comp.end){
+          iterators.push(comp);
+        }
+        comp.idx = idx + 1;
+      });
+    
+      res += " -P1[1," + [icVal['e1'], icVal['w1'], icVal['M']].join(',') + "]"
+  
+      var p2Array = $w("a e i w O M");
+      if(!is_3D){
+        p2Array = p2Array.without('i', 'O');
+      }
+  
+      res += " -P2[" + p2Array.map(function(s){
+        return icVal[s];
+      }).join(',') + "]"; 
+    }
+    catch(error){
+      //TODO
+    }
+    if(iterators.length > 0){
+      res += " -grid " + iterators.map(function(e){
+        return e.idx + "[" + [e.end, e.d].join(',') + "]"
+      }).join(',');
+    }
+    return res;
+  }
+
+  //
+  //debug
+  //
+  
+  $('partial').select('input').each(function(e){
+    e.observe('change', function(){
+      debug(buildCommandLine());
+    })
+  });

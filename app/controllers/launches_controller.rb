@@ -24,6 +24,7 @@ class LaunchesController < ApplicationController
   # GET /launches/new
   # GET /launches/new.xml
   def new
+    read_partial
     @subapp = Subapp.find params[:subapp_id]
     @launch = Launch.new
 
@@ -82,5 +83,12 @@ class LaunchesController < ApplicationController
       format.html { redirect_to(launches_url) }
       format.xml  { head :ok }
     end
+  end
+  
+  private
+  def read_partial
+    input_page = IO.read("app/views/input/r3bp.html.haml")
+    engine = Haml::Engine.new(input_page, :suppress_eval => true)
+    @input_html = engine.render 
   end
 end
