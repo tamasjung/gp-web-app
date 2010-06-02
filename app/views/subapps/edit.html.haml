@@ -1,0 +1,7 @@
+%h1 Editing subapp
+- form_for(@subapp) do |f|
+  = render :partial => 'subapp', :locals =>{:f => f}
+  = f.submit 'Update'
+= link_to 'Show', @subapp
+|
+= link_to 'Back', subapps_path

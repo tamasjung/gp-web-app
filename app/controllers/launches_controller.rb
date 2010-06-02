@@ -14,7 +14,6 @@ class LaunchesController < ApplicationController
   # GET /launches/1.xml
   def show
     @launch = Launch.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @launch }
@@ -24,10 +23,13 @@ class LaunchesController < ApplicationController
   # GET /launches/new
   # GET /launches/new.xml
   def new
-    read_partial
-    @subapp = Subapp.find params[:subapp_id]
+    
     @launch = Launch.new
-
+    @subapp = Subapp.find params[:subapp_id]
+    @launch.subapp = @subapp
+    
+    read_input_partial
+    
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @launch }
@@ -86,9 +88,18 @@ class LaunchesController < ApplicationController
   end
   
   private
-  def read_partial
-    input_page = IO.read("app/views/input/r3bp.html.haml")
+  def read_input_partial
+    begin
+      dir  = "app/views/input"
+      file_name = "#{dir}/#{@launch.subapp.tech_name}.html.haml"
+      raise "file not found #{file_name}" unless File.exist? file_name
+      raise "illegal file path" unless (File.dirname(File.expand_path file_name) == File.expand_path(dir))
+      input_page = IO.read(file_name)
+    rescue
+      input_page = "No template found"
+    end
+    @embedded_css = input_page[/EMBEDDED_STYLE(.*)EMBEDDED_STYLE/m, 1] rescue ""
     engine = Haml::Engine.new(input_page, :suppress_eval => true)
-    @input_html = engine.render 
+    @input_html = engine.render
   end
 end

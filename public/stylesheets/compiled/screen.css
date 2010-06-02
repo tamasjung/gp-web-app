@@ -763,23 +763,27 @@ body.three-col #content {
   float: left;
   margin-right: 10px;
   width: 270px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 /* line 138, ../../../../../../../../../../opt/local/lib/ruby/gems/1.8/gems/compass-0.10.1/frameworks/blueprint/stylesheets/blueprint/_grid.scss */
 * html .prop_row .field input[type="text"] {
   overflow-x: hidden;
 }
 
-/* line 180, ../../../app/stylesheets/partials/_main.sass */
+/* line 184, ../../../app/stylesheets/partials/_main.sass */
 .debug {
   background: #aaaaaa;
 }
 
-/* line 183, ../../../app/stylesheets/partials/_main.sass */
+/* line 187, ../../../app/stylesheets/partials/_main.sass */
 .window {
   min-width: 150px;
   min-height: 100px;
 }
-/* line 184, ../../../app/stylesheets/partials/_main.sass */
+/* line 188, ../../../app/stylesheets/partials/_main.sass */
 .window .window_title {
   margin-top: -7px;
   margin-bottom: 7px;
@@ -825,7 +829,6 @@ body.three-col #content {
 
 /* line 33, ../../../app/stylesheets/partials/_new_main.scss */
 .window {
-  background-image: url("/stylesheets/window_background.png");
   background-position: top left;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;

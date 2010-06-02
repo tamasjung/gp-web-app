@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100518203455) do
+ActiveRecord::Schema.define(:version => 20100602113406) do
 
   create_table "application_files", :force => true do |t|
     t.string   "name"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(:version => 20100518203455) do
     t.text     "executable"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "tech_name"
   end
 
 end

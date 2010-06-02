@@ -2,40 +2,10 @@
   New subapp
 
 - form_for(@subapp) do |f| 
-  = f.error_messages 
-  %ul#subapps_tabs.subsection_tabs
-    %li.tab
-      %a{ :href => "#one" }
-        settings
-    %li.tab
-      %a{ :href => "#two" }
-        input partial
-  #one.tabpanel
-    .prop_row
-      .label
-        = f.label :name 
-      .field
-        = f.text_field :name, :size => 40
-
-    .prop_row
-      .label
-        = f.label :executable
-      .field
-        = f.text_area :executable, :rows => 5
-    
-  #two.tabpanel
-    .label
-      = f.label :input_partial
-      
-    .field
-      = f.text_area :input_partial, :size => "60x50"
-  
-  
-
+  = render :partial => 'subapp', :locals =>{:f => f}
 
   = f.submit 'Create' 
   
-
 
 = link_to 'Back', subapps_path 
 

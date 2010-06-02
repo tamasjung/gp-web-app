@@ -26,14 +26,26 @@
       .label
         = f.label :settings 
       .field
-        = f.text_field :settings, :size => 40
-    = f.submit 'Create'
-  
+        = f.text_area :settings, :rows => 40
+    = f.submit 'Create', :onclick => 'collect_and_submit()'
+    %input{:type => 'button', :onclick=> 'collect_and_submit();', :value => 'serialize'}
+      
 
 
 
 = link_to 'Back', launches_path
 
-%script
-  !="new Control.Tabs('launch_tabs');"
+:javascript
+  new Control.Tabs('launch_tabs');
+  function collect_and_submit(){
+    
+    prepareSubmit();
+    var object = $('partial_form').serialize(true);
+    object.M_d = '111';
+    var serString = Object.toJSON(object);
+    $('launch_settings').value = serString;
+    
+    $('partial_form').deserialize(serString);
+    return true;
+  }
   

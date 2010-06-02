@@ -1,4 +1,18 @@
+-#
+  EMBEDDED_STYLE
+  #initial-conditions input {
+    max-width: 120px;
+  }
+
+  .xi_input {
+    max-width: 1em;
+    float: both;
+  }
+  
+  EMBEDDED_STYLE
+
 %form#partial_form.tab_in_tab
+  %input{:type => "hidden", :id=>"command_line"}
   %ul#k3tabs
     / %li.tab
     /   %a{:href => "#model_params"}
@@ -40,33 +54,27 @@
       function two_or_three_dim(){
         var cond = $('dimension_2d').checked;
         if(cond){
-          $('xi5').hide();
-          $('xi6').hide();
-          $('i_tr').hide();
-          $('O_tr').hide();
+          $('partial_form').select('.only_3D').invoke('fade');
         }
         else{
-          $('xi5').show();
-          $('xi6').show();
-          $('i_tr').show();
-          $('O_tr').show();
+          $('partial_form').select('.only_3D').invoke('appear');
         }
       }
       
       function lci_or_me(){
         var cond = $('type_lci').checked;
         if(cond){
-          $('xi').show();
+          $('xi').appear();
         }
         else{
-          $('xi').hide();
+          $('xi').fade();
         }
       }
       
     .prop_row
       .label
         &mu; 
-        = " = m<sub>1</sub>/(m<sub>0</sub> + m<sub>1</sub>)"
+        \= m<sub>1</sub>/(m<sub>0</sub> + m<sub>1</sub>)
       .field
         %input{:type => "text", :id=>"mu", :onKeyUp=>"resetMs()"}
 
@@ -121,13 +129,22 @@
     #xi.prop_row
       .label
         &xi;
-      .field
-        %input{:type => "text", :id=>"xi1", :value => "0"}
-        %input{:type => "text", :id=>"xi2", :value => "0"}
-        %input{:type => "text", :id=>"xi3", :value => "0"}
-        %input{:type => "text", :id=>"xi4", :value => "0"}
-        %input{:type => "text", :id=>"xi5", :value => "0"}
-        %input{:type => "text", :id=>"xi6", :value => "0"}
+      .custom-field
+        [
+        %input.xi_input{:type => "text", :id=>"xi1", :value => "1"}
+        ,
+        %input.xi_input{:type => "text", :id=>"xi2", :value => "0"}
+        ,
+        %input.xi_input{:type => "text", :id=>"xi3", :value => "0"}
+        ,
+        %input.xi_input{:type => "text", :id=>"xi4", :value => "0"}
+        %span.only_3D
+          ,
+        %input.xi_input.only_3D{:type => "text", :id=>"xi5", :value => "0"}
+        %span.only_3D
+          ,
+        %input.xi_input.only_3D{:type => "text", :id=>"xi6", :value => "0"}
+        ]
     .prop_row
       .label
         N<sub>avg</sub>
@@ -163,7 +180,7 @@
         %th
           N
         %th
-          D
+          &Delta;
       %tr
         %td
           e<sub>1</sub>
@@ -224,7 +241,7 @@
         %td
           %input{:type => "text", :id=>"e_d"}
 
-      %tr{:id => "i_tr"}
+      %tr.only_3D
         %td
           i
         %td
@@ -248,7 +265,7 @@
         %td
           %input{:type => "text", :id=>"w_d"}
 
-      %tr{:id => "O_tr"}
+      %tr.only_3D
         %td
           &Omega;
         %td
@@ -276,11 +293,11 @@
   two_or_three_dim();
   lci_or_me();
 
-  $('initial-conditions').select('input').invoke('setStyle', 'max-width: 120px  ');//or IFrame?
+  
 
   function initial_condtition_change(event){
 
-    if(!/(\w|\d)/.test(whichKey(event))){
+    if(!/(\w|\d|\u0008)/.test(whichKey(event))){
       return;
     }
     var id = event.element().id;
@@ -398,7 +415,17 @@
     }
     return res;
   }
-
+  
+  function prepareSubmit(){
+    
+    $('command_line').value = buildCommandLine();
+    
+    $('partial_form').getElements().each(function (e){
+      if(e.type != 'radio'){
+        e.name = e.id;
+      }
+    });
+  }
   //
   //debug
   //
