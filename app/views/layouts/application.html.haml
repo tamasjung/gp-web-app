@@ -46,6 +46,9 @@
         .place_holder
           %a{:onClick => "debug_window.open()"}
             debug
+        .broadcast
+          = h ApplicationController.broadcast
+          -#Process.pid
             
       
       #content

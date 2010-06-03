@@ -25,9 +25,18 @@ class LaunchesController < ApplicationController
   def new
     
     @launch = Launch.new
-    @subapp = Subapp.find params[:subapp_id]
-    @launch.subapp = @subapp
     
+    subapp_id = params[:subapp_id]
+    subapp_id ||= cookies[:last_subapp]
+    unless subapp_id
+      raise "missing subapp_id"
+    else
+      cookies[:last_subapp] = subapp_id
+    end
+    
+    
+    @subapp = Subapp.find subapp_id
+    @launch.subapp = @subapp
     read_input_partial
     
     respond_to do |format|
@@ -39,15 +48,23 @@ class LaunchesController < ApplicationController
   # GET /launches/1/edit
   def edit
     @launch = Launch.find(params[:id])
+    cookies[:last_subapp] = @launch.subapp.id
+    read_input_partial
   end
 
   # POST /launches
   # POST /launches.xml
   def create
     @launch = Launch.new(params[:launch])
-
+    save_ok = @launch.save
+    unless @launch.name.size > 0
+      @launch.name = @launch.subapp.name + "-" + @launch.id.to_s#generate a name
+      save_ok = @launch.save
+    end
+    cookies[:last_subapp] = @launch.subapp.id
+    read_input_partial
     respond_to do |format|
-      if @launch.save
+      if save_ok 
         flash[:notice] = 'Launch was successfully created.'
         format.html { redirect_to(@launch) }
         format.xml  { render :xml => @launch, :status => :created, :location => @launch }
@@ -62,7 +79,8 @@ class LaunchesController < ApplicationController
   # PUT /launches/1.xml
   def update
     @launch = Launch.find(params[:id])
-
+    cookies[:last_subapp] = @launch.subapp.id
+    read_input_partial
     respond_to do |format|
       if @launch.update_attributes(params[:launch])
         flash[:notice] = 'Launch was successfully updated.'
@@ -95,11 +113,13 @@ class LaunchesController < ApplicationController
       raise "file not found #{file_name}" unless File.exist? file_name
       raise "illegal file path" unless (File.dirname(File.expand_path file_name) == File.expand_path(dir))
       input_page = IO.read(file_name)
-    rescue
+    rescue  
       input_page = "No template found"
     end
     @embedded_css = input_page[/EMBEDDED_STYLE(.*)EMBEDDED_STYLE/m, 1] rescue ""
     engine = Haml::Engine.new(input_page, :suppress_eval => true)
     @input_html = engine.render
   end
+  
+  
 end

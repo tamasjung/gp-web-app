@@ -12,7 +12,8 @@
   EMBEDDED_STYLE
 
 %form#partial_form.tab_in_tab
-  %input{:type => "hidden", :id=>"command_line"}
+  %input{:type => "hidden", :id=>"command_args"}
+  %input{:type => "hidden", :id=>"display_str"}
   %ul#k3tabs
     / %li.tab
     /   %a{:href => "#model_params"}
@@ -94,16 +95,16 @@
       .label
         dimension
       .field
-        %input{:type => "radio", :id=>"dimension_2d", :name => "dimension_radio", :checked=>"true", :value => "2D", :onClick => 'two_or_three_dim()'}
+        %input{:type => "radio", :id=>"dimension_2d", :name => "dimension_radio", :value => "2D", :onClick => 'two_or_three_dim()'}
           2D
-        %input{:type => "radio", :id=>"dimension_3d", :name => "dimension_radio", :value => "3D", :onClick => 'two_or_three_dim()'}
+        %input{:type => "radio", :id=>"dimension_3d", :name => "dimension_radio", :value => "3D", :onClick => 'two_or_three_dim()', :checked=>"true"}
           3D
         
     .prop_row
       .label
         centre
       .field
-        %input{:type => "radio", :id=>"centre_astro", :name => "centre_radio", :checked=>"true", :value => "ac"}
+        %input{:type => "radio", :id=>"centre_astro", :name => "centre_radio", :value => "ac", :checked=>"true"}
           astrocentric
         %input{:type => "radio", :id=>"centre_bari", :name => "centre_radio", :value => "bc"}
           baricentric
@@ -122,28 +123,28 @@
       .label
         type
       .field
-        %input{:type => "radio", :id=>"type_lci", :name => "type_radio", :checked=>"true", :value => "lci", :onClick => 'lci_or_me()'}
+        %input{:type => "radio", :id=>"type_lci", :name => "type_radio", :value => "lci", :onClick => 'lci_or_me()', :checked=>"true"}
           LCI
-        %input{:type => "radio", :id=>"type_me", :name => "type_radio", :checked=>"true", :value => "me", :onClick => 'lci_or_me()'}
+        %input{:type => "radio", :id=>"type_me", :name => "type_radio", :value => "me", :onClick => 'lci_or_me()'}
           ME
     #xi.prop_row
       .label
         &xi;
       .custom-field
         [
-        %input.xi_input{:type => "text", :id=>"xi1", :value => "1"}
+        %input.xi_input{:type => "text", :id=>"xi1", :value => "1", :valid_if => "x == 0 || x == 1"}
         ,
-        %input.xi_input{:type => "text", :id=>"xi2", :value => "0"}
+        %input.xi_input{:type => "text", :id=>"xi2", :value => "0", :valid_if => "x == 0 || x == 1"}
         ,
-        %input.xi_input{:type => "text", :id=>"xi3", :value => "0"}
+        %input.xi_input{:type => "text", :id=>"xi3", :value => "0", :valid_if => "x == 0 || x == 1"}
         ,
-        %input.xi_input{:type => "text", :id=>"xi4", :value => "0"}
+        %input.xi_input{:type => "text", :id=>"xi4", :value => "0", :valid_if => "x == 0 || x == 1"}
         %span.only_3D
           ,
-        %input.xi_input.only_3D{:type => "text", :id=>"xi5", :value => "0"}
+        %input.xi_input.only_3D{:type => "text", :id=>"xi5", :value => "0", :valid_if => "x == 0 || x == 1"}
         %span.only_3D
           ,
-        %input.xi_input.only_3D{:type => "text", :id=>"xi6", :value => "0"}
+        %input.xi_input.only_3D{:type => "text", :id=>"xi6", :value => "0", :valid_if => "x == 0 || x == 1"}
         ]
     .prop_row
       .label
@@ -185,9 +186,9 @@
         %td
           e<sub>1</sub>
         %td
-          %input{:type => "text", :id=>"e1_start", :value=>"0"}
+          %input{:type => "text", :id=>"e1_start", :value=>"0", :valid_if => "0 <= x && x < 1"}
         %td
-          %input{:type => "text", :id=>"e1_end"}
+          %input{:type => "text", :id=>"e1_end", :valid_if => "0 <= x && x < 1"}
         %td
           %input{:type => "text", :id=>"e1_n"}
         %td
@@ -197,9 +198,9 @@
         %td
           &omega;<sub>1</sub>
         %td
-          %input{:type => "text", :id=>"w1_start", :value=>"0"}
+          %input{:type => "text", :id=>"w1_start", :value=>"0", :valid_if =>  "0 <= x && x < 360"}
         %td
-          %input{:type => "text", :id=>"w1_end"}
+          %input{:type => "text", :id=>"w1_end", :valid_if =>  "0 <= x && x < 360"}
         %td
           %input{:type => "text", :id=>"w1_n"}
         %td
@@ -209,9 +210,9 @@
         %td{:style => "border-bottom: solid 1px lightgrey"}
           M<sub>1</sub>
         %td
-          %input{:type => "text", :id=>"M1_start", :value=>"0"}
+          %input{:type => "text", :id=>"M1_start", :value=>"0", :valid_if =>  "0 <= x && x < 360"}
         %td
-          %input{:type => "text", :id=>"M1_end"}
+          %input{:type => "text", :id=>"M1_end", :valid_if =>  "0 <= x && x < 360"}
         %td
           %input{:type => "text", :id=>"M1_n"}
         %td
@@ -221,9 +222,9 @@
         %td
           a
         %td
-          %input{:type => "text", :id=>"a_start", :value=>"0"}
+          %input{:type => "text", :id=>"a_start", :value=>"0", :valid_if => "x > 0"}
         %td
-          %input{:type => "text", :id=>"a_end"}
+          %input{:type => "text", :id=>"a_end", :valid_if => "x > 0"}
         %td
           %input{:type => "text", :id=>"a_n"}
         %td
@@ -233,9 +234,9 @@
         %td
           e
         %td
-          %input{:type => "text", :id=>"e_start", :value=>"0"}
+          %input{:type => "text", :id=>"e_start", :value=>"0", :valid_if => "0 <= x && x < 1"}
         %td
-          %input{:type => "text", :id=>"e_end"}
+          %input{:type => "text", :id=>"e_end", :valid_if => "0 <= x && x < 1"}
         %td
           %input{:type => "text", :id=>"e_n"}
         %td
@@ -245,9 +246,9 @@
         %td
           i
         %td
-          %input{:type => "text", :id=>"i_start", :value=>"0"}
+          %input{:type => "text", :id=>"i_start", :value=>"0", :valid_if =>  "0 <= x && x < 180"}
         %td
-          %input{:type => "text", :id=>"i_end"}
+          %input{:type => "text", :id=>"i_end", :valid_if =>  "0 <= x && x < 180"}
         %td
           %input{:type => "text", :id=>"i_n"}
         %td
@@ -257,9 +258,9 @@
         %td
           &omega;
         %td
-          %input{:type => "text", :id=>"w_start", :value=>"0"}
+          %input{:type => "text", :id=>"w_start", :value=>"0", :valid_if =>  "0 <= x && x < 360"}
         %td
-          %input{:type => "text", :id=>"w_end"}
+          %input{:type => "text", :id=>"w_end", :valid_if =>  "0 <= x && x < 360"}
         %td
           %input{:type => "text", :id=>"w_n"}
         %td
@@ -269,9 +270,9 @@
         %td
           &Omega;
         %td
-          %input{:type => "text", :id=>"O_start", :value=>"0"}
+          %input{:type => "text", :id=>"O_start", :value=>"0", :valid_if =>  "0 <= x && x < 360"}
         %td
-          %input{:type => "text", :id=>"O_end"}
+          %input{:type => "text", :id=>"O_end", :valid_if =>  "0 <= x && x < 360"}
         %td
           %input{:type => "text", :id=>"O_n"}
         %td
@@ -281,19 +282,31 @@
         %td
           M
         %td
-          %input{:type => "text", :id=>"M_start", :value=>"0"}
+          %input{:type => "text", :id=>"M_start", :value=>"0", :valid_if =>  "0 <= x && x < 360"}
         %td
-          %input{:type => "text", :id=>"M_end"}
+          %input{:type => "text", :id=>"M_end", :valid_if =>  "0 <= x && x < 360"}
         %td
           %input{:type => "text", :id=>"M_n"}
         %td
           %input{:type => "text", :id=>"M_d"}
-
-:javascript
-  two_or_three_dim();
-  lci_or_me();
-
-  
+  #integrator_params.tabpanel.group
+    .group_title
+      Output options
+    .prop_row
+      .label
+        indicator
+      .field
+        %input{:type => "checkbox", :id=>"indicator"}
+    .prop_row
+      .label
+        file name
+      .field
+        %input{:type => "text", :id=>"file_name", :value => "output"}
+          
+  %br
+        
+      
+:javascript  
 
   function initial_condtition_change(event){
 
@@ -356,7 +369,7 @@
     return result;
   }
  
-  function buildCommandLine(){
+  function buildCommandArgs(){
     var res = "";
     var iterators = [];
     var is_3D = radio_value('dimension_radio') == '3D';
@@ -408,30 +421,75 @@
     catch(error){
       //TODO
     }
+    var file_name = $('file_name').value
     if(iterators.length > 0){
       res += " -grid " + iterators.map(function(e){
         return e.idx + "[" + [e.end, e.d].join(',') + "]"
       }).join(',');
+      
+      if($('indicator').checked){
+        res += " -oGI " + file_name; 
+      }
+      else{
+        res += " -oG " + file_name;
+      }
     }
+    else{
+      res += " -oI " + file_name;
+    }
+    
+    
+    
     return res;
   }
   
   function prepareSubmit(){
     
-    $('command_line').value = buildCommandLine();
+    $('command_args').value = buildCommandArgs();
     
-    $('partial_form').getElements().each(function (e){
-      if(e.type != 'radio'){
-        e.name = e.id;
-      }
-    });
+    $('display_str').value = $('command_args').value;
   }
+  
+  //
+  //setting of the missing name attributes 
+  //
+  $('partial_form').getElements().each(function (e){
+    if(e.type != 'radio'){
+      e.name = e.id;
+    }
+  });
+  
+  $('partial_form').init = function (){
+    two_or_three_dim();
+    lci_or_me();
+  }
+  
+  function validate(element){
+    var exp = element.readAttribute('valid_if');
+    if(exp){
+      x = element.value;
+      result = eval(exp);
+      if(!result){
+        Effect.Pulsate(element.id, { pulses: 1, duration: 0.5});
+        element.addClassName("invalid");
+        //element.parentNode.appendChild(Builder.node('div', {'className': 'dyn_help', 'style': 'display: block; position: absolute; left: 150px; opacity: 1; z-index: 9999'}, [exp]));
+        
+      }
+      else{
+        element.removeClassName("invalid");
+        $$('.dyn_help').each(function(e){e.remove();});
+      }
+    }
+    
+  }
+  
   //
   //debug
   //
   
   $('partial').select('input').each(function(e){
     e.observe('change', function(){
-      debug(buildCommandLine());
+      debug(buildCommandArgs());
+      validate(e);
     })
   });

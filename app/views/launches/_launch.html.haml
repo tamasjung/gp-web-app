@@ -1,0 +1,48 @@
+
+%ul#launch_tabs.subsection_tabs
+  %li.tab
+    %a{ :href => "#partial" }
+      partial
+  %li.tab
+    %a{ :href => "#settings" }
+      settings
+#partial.tabpanel
+  =@input_html
+  
+
+#settings.tabpanel
+  -form_for @launch do |f|
+    = f.error_messages
+    =f.hidden_field :subapp_id
+    .prop_row
+      .label
+        = f.label :name 
+      .field
+        = f.text_field :name, :size => 40
+    .prop_row
+      .label
+        = f.label :settings 
+      .field
+        = f.text_area :settings, :rows => 20
+    = f.submit controller.action_name, :onclick => 'collect_and_submit()'
+    %input{:type => 'button', :onclick=> 'collect_and_submit();', :value => 'serialize'}
+:javascript
+
+  new Control.Tabs('launch_tabs');
+  
+  function collect_and_submit(){
+  
+    prepareSubmit();
+    var object = $('partial_form').serialize(true);
+    var serString = Object.toJSON(object);
+    $('launch_settings').value = serString;
+    return true;
+    
+  }     
+  
+  var settings = $('launch_settings').value;
+  if(settings.isJSON()){
+    Form.deserializeJSON('partial_form', settings);
+  }
+  $('partial_form').init();  
+   

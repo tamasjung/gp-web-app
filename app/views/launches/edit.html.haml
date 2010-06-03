@@ -1,14 +1,10 @@
 .page_title
-  =":New launch of" 
+  ="Editing launch of" 
   %span.subapp_name
     =@launch.subapp.name
   
     = render :partial => 'launch'
 
-
-
-
-= link_to 'Back', launches_path
-
-
-  
+= link_to 'Back', launches_path 
+| 
+= link_to 'Show', @launch  

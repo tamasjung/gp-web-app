@@ -57,6 +57,9 @@ $grid_logo = "grid_logo.png"
   :padding-top 25px
   >.place_holder
     :padding 20px
+  .broadcast
+    :font-size 3em
+    :color red
   
 #footer 
   #version
@@ -171,15 +174,24 @@ $grid_logo = "grid_logo.png"
     :color grey
   .field
     +column(12, true)
-    input[type="text"]
+    input[type="text"], textarea
       +column(7)
       padding-top: 2px
       padding-bottom: 2px
       margin-top: 2px
       margin-bottom: 2px
       
-//input
-//  color: inherit
+input.invalid
+  color: black
+  background: #F9AEA8
+  border: solid 2px #FF8935
+  
+.help
+  display: none
+
+.help_shown
+  display: inline
+
 
 .debug
   background: #aaa
