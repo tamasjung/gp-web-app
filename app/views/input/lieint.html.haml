@@ -1,0 +1,118 @@
+-#
+  EMBEDDED_STYLE
+       
+    #orbitals input{
+      width: 5em;
+    }
+    
+    #plus_orbital {
+      color: red;
+      
+      float: left;
+      background: green;
+    }
+  
+  EMBEDDED_STYLE
+
+%form#partial_form.panel_in_tab
+  %input{:type => "hidden", :id=>"command_args"}
+  %input{:type => "hidden", :id=>"display_str"}
+
+        
+  #model_params.group
+    .group_title
+      Orbitals
+    .prop_row
+      .label
+        central mass
+      .field
+        %input{:type => "text", :id=>"central_mass"}
+
+
+    %br
+    %a.clickable{:onclick => "new_orbital()"}
+      +
+        
+    %table
+      %tbody#orbitals
+        %tr
+          %th
+            a
+          %th
+            l
+          %th
+            e
+          %th
+            w
+          %th
+            i
+          %th
+            o
+          %th
+            mass 
+          %th
+            &nbsp;
+        %tr#orbital_0
+          %td
+            %input{:type => "text", :id => "orbital_a_0"}
+          %td
+            %input{:type => "text", :id => "orbital_l_0"}
+          %td
+            %input{:type => "text", :id => "orbital_e_0"}
+          %td
+            %input{:type => "text", :id => "orbital_w_0"}
+          %td
+            %input{:type => "text", :id => "orbital_i_0"}
+          %td
+            %input{:type => "text", :id => "orbital_o_0"}
+          %td
+            %input{:type => "text", :id => "orbital_mass_0"} 
+          %td
+            %a.clickable{:onclick => "remove_orbital(event)"}
+              \-
+          
+        
+      
+    :javascript 
+      var orbital_prefix = 'orbital_';
+      function new_orbital(){
+        
+        var clone = $('orbital_0').cloneNode(true);
+        
+        $('orbitals').appendChild(clone);
+        
+        re_indexing_orbitals();
+        
+      }
+      
+      function remove_orbital(event){
+        if(Event.element(event).parentNode.parentNode.parentNode.childElements().size() > 2){
+          Event.element(event).parentNode.parentNode.remove();
+          re_indexing_orbitals();
+        }
+      }
+      
+      function re_indexing_orbitals(){
+        var i = 0;
+        var trs = [];
+        $('orbitals').select("tr[id^='orbital_']").each(function (e){
+          trs.push(e);
+        });
+        $A(trs).each(function (e){
+          e.select("input").each(function(element){
+            element.writeAttribute("id", element.readAttribute("id").replace(/\d+$/, i));
+          });
+          e.writeAttribute("id", orbital_prefix + i);
+          i++;
+        });
+      }
+      
+      
+   
+:javascript
+   $('partial_form').init = function (){
+     
+   }
+
+
+

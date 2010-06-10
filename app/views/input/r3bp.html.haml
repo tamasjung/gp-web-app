@@ -1,6 +1,6 @@
 -#
   EMBEDDED_STYLE
-  #initial-conditions input {
+  #initial_conditions input {
     max-width: 120px;
   }
 
@@ -11,7 +11,7 @@
   
   EMBEDDED_STYLE
 
-%form#partial_form.tab_in_tab
+%form#partial_form.panel_in_tab
   %input{:type => "hidden", :id=>"command_args"}
   %input{:type => "hidden", :id=>"display_str"}
   %ul#k3tabs
@@ -28,7 +28,7 @@
     /   %a{:href => "#kezdofeltetelek"}
     /     Initial constraints
     /     
-  #model_params.tabpanel.group
+  #model_params.group
     .group_title
       Model parameters
       
@@ -116,7 +116,7 @@
         %input{:type => "checkbox", :id=>"CO"}
     
 
-  #indikator_parametek.tabpanel.group
+  #indikator_parametek.group
     .group_title
       Indicator parameters
     .prop_row
@@ -153,7 +153,7 @@
         %input{:type => "text", :id => "Navg"}
         
     
-  #integrator_params.tabpanel.group
+  #integrator_params.group
     .group_title
       Integrator parameters
     .prop_row
@@ -167,10 +167,10 @@
       .field
         %input{:type => "text", :id=>"Tmax"}
         
-  #kezdofeltetelek.tabpanel.group
+  #kezdofeltetelek.group
     .group_title
       Initial condition
-    %table#initial-conditions
+    %table#initial_conditions
       %tr
         %th
           &nbsp;
@@ -289,7 +289,7 @@
           %input{:type => "text", :id=>"M_n"}
         %td
           %input{:type => "text", :id=>"M_d"}
-  #integrator_params.tabpanel.group
+  #integrator_params.group
     .group_title
       Output options
     .prop_row
@@ -330,7 +330,7 @@
     }
   }
 
-  $('initial-conditions').select('input').each(function(i){
+  $('initial_conditions').select('input').each(function(i){
     i.observe('keyup', initial_condtition_change);
   });
   
@@ -472,8 +472,11 @@
       if(!result){
         Effect.Pulsate(element.id, { pulses: 1, duration: 0.5});
         element.addClassName("invalid");
-        //element.parentNode.appendChild(Builder.node('div', {'className': 'dyn_help', 'style': 'display: block; position: absolute; left: 150px; opacity: 1; z-index: 9999'}, [exp]));
-        
+        //element.parentNode.appendChild(
+          // Builder.node(
+          //   'div', {'className': 'dyn_help', 'style': 'display: block; position: absolute; left: 150px; opacity: 1; z-index: 9999'}, 
+          //     [translate4human(exp)]));
+        //debug(translate4human(exp));
       }
       else{
         element.removeClassName("invalid");

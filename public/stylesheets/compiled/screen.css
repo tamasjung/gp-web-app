@@ -602,14 +602,15 @@ body.three-col #content {
   color: lightblue;
   text-shadow: white 1px 1px 0px;
   padding-top: 20px;
+  padding-bottom: 5px;
 }
 
-/* line 72, ../../../app/stylesheets/partials/_main.sass */
+/* line 73, ../../../app/stylesheets/partials/_main.sass */
 .bp {
   background: #eaeaea;
 }
 
-/* line 78, ../../../app/stylesheets/partials/_main.sass */
+/* line 79, ../../../app/stylesheets/partials/_main.sass */
 .page_title {
   border-radius: 15px;
   -moz-border-radius: 15px;
@@ -618,7 +619,7 @@ body.three-col #content {
   background-color: #dddddd;
 }
 
-/* line 83, ../../../app/stylesheets/partials/_main.sass */
+/* line 84, ../../../app/stylesheets/partials/_main.sass */
 .notice {
   border-radius: 15px;
   -moz-border-radius: 15px;
@@ -626,7 +627,7 @@ body.three-col #content {
   background: #ffdeb4;
 }
 
-/* line 87, ../../../app/stylesheets/partials/_main.sass */
+/* line 88, ../../../app/stylesheets/partials/_main.sass */
 .dashboard {
   border-radius: 15px;
   -moz-border-radius: 15px;
@@ -635,7 +636,7 @@ body.three-col #content {
   padding: 10px;
 }
 
-/* line 93, ../../../app/stylesheets/partials/_main.sass */
+/* line 94, ../../../app/stylesheets/partials/_main.sass */
 .remote_module {
   border-radius: 15px;
   -moz-border-radius: 15px;
@@ -646,7 +647,7 @@ body.three-col #content {
   background: #eeeeee;
 }
 
-/* line 101, ../../../app/stylesheets/partials/_main.sass */
+/* line 102, ../../../app/stylesheets/partials/_main.sass */
 .tabpanel {
   display: block;
   clear: both;
@@ -658,20 +659,20 @@ body.three-col #content {
   background-color: #eeeeee;
 }
 
-/* line 110, ../../../app/stylesheets/partials/_main.sass */
-.tab_in_tab {
+/* line 111, ../../../app/stylesheets/partials/_main.sass */
+.panel_in_tab {
   background-color: #f6f6f6;
   border-radius: 3px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
 }
 
-/* line 114, ../../../app/stylesheets/partials/_main.sass */
+/* line 115, ../../../app/stylesheets/partials/_main.sass */
 .group {
   margin: 8px;
   padding: 10px;
 }
-/* line 117, ../../../app/stylesheets/partials/_main.sass */
+/* line 118, ../../../app/stylesheets/partials/_main.sass */
 .group .group_title {
   background-color: #eff2b2;
   border-radius: 5px;
@@ -683,11 +684,6 @@ body.three-col #content {
 }
 
 /* line 126, ../../../app/stylesheets/partials/_main.sass */
-.tab_in_tab .tabpanel {
-  background: inherit;
-}
-
-/* line 129, ../../../app/stylesheets/partials/_main.sass */
 #container ul.subsection_tabs {
   list-style-type: none;
   list-style-image: none;
@@ -699,14 +695,14 @@ body.three-col #content {
   margin-top: 1em;
   padding-left: 0px;
 }
-/* line 141, ../../../app/stylesheets/partials/_main.sass */
+/* line 138, ../../../app/stylesheets/partials/_main.sass */
 #container ul.subsection_tabs .tab {
   display: block;
   float: left;
   margin: 0px;
   margin-bottom: 0px;
 }
-/* line 146, ../../../app/stylesheets/partials/_main.sass */
+/* line 143, ../../../app/stylesheets/partials/_main.sass */
 #container ul.subsection_tabs .tab a {
   display: block;
   text-decoration: none;
@@ -725,7 +721,7 @@ body.three-col #content {
   -webkit-border-top-right-radius: 7px;
   -webkit-border-top-left-radius: 7px;
 }
-/* line 161, ../../../app/stylesheets/partials/_main.sass */
+/* line 158, ../../../app/stylesheets/partials/_main.sass */
 #container ul.subsection_tabs .tab a.active {
   background-color: #eeeeee;
   background-image: none;
@@ -733,11 +729,11 @@ body.three-col #content {
   text-shadow: white 1px 1px 0px;
 }
 
-/* line 168, ../../../app/stylesheets/partials/_main.sass */
+/* line 165, ../../../app/stylesheets/partials/_main.sass */
 .prop_row {
   clear: both;
 }
-/* line 170, ../../../app/stylesheets/partials/_main.sass */
+/* line 167, ../../../app/stylesheets/partials/_main.sass */
 .prop_row .label {
   text-align: right;
   padding-right: 30px;
@@ -751,7 +747,7 @@ body.three-col #content {
 * html .prop_row .label {
   overflow-x: hidden;
 }
-/* line 175, ../../../app/stylesheets/partials/_main.sass */
+/* line 172, ../../../app/stylesheets/partials/_main.sass */
 .prop_row .field {
   display: inline;
   float: left;
@@ -762,7 +758,7 @@ body.three-col #content {
 * html .prop_row .field {
   overflow-x: hidden;
 }
-/* line 177, ../../../app/stylesheets/partials/_main.sass */
+/* line 174, ../../../app/stylesheets/partials/_main.sass */
 .prop_row .field input[type="text"], .prop_row .field textarea {
   display: inline;
   float: left;
@@ -778,39 +774,53 @@ body.three-col #content {
   overflow-x: hidden;
 }
 
-/* line 184, ../../../app/stylesheets/partials/_main.sass */
+/* line 181, ../../../app/stylesheets/partials/_main.sass */
 input.invalid {
   color: black;
   background: #f9aea8;
   border: solid 2px #ff8935;
 }
 
-/* line 189, ../../../app/stylesheets/partials/_main.sass */
+/* line 186, ../../../app/stylesheets/partials/_main.sass */
 .help {
   display: none;
 }
 
-/* line 192, ../../../app/stylesheets/partials/_main.sass */
+/* line 189, ../../../app/stylesheets/partials/_main.sass */
 .help_shown {
   display: inline;
 }
 
-/* line 196, ../../../app/stylesheets/partials/_main.sass */
+/* line 193, ../../../app/stylesheets/partials/_main.sass */
 .debug {
   background: #aaaaaa;
 }
 
-/* line 199, ../../../app/stylesheets/partials/_main.sass */
+/* line 196, ../../../app/stylesheets/partials/_main.sass */
 .window {
   min-width: 150px;
   min-height: 100px;
 }
-/* line 200, ../../../app/stylesheets/partials/_main.sass */
+/* line 197, ../../../app/stylesheets/partials/_main.sass */
 .window .window_title {
   margin-top: -7px;
   margin-bottom: 7px;
   font-size: 11px;
   cursor: move;
+}
+
+/* line 205, ../../../app/stylesheets/partials/_main.sass */
+body a.clickable {
+  background: #fbfbfb;
+  padding: 5px;
+  border-radius: 15px;
+  -moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
+  text-decoration: none;
+}
+/* line 211, ../../../app/stylesheets/partials/_main.sass */
+body a.clickable:hover {
+  background: #eeeeee;
 }
 
 /* line 1, ../../../app/stylesheets/partials/_new_main.scss */

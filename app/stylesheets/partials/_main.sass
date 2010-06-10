@@ -67,6 +67,7 @@ $grid_logo = "grid_logo.png"
     :color lightblue
     +embed
     :padding-top 20px
+    padding-bottom: 5px
     
   
 .bp 
@@ -107,7 +108,7 @@ $grid_logo = "grid_logo.png"
   :background-color $selected_background_color
 
   
-.tab_in_tab
+.panel_in_tab
   background-color: lighten($selected_background_color, 3%)
   +rounded(3px)
 
@@ -120,11 +121,7 @@ $grid_logo = "grid_logo.png"
     padding: 3px
     padding-left: 1em
     margin: 3px
-  
 
-  
-.tab_in_tab .tabpanel
-  background: inherit
  
 #container ul.subsection_tabs
 
@@ -204,6 +201,17 @@ input.invalid
     cursor: move
   min-width: 150px 
   min-height: 100px
+  
+body a.clickable
+  background: lighten($selected_background_color, 5%)
+  padding: 5px
+  +rounded(15px)
+  text-decoration: none
+  
+  &:hover
+    background: $selected_background_color
+    
+  
   
 
   

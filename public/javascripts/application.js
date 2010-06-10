@@ -1,6 +1,22 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
+function translate4human(exp){
+  var result = exp;
+  dict = [
+    { regexp: /&&/g, replacement: "and"},
+    { regexp: /<=/g, replacement: "&le;"},
+    { regexp: /&&/g, replacement: "and"},
+    { regexp: /&&/g, replacement: "and"},
+     
+    ];
+  dict.each(function (dict_element){
+    alert(dict_element.regexp);
+    result = result.replace(dict_element.regexp, dict_element.replacement);
+  });
+  return result;
+}
+
 function whichKey(event){
   
   return (event.which ? String.fromCharCode(event.which) : null);//TODO IE
