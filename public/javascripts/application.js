@@ -6,15 +6,32 @@ function translate4human(exp){
   dict = [
     { regexp: /&&/g, replacement: "and"},
     { regexp: /<=/g, replacement: "&le;"},
-    { regexp: /&&/g, replacement: "and"},
-    { regexp: /&&/g, replacement: "and"},
+    { regexp: /\|\|/g, replacement: "or"},
+    { regexp: /==/g, replacement: "="},
+    { regexp: /isInteger\(x\)/g, replacement: "integer"},
+    { regexp: /isDefined\(x\)/g, replacement: "defined"},
+
      
     ];
   dict.each(function (dict_element){
-    alert(dict_element.regexp);
     result = result.replace(dict_element.regexp, dict_element.replacement);
   });
   return result;
+}
+
+function isNumber(num){
+  return num !== "" && isFinite(num);
+}
+
+function isDefined(val){
+  if(val === "" || val === null || val === undefined){
+    throw {name: 'notDefined'}
+  }
+  return true;
+}
+
+function isInteger(n){
+  return n == Math.floor(n);
 }
 
 function whichKey(event){

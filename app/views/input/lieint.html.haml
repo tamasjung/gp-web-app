@@ -22,6 +22,12 @@
   #model_params.group
     .group_title
       Orbitals
+      
+    .prop_row
+      .label
+        gravitational constant
+      .field
+        %input{:type => "text", :id=>"gravitational_constant"}      
     .prop_row
       .label
         central mass
@@ -30,8 +36,8 @@
 
 
     %br
-    %a.clickable{:onclick => "new_orbital()"}
-      +
+    %a.clickable.add{:onclick => "new_orbital()"}
+      
         
     %table
       %tbody#orbitals
@@ -68,27 +74,148 @@
           %td
             %input{:type => "text", :id => "orbital_mass_0"} 
           %td
-            %a.clickable{:onclick => "remove_orbital(event)"}
-              \-
+            %a.clickable.minus{:onclick => "remove_orbital(event)"}
+              
           
+  #model_params.group
+    .group_title
+      Output
         
+    .prop_row
+      .label
+        write final 
+      .field
+        %input{:type => "checkbox", :id=>"final"}
+        
+    .prop_row
+      .label
+        format
+      .field
+        %input{:type => "text", :id=>"format"}
+       
+
+  #model_params.group
+    .group_title
+      Integration parameters
+    .prop_row
+      .label
+        precision
+      .field
+        %input{:type => "text", :id=>"precision"}
+
+    .prop_row
+      .label
+        order
+      .field
+        %input{:type => "text", :id=>"order"}
+        
+    .prop_row
+      .label
+        delta
+      .field
+        %input{:type => "text", :id=>"delta"}
+
+    .prop_row
+      .label
+        time
+      .field
+        %input{:type => "text", :id=>"time"}
+        
+  #model_params.group
+    .group_title
+      Analysis methods
       
-    :javascript 
+      
+    .prop_row
+      .label
+        normal 
+      .field
+        %input{:type => "checkbox", :id=>"normal"}
+
+    .prop_row
+      .label
+        Lyapunov 
+      .field
+        %input{:type => "checkbox", :id=>"lci"}
+
+    .prop_row
+      .label
+        relative Lyapunov
+      .field
+        %input{:type => "checkbox", :id=>"rli"}
+
+    .prop_row
+      .label
+        thrid-order differential Lyapunov 
+      .field
+        %input{:type => "checkbox", :id=>"lli"}
+
+    .prop_row
+      .label
+        differential maximum eccentricity 
+      .field
+        %input{:type => "checkbox", :id=>"dmx"}
+      
+    .prop_row
+      .label
+        differential separation
+      .field
+        %input{:type => "text", :id=>"difference"}
+        
+  %br
+
+      
+    :javascript
+    
+      function directFlag(name){
+        if($(name).checked){
+          return " --" + name
+        }
+        else{
+          return "";
+        }
+      } 
+      
+      function directValue(name){
+        var element = $(name);
+        if(!element){
+          
+        }
+        else{
+          var val = $(name).value;
+          if(val){
+            return " --" + name + " " + val;
+          }
+          else{
+            return "";
+          }
+        }
+      }
+      
+      
+       
       var orbital_prefix = 'orbital_';
       function new_orbital(){
         
         var clone = $('orbital_0').cloneNode(true);
         
+        clone.setStyle("display: none");
+        
         $('orbitals').appendChild(clone);
         
         re_indexing_orbitals();
-        
+        Effect.Appear(clone.id, { duration: 0.5 });
       }
       
       function remove_orbital(event){
         if(Event.element(event).parentNode.parentNode.parentNode.childElements().size() > 2){
-          Event.element(event).parentNode.parentNode.remove();
-          re_indexing_orbitals();
+          var element = Event.element(event).parentNode.parentNode;
+          Effect.Fade(element.id, {
+            duration: 0.5, 
+            afterFinish: function(){
+              element.remove();
+              re_indexing_orbitals();
+            }});
         }
       }
       
@@ -107,6 +234,21 @@
         });
       }
       
+      function buildCommandArgs(){
+        var cmdArgs = "";
+        
+        var flags = $A(['final', 'normal', 'lci', 'rli', 'lli', 'dmx']);
+        
+        cmdArgs = flags.inject(cmdArgs, function(res, item){ return res + directFlag(item)});
+        
+        var simpleValues = ['gravitational_constant', 'format', 'precision', 'order', 'delta', 'time', 'difference'];
+        
+        cmdArgs = simpleValues.inject(cmdArgs, function(res, item){ return res + directValue(item)});
+        
+        return cmdArgs
+        
+      }
+      
       
    
 :javascript
@@ -114,5 +256,14 @@
      
    }
 
+   //
+   //debug
+   //
 
+   $('partial').select('input').each(function(e){
+     e.observe('change', function(){
+       debug(buildCommandArgs());
+       //validate(e);
+     })
+   });
 

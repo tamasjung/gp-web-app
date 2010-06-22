@@ -153,8 +153,6 @@ $grid_logo = "grid_logo.png"
       :background image_url("grad_100_50.png")
       +rounded_top(7px)
       
-      
-
       &.active
         :background-color $selected_background_color
         :background-image none
@@ -164,19 +162,28 @@ $grid_logo = "grid_logo.png"
 
 .prop_row
   :clear both
+  margin-bottom: 70px
+  display: table-row
+  
   .label
     :text-align right
-    :padding-right 30px
-    +column(3, true)
+    :padding-right 20px
+    +column(6, true)
     :color grey
   .field
-    +column(12, true)
-    input[type="text"], textarea
-      +column(7)
-      padding-top: 2px
-      padding-bottom: 2px
-      margin-top: 2px
-      margin-bottom: 2px
+    +column(9, true)
+    input, textarea
+      position: relative
+      &[type="checkbox"]
+        background: yellow
+        border: solid
+      &[type="text"]
+        //+column(7)
+        padding-top: 2px
+        padding-bottom: 2px
+        margin-top: 2px
+        margin-bottom: 2px
+      
       
 input.invalid
   color: black
@@ -191,7 +198,7 @@ input.invalid
 
 
 .debug
-  background: #aaa
+  background: image_url('grey79.png')
   
 .window
   .window_title
@@ -202,15 +209,44 @@ input.invalid
   min-width: 150px 
   min-height: 100px
   
-body a.clickable
-  background: lighten($selected_background_color, 5%)
-  padding: 5px
-  +rounded(15px)
-  text-decoration: none
-  
-  &:hover
-    background: $selected_background_color
+#content
+  a
     
+    &.add
+      background: image_url("protocons/24px/actions/add.png") no-repeat center center 
+      &:hover
+        background: image_url("protocons/32px/actions/add.png") no-repeat center center
+        
+    &.minus
+      background: image_url("protocons/24px/actions/minus.png") no-repeat center center
+      &:hover
+        background: image_url("protocons/32px/actions/minus.png") no-repeat center center
+           
+    &.clickable
+      opacity: 0.6
+      border: solid 1px #ccc
+      padding: 5px
+      +rounded(10px)
+      text-decoration: none
+      width: 20px
+      height: 20px
+      display: block
+      
+.dyn_help
+  background: image_url('grey79.png')
+  display: block
+  position: absolute
+  z-index: 9999
+  +rounded(5px)
+  padding-left: 5px
+  paddding-right: 5px
+  //display: none
+  
+
+        
+  
+  
+
   
   
 

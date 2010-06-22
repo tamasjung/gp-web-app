@@ -721,7 +721,7 @@ body.three-col #content {
   -webkit-border-top-right-radius: 7px;
   -webkit-border-top-left-radius: 7px;
 }
-/* line 158, ../../../app/stylesheets/partials/_main.sass */
+/* line 156, ../../../app/stylesheets/partials/_main.sass */
 #container ul.subsection_tabs .tab a.active {
   background-color: #eeeeee;
   background-image: none;
@@ -729,79 +729,82 @@ body.three-col #content {
   text-shadow: white 1px 1px 0px;
 }
 
-/* line 165, ../../../app/stylesheets/partials/_main.sass */
+/* line 163, ../../../app/stylesheets/partials/_main.sass */
 .prop_row {
   clear: both;
+  margin-bottom: 70px;
+  display: table-row;
 }
-/* line 167, ../../../app/stylesheets/partials/_main.sass */
+/* line 168, ../../../app/stylesheets/partials/_main.sass */
 .prop_row .label {
   text-align: right;
-  padding-right: 30px;
+  padding-right: 20px;
   display: inline;
   float: left;
   margin-right: 0;
-  width: 110px;
+  width: 230px;
   color: grey;
 }
 /* line 138, ../../../../../../../../../../opt/local/lib/ruby/gems/1.8/gems/compass-0.10.1/frameworks/blueprint/stylesheets/blueprint/_grid.scss */
 * html .prop_row .label {
   overflow-x: hidden;
 }
-/* line 172, ../../../app/stylesheets/partials/_main.sass */
+/* line 173, ../../../app/stylesheets/partials/_main.sass */
 .prop_row .field {
   display: inline;
   float: left;
   margin-right: 0;
-  width: 470px;
+  width: 350px;
 }
 /* line 138, ../../../../../../../../../../opt/local/lib/ruby/gems/1.8/gems/compass-0.10.1/frameworks/blueprint/stylesheets/blueprint/_grid.scss */
 * html .prop_row .field {
   overflow-x: hidden;
 }
-/* line 174, ../../../app/stylesheets/partials/_main.sass */
-.prop_row .field input[type="text"], .prop_row .field textarea {
-  display: inline;
-  float: left;
-  margin-right: 10px;
-  width: 270px;
+/* line 175, ../../../app/stylesheets/partials/_main.sass */
+.prop_row .field input, .prop_row .field textarea {
+  position: relative;
+}
+/* line 177, ../../../app/stylesheets/partials/_main.sass */
+.prop_row .field input[type="checkbox"], .prop_row .field textarea[type="checkbox"] {
+  background: yellow;
+  border: solid;
+}
+/* line 180, ../../../app/stylesheets/partials/_main.sass */
+.prop_row .field input[type="text"], .prop_row .field textarea[type="text"] {
   padding-top: 2px;
   padding-bottom: 2px;
   margin-top: 2px;
   margin-bottom: 2px;
 }
-/* line 138, ../../../../../../../../../../opt/local/lib/ruby/gems/1.8/gems/compass-0.10.1/frameworks/blueprint/stylesheets/blueprint/_grid.scss */
-* html .prop_row .field input[type="text"], * html .prop_row .field textarea {
-  overflow-x: hidden;
-}
 
-/* line 181, ../../../app/stylesheets/partials/_main.sass */
+/* line 188, ../../../app/stylesheets/partials/_main.sass */
 input.invalid {
   color: black;
   background: #f9aea8;
   border: solid 2px #ff8935;
 }
 
-/* line 186, ../../../app/stylesheets/partials/_main.sass */
+/* line 193, ../../../app/stylesheets/partials/_main.sass */
 .help {
   display: none;
 }
 
-/* line 189, ../../../app/stylesheets/partials/_main.sass */
+/* line 196, ../../../app/stylesheets/partials/_main.sass */
 .help_shown {
   display: inline;
 }
 
-/* line 193, ../../../app/stylesheets/partials/_main.sass */
+/* line 200, ../../../app/stylesheets/partials/_main.sass */
 .debug {
-  background: #aaaaaa;
+  background: url('/images/grey79.png?1276383231');
 }
 
-/* line 196, ../../../app/stylesheets/partials/_main.sass */
+/* line 203, ../../../app/stylesheets/partials/_main.sass */
 .window {
   min-width: 150px;
   min-height: 100px;
 }
-/* line 197, ../../../app/stylesheets/partials/_main.sass */
+/* line 204, ../../../app/stylesheets/partials/_main.sass */
 .window .window_title {
   margin-top: -7px;
   margin-bottom: 7px;
@@ -809,18 +812,47 @@ input.invalid {
   cursor: move;
 }
 
-/* line 205, ../../../app/stylesheets/partials/_main.sass */
-body a.clickable {
-  background: #fbfbfb;
-  padding: 5px;
-  border-radius: 15px;
-  -moz-border-radius: 15px;
-  -webkit-border-radius: 15px;
-  text-decoration: none;
+/* line 215, ../../../app/stylesheets/partials/_main.sass */
+#content a.add {
+  background: url('/images/protocons/24px/actions/add.png?1268731436') no-repeat center center;
 }
-/* line 211, ../../../app/stylesheets/partials/_main.sass */
-body a.clickable:hover {
-  background: #eeeeee;
+/* line 217, ../../../app/stylesheets/partials/_main.sass */
+#content a.add:hover {
+  background: url('/images/protocons/32px/actions/add.png?1268731436') no-repeat center center;
+}
+/* line 220, ../../../app/stylesheets/partials/_main.sass */
+#content a.minus {
+  background: url('/images/protocons/24px/actions/minus.png?1268731436') no-repeat center center;
+}
+/* line 222, ../../../app/stylesheets/partials/_main.sass */
+#content a.minus:hover {
+  background: url('/images/protocons/32px/actions/minus.png?1266541341') no-repeat center center;
+}
+/* line 225, ../../../app/stylesheets/partials/_main.sass */
+#content a.clickable {
+  opacity: 0.6;
+  border: solid 1px #cccccc;
+  padding: 5px;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  text-decoration: none;
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+/* line 235, ../../../app/stylesheets/partials/_main.sass */
+.dyn_help {
+  background: url('/images/grey79.png?1276383231');
+  display: block;
+  position: absolute;
+  z-index: 9999;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  padding-left: 5px;
+  paddding-right: 5px;
 }
 
 /* line 1, ../../../app/stylesheets/partials/_new_main.scss */

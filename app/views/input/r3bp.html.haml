@@ -40,8 +40,10 @@
           var m0 = parseFloat($F('m0'));
           var m1 = parseFloat($F('m1'));
           if(m0 || m1){
-            $('mu').value = m1 / (m0 + m1);
+            var mu = m1 / (m0 + m1);
+            $('mu').value = (isNaN(mu)? "" : mu);
           }
+          validate($('mu'));
         }
         catch(err){
           $('mu').value = ""
@@ -77,7 +79,7 @@
         &mu; 
         \= m<sub>1</sub>/(m<sub>0</sub> + m<sub>1</sub>)
       .field
-        %input{:type => "text", :id=>"mu", :onKeyUp=>"resetMs()"}
+        %input{:type => "text", :id=>"mu", :onKeyUp=>"resetMs()", :valid_if => "isDefined(x)"}
 
     .prop_row
       .label
@@ -150,7 +152,7 @@
       .label
         N<sub>avg</sub>
       .field
-        %input{:type => "text", :id => "Navg"}
+        %input{:type => "text", :id => "Navg", :value=>"50"}
         
     
   #integrator_params.group
@@ -160,12 +162,12 @@
       .label
         &epsilon;
       .field
-        %input{:type => "text", :id=>"epsilon"}
+        %input{:type => "text", :id=>"epsilon", :value=>"10e-10"}
     .prop_row
       .label
         T<sub>max</sub>
       .field
-        %input{:type => "text", :id=>"Tmax"}
+        %input{:type => "text", :id=>"Tmax", :value=>"1000"}
         
   #kezdofeltetelek.group
     .group_title
@@ -190,7 +192,7 @@
         %td
           %input{:type => "text", :id=>"e1_end", :valid_if => "0 <= x && x < 1"}
         %td
-          %input{:type => "text", :id=>"e1_n"}
+          %input{:type => "text", :id=>"e1_n", :valid_if => "isInteger(x)"}
         %td
           %input{:type => "text", :id=>"e1_d"}
       
@@ -202,7 +204,7 @@
         %td
           %input{:type => "text", :id=>"w1_end", :valid_if =>  "0 <= x && x < 360"}
         %td
-          %input{:type => "text", :id=>"w1_n"}
+          %input{:type => "text", :id=>"w1_n", :valid_if => "isInteger(x)"}
         %td
           %input{:type => "text", :id=>"w1_d"}
 
@@ -214,7 +216,7 @@
         %td
           %input{:type => "text", :id=>"M1_end", :valid_if =>  "0 <= x && x < 360"}
         %td
-          %input{:type => "text", :id=>"M1_n"}
+          %input{:type => "text", :id=>"M1_n", :valid_if => "isInteger(x)"}
         %td
           %input{:type => "text", :id=>"M1_d"}
 
@@ -222,11 +224,11 @@
         %td
           a
         %td
-          %input{:type => "text", :id=>"a_start", :value=>"0", :valid_if => "x > 0"}
+          %input{:type => "text", :id=>"a_start", :valid_if => "x > 0"}
         %td
           %input{:type => "text", :id=>"a_end", :valid_if => "x > 0"}
         %td
-          %input{:type => "text", :id=>"a_n"}
+          %input{:type => "text", :id=>"a_n", :valid_if => "isInteger(x)"}
         %td
           %input{:type => "text", :id=>"a_d"}
 
@@ -238,7 +240,7 @@
         %td
           %input{:type => "text", :id=>"e_end", :valid_if => "0 <= x && x < 1"}
         %td
-          %input{:type => "text", :id=>"e_n"}
+          %input{:type => "text", :id=>"e_n", :valid_if => "isInteger(x)"}
         %td
           %input{:type => "text", :id=>"e_d"}
 
@@ -250,7 +252,7 @@
         %td
           %input{:type => "text", :id=>"i_end", :valid_if =>  "0 <= x && x < 180"}
         %td
-          %input{:type => "text", :id=>"i_n"}
+          %input{:type => "text", :id=>"i_n", :valid_if => "isInteger(x)"}
         %td
           %input{:type => "text", :id=>"i_d"}
 
@@ -262,7 +264,7 @@
         %td
           %input{:type => "text", :id=>"w_end", :valid_if =>  "0 <= x && x < 360"}
         %td
-          %input{:type => "text", :id=>"w_n"}
+          %input{:type => "text", :id=>"w_n", :valid_if => "isInteger(x)"}
         %td
           %input{:type => "text", :id=>"w_d"}
 
@@ -274,7 +276,7 @@
         %td
           %input{:type => "text", :id=>"O_end", :valid_if =>  "0 <= x && x < 360"}
         %td
-          %input{:type => "text", :id=>"O_n"}
+          %input{:type => "text", :id=>"O_n", :valid_if => "isInteger(x)"}
         %td
           %input{:type => "text", :id=>"O_d"}
 
@@ -286,7 +288,7 @@
         %td
           %input{:type => "text", :id=>"M_end", :valid_if =>  "0 <= x && x < 360"}
         %td
-          %input{:type => "text", :id=>"M_n"}
+          %input{:type => "text", :id=>"M_n", :valid_if => "isInteger(x)"}
         %td
           %input{:type => "text", :id=>"M_d"}
   #integrator_params.group
@@ -317,17 +319,28 @@
     var id_arr = id.split("_");
     var prefix = id_arr[0];
     var field = id_arr[1];
-    if(field == 'd'){
-      $(prefix + "_n").value = "";
-    }
+
   
     var start = $(prefix + "_start").value;
     var end = $(prefix + "_end").value;
     var n = $(prefix + "_n").value;
     var d = $(prefix + "_d").value;
-    if(start && end && n){
-      $(prefix + "_d").value = (end - start)/n;
+    if(isNumber(start) && isNumber(end)){
+      
+      if(field == 'n'){
+        $(prefix + "_d").value = (end - start)/n;
+      }
+      else if(isNumber(d)){
+        $(prefix + "_n").value = (end - start)/d;
+        validate($(prefix + "_n"));
+      }
+      
     }
+    return;
+  }
+  
+  function checkDelta(element){
+    
   }
 
   $('initial_conditions').select('input').each(function(i){
@@ -347,12 +360,11 @@
     if(value){
       result += " -" + clName + " " + value;
     }
-  
     return result;
   }
 
   function buildInitalCondComp(cid){
-    var result = {}
+    var result = {};
     var start = $(cid + "_start").value;
     var end = $(cid + "_end").value;
     var n = $(cid + "_n").value;
@@ -437,9 +449,6 @@
     else{
       res += " -oI " + file_name;
     }
-    
-    
-    
     return res;
   }
   
@@ -464,35 +473,59 @@
     lci_or_me();
   }
   
+  function showValidity(element, valid){
+    if(!valid){
+      Effect.Pulsate(element.id, { pulses: 1, duration: 0.5});
+      element.addClassName("invalid");
+    }
+    else{
+      element.removeClassName("invalid");
+    }    
+  }
+  
   function validate(element){
     var exp = element.readAttribute('valid_if');
     if(exp){
       x = element.value;
-      result = eval(exp);
-      if(!result){
-        Effect.Pulsate(element.id, { pulses: 1, duration: 0.5});
-        element.addClassName("invalid");
-        //element.parentNode.appendChild(
-          // Builder.node(
-          //   'div', {'className': 'dyn_help', 'style': 'display: block; position: absolute; left: 150px; opacity: 1; z-index: 9999'}, 
-          //     [translate4human(exp)]));
-        //debug(translate4human(exp));
+      var valid = true;
+      try{
+        valid = eval(exp) || x === '';
       }
-      else{
-        element.removeClassName("invalid");
-        $$('.dyn_help').each(function(e){e.remove();});
+      catch(e){
+        valid = false;
       }
+      showValidity(element,  valid);
     }
+  }
+  
+  function addHelpNode(element){
     
   }
   
-  //
-  //debug
-  //
+
+  
   
   $('partial').select('input').each(function(e){
+    var exp = e.readAttribute('valid_if');
+    if(exp){
+      helpNode = Builder.node(
+         'div', {id:(e.id + "_help") ,'className': 'dyn_help'}, []).update(translate4human(exp));
+      e.parentNode.appendChild(helpNode);
+      helpNode.hide();
+      e.observe('mouseover', function(){
+        Effect.Queues.get('helpOver').invoke('cancel');
+        Effect.Appear($(e.id + '_help'), {queue: {position: 'end', scope: 'helpOver'}});
+      });
+      
+      e.observe('mouseout', function(){
+        Effect.Fade(e.id + '_help');
+      });
+    }    
+    
+    validate(e);
     e.observe('change', function(){
       debug(buildCommandArgs());
       validate(e);
+      
     })
   });
