@@ -562,20 +562,24 @@ body.three-col #content {
   clear: both;
 }
 /* line 42, ../../../app/stylesheets/partials/_main.sass */
-#header img {
+#header .logo {
+  float: left;
   border-radius: 15px;
   -moz-border-radius: 15px;
   -webkit-border-radius: 15px;
-  float: left;
+  background: url('/images/niif_honlap_logoN_gray2.png?1278498565') no-repeat;
+  min-width: 154px;
+  max-width: 154px;
+  min-height: 93px;
 }
-/* line 45, ../../../app/stylesheets/partials/_main.sass */
+/* line 51, ../../../app/stylesheets/partials/_main.sass */
 #header #title {
   margin-left: 157px;
   padding-top: 25px;
   color: #999999;
 }
 
-/* line 51, ../../../app/stylesheets/partials/_main.sass */
+/* line 58, ../../../app/stylesheets/partials/_main.sass */
 #sidebar {
   border-radius: 15px;
   -moz-border-radius: 15px;
@@ -586,17 +590,17 @@ body.three-col #content {
   height: 500px;
   padding-top: 25px;
 }
-/* line 58, ../../../app/stylesheets/partials/_main.sass */
+/* line 65, ../../../app/stylesheets/partials/_main.sass */
 #sidebar > .place_holder {
   padding: 20px;
 }
-/* line 60, ../../../app/stylesheets/partials/_main.sass */
+/* line 67, ../../../app/stylesheets/partials/_main.sass */
 #sidebar .broadcast {
   font-size: 3em;
   color: red;
 }
 
-/* line 65, ../../../app/stylesheets/partials/_main.sass */
+/* line 72, ../../../app/stylesheets/partials/_main.sass */
 #footer #version {
   font-size: 0.9em;
   color: lightblue;
@@ -605,12 +609,12 @@ body.three-col #content {
   padding-bottom: 5px;
 }
 
-/* line 73, ../../../app/stylesheets/partials/_main.sass */
+/* line 80, ../../../app/stylesheets/partials/_main.sass */
 .bp {
   background: #eaeaea;
 }
 
-/* line 79, ../../../app/stylesheets/partials/_main.sass */
+/* line 86, ../../../app/stylesheets/partials/_main.sass */
 .page_title {
   border-radius: 15px;
   -moz-border-radius: 15px;
@@ -619,7 +623,7 @@ body.three-col #content {
   background-color: #dddddd;
 }
 
-/* line 84, ../../../app/stylesheets/partials/_main.sass */
+/* line 91, ../../../app/stylesheets/partials/_main.sass */
 .notice {
   border-radius: 15px;
   -moz-border-radius: 15px;
@@ -627,7 +631,7 @@ body.three-col #content {
   background: #ffdeb4;
 }
 
-/* line 88, ../../../app/stylesheets/partials/_main.sass */
+/* line 95, ../../../app/stylesheets/partials/_main.sass */
 .dashboard {
   border-radius: 15px;
   -moz-border-radius: 15px;
@@ -636,7 +640,7 @@ body.three-col #content {
   padding: 10px;
 }
 
-/* line 94, ../../../app/stylesheets/partials/_main.sass */
+/* line 101, ../../../app/stylesheets/partials/_main.sass */
 .remote_module {
   border-radius: 15px;
   -moz-border-radius: 15px;
@@ -647,7 +651,7 @@ body.three-col #content {
   background: #eeeeee;
 }
 
-/* line 102, ../../../app/stylesheets/partials/_main.sass */
+/* line 109, ../../../app/stylesheets/partials/_main.sass */
 .tabpanel {
   display: block;
   clear: both;
@@ -659,7 +663,7 @@ body.three-col #content {
   background-color: #eeeeee;
 }
 
-/* line 111, ../../../app/stylesheets/partials/_main.sass */
+/* line 118, ../../../app/stylesheets/partials/_main.sass */
 .panel_in_tab {
   background-color: #f6f6f6;
   border-radius: 3px;
@@ -667,12 +671,12 @@ body.three-col #content {
   -webkit-border-radius: 3px;
 }
 
-/* line 115, ../../../app/stylesheets/partials/_main.sass */
+/* line 122, ../../../app/stylesheets/partials/_main.sass */
 .group {
   margin: 8px;
   padding: 10px;
 }
-/* line 118, ../../../app/stylesheets/partials/_main.sass */
+/* line 125, ../../../app/stylesheets/partials/_main.sass */
 .group .group_title {
   background-color: #eff2b2;
   border-radius: 5px;
@@ -683,7 +687,16 @@ body.three-col #content {
   margin: 3px;
 }
 
-/* line 126, ../../../app/stylesheets/partials/_main.sass */
+/* line 133, ../../../app/stylesheets/partials/_main.sass */
+#container .action_link {
+  text-decoration: none;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border: solid 1px lightgrey;
+}
+
+/* line 139, ../../../app/stylesheets/partials/_main.sass */
 #container ul.subsection_tabs {
   list-style-type: none;
   list-style-image: none;
@@ -695,14 +708,14 @@ body.three-col #content {
   margin-top: 1em;
   padding-left: 0px;
 }
-/* line 138, ../../../app/stylesheets/partials/_main.sass */
+/* line 151, ../../../app/stylesheets/partials/_main.sass */
 #container ul.subsection_tabs .tab {
   display: block;
   float: left;
   margin: 0px;
   margin-bottom: 0px;
 }
-/* line 143, ../../../app/stylesheets/partials/_main.sass */
+/* line 156, ../../../app/stylesheets/partials/_main.sass */
 #container ul.subsection_tabs .tab a {
   display: block;
   text-decoration: none;
@@ -716,12 +729,12 @@ body.three-col #content {
   background: url('/images/grad_100_50.png?1274810772');
   border-top-right-radius: 7px;
   border-top-left-radius: 7px;
-  -moz-border-top-right-radius: 7px;
-  -moz-border-top-left-radius: 7px;
+  -moz-border-radius-topright: 7px;
+  -moz-border-radius-topleft: 7px;
   -webkit-border-top-right-radius: 7px;
   -webkit-border-top-left-radius: 7px;
 }
-/* line 156, ../../../app/stylesheets/partials/_main.sass */
+/* line 169, ../../../app/stylesheets/partials/_main.sass */
 #container ul.subsection_tabs .tab a.active {
   background-color: #eeeeee;
   background-image: none;
@@ -729,13 +742,55 @@ body.three-col #content {
   text-shadow: white 1px 1px 0px;
 }
 
-/* line 163, ../../../app/stylesheets/partials/_main.sass */
+/* line 176, ../../../app/stylesheets/partials/_main.sass */
+#container ul.group_title_tabs {
+  float: right;
+  list-style-type: none;
+  list-style-image: none;
+  list-style-position: outside;
+  display: inline-block;
+  margin: 0px;
+  padding-left: 0px;
+}
+/* line 188, ../../../app/stylesheets/partials/_main.sass */
+#container ul.group_title_tabs .tab {
+  display: inline-block;
+  margin: 0px;
+  margin-bottom: 0px;
+}
+/* line 193, ../../../app/stylesheets/partials/_main.sass */
+#container ul.group_title_tabs .tab a {
+  display: block;
+  text-decoration: none;
+  margin: 0px;
+  margin-bottom: 0px;
+  padding: 2px;
+  padding-right: 10px;
+  padding-left: 10px;
+  color: #aaaaaa;
+  background-color: #eeeeee;
+  background: url('/images/grad_100_50.png?1274810772');
+  border-top-right-radius: 7px;
+  border-top-left-radius: 7px;
+  -moz-border-radius-topright: 7px;
+  -moz-border-radius-topleft: 7px;
+  -webkit-border-top-right-radius: 7px;
+  -webkit-border-top-left-radius: 7px;
+}
+/* line 206, ../../../app/stylesheets/partials/_main.sass */
+#container ul.group_title_tabs .tab a.active {
+  background-color: #eeeeee;
+  background-image: none;
+  color: #888888;
+  text-shadow: white 1px 1px 0px;
+}
+
+/* line 213, ../../../app/stylesheets/partials/_main.sass */
 .prop_row {
   clear: both;
-  margin-bottom: 70px;
   display: table-row;
 }
-/* line 168, ../../../app/stylesheets/partials/_main.sass */
+/* line 217, ../../../app/stylesheets/partials/_main.sass */
 .prop_row .label {
   text-align: right;
   padding-right: 20px;
@@ -749,7 +804,7 @@ body.three-col #content {
 * html .prop_row .label {
   overflow-x: hidden;
 }
-/* line 173, ../../../app/stylesheets/partials/_main.sass */
+/* line 223, ../../../app/stylesheets/partials/_main.sass */
 .prop_row .field {
   display: inline;
   float: left;
@@ -760,16 +815,11 @@ body.three-col #content {
 * html .prop_row .field {
   overflow-x: hidden;
 }
-/* line 175, ../../../app/stylesheets/partials/_main.sass */
+/* line 226, ../../../app/stylesheets/partials/_main.sass */
 .prop_row .field input, .prop_row .field textarea {
   position: relative;
 }
-/* line 177, ../../../app/stylesheets/partials/_main.sass */
-.prop_row .field input[type="checkbox"], .prop_row .field textarea[type="checkbox"] {
-  background: yellow;
-  border: solid;
-}
-/* line 180, ../../../app/stylesheets/partials/_main.sass */
+/* line 229, ../../../app/stylesheets/partials/_main.sass */
 .prop_row .field input[type="text"], .prop_row .field textarea[type="text"] {
   padding-top: 2px;
   padding-bottom: 2px;
@@ -777,34 +827,48 @@ body.three-col #content {
   margin-bottom: 2px;
 }
 
-/* line 188, ../../../app/stylesheets/partials/_main.sass */
+/* line 236, ../../../app/stylesheets/partials/_main.sass */
+.long_desc {
+  display: block;
+  clear: left;
+  font-size: 0.82em;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  background: white;
+  padding-left: 3px;
+  color: lightgrey;
+  margin-bottom: 1em;
+}
+
+/* line 252, ../../../app/stylesheets/partials/_main.sass */
 input.invalid {
   color: black;
   background: #f9aea8;
   border: solid 2px #ff8935;
 }
 
-/* line 193, ../../../app/stylesheets/partials/_main.sass */
+/* line 257, ../../../app/stylesheets/partials/_main.sass */
 .help {
   display: none;
 }
 
-/* line 196, ../../../app/stylesheets/partials/_main.sass */
+/* line 260, ../../../app/stylesheets/partials/_main.sass */
 .help_shown {
   display: inline;
 }
 
-/* line 200, ../../../app/stylesheets/partials/_main.sass */
+/* line 264, ../../../app/stylesheets/partials/_main.sass */
 .debug {
-  background: url('/images/grey79.png?1276383231');
+  background: url('/images/grey79.png?1277223885');
 }
 
-/* line 203, ../../../app/stylesheets/partials/_main.sass */
+/* line 267, ../../../app/stylesheets/partials/_main.sass */
 .window {
   min-width: 150px;
   min-height: 100px;
 }
-/* line 204, ../../../app/stylesheets/partials/_main.sass */
+/* line 268, ../../../app/stylesheets/partials/_main.sass */
 .window .window_title {
   margin-top: -7px;
   margin-bottom: 7px;
@@ -812,23 +876,23 @@ input.invalid {
   cursor: move;
 }
 
-/* line 215, ../../../app/stylesheets/partials/_main.sass */
+/* line 278, ../../../app/stylesheets/partials/_main.sass */
 #content a.add {
-  background: url('/images/protocons/24px/actions/add.png?1268731436') no-repeat center center;
+  background: url('/images/protocons/24px/actions/add.png?1277223885') no-repeat center center;
 }
-/* line 217, ../../../app/stylesheets/partials/_main.sass */
+/* line 280, ../../../app/stylesheets/partials/_main.sass */
 #content a.add:hover {
-  background: url('/images/protocons/32px/actions/add.png?1268731436') no-repeat center center;
+  background: url('/images/protocons/32px/actions/add.png?1277223885') no-repeat center center;
 }
-/* line 220, ../../../app/stylesheets/partials/_main.sass */
+/* line 283, ../../../app/stylesheets/partials/_main.sass */
 #content a.minus {
-  background: url('/images/protocons/24px/actions/minus.png?1268731436') no-repeat center center;
+  background: url('/images/protocons/24px/actions/minus.png?1277223885') no-repeat center center;
 }
-/* line 222, ../../../app/stylesheets/partials/_main.sass */
+/* line 285, ../../../app/stylesheets/partials/_main.sass */
 #content a.minus:hover {
-  background: url('/images/protocons/32px/actions/minus.png?1266541341') no-repeat center center;
+  background: url('/images/protocons/32px/actions/minus.png?1277223885') no-repeat center center;
 }
-/* line 225, ../../../app/stylesheets/partials/_main.sass */
+/* line 288, ../../../app/stylesheets/partials/_main.sass */
 #content a.clickable {
   opacity: 0.6;
   border: solid 1px #cccccc;
@@ -841,10 +905,23 @@ input.invalid {
   height: 20px;
   display: block;
 }
+/* line 298, ../../../app/stylesheets/partials/_main.sass */
+#content a.help {
+  background: url('/images/protocons/24px/status/help.png?1277223885') no-repeat center center;
+}
+/* line 300, ../../../app/stylesheets/partials/_main.sass */
+#content a.help:hover {
+  background: url('/images/protocons/32px/status/help.png?1277223885') no-repeat center center;
+}
 
-/* line 235, ../../../app/stylesheets/partials/_main.sass */
+/* line 303, ../../../app/stylesheets/partials/_main.sass */
+.add_image {
+  background: url('/images/protocons/48px/actions/add.png?1277223885') no-repeat center center;
+}
+
+/* line 306, ../../../app/stylesheets/partials/_main.sass */
 .dyn_help {
-  background: url('/images/grey79.png?1276383231');
+  background: url('/images/grey79.png?1277223885');
   display: block;
   position: absolute;
   z-index: 9999;
@@ -853,6 +930,22 @@ input.invalid {
   -webkit-border-radius: 5px;
   padding-left: 5px;
   paddding-right: 5px;
+}
+
+/* line 316, ../../../app/stylesheets/partials/_main.sass */
+.action_link {
+  text-decoration: none;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border: solid 1px lightgrey;
+}
+
+/* line 322, ../../../app/stylesheets/partials/_main.sass */
+.rounded_15 {
+  border-radius: 15;
+  -moz-border-radius: 15;
+  -webkit-border-radius: 15;
 }
 
 /* line 1, ../../../app/stylesheets/partials/_new_main.scss */

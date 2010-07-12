@@ -1,6 +1,21 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
+
+
+function reindexing(element, index){
+  element.descendants().each(function(e){
+    var e_id = e.readAttribute("id");
+    if(e_id){
+      e.writeAttribute("id", e_id.replace(/\d+$/, index));
+    }
+  });
+  var element_id = element.readAttribute("id");
+  if(element_id){
+    element.writeAttribute("id", element_id.replace(/\d+$/, index));
+  }
+}
+
 function translate4human(exp){
   var result = exp;
   dict = [
@@ -21,6 +36,14 @@ function translate4human(exp){
 
 function isNumber(num){
   return num !== "" && isFinite(num);
+}
+
+function  divisibleBy4(num){
+  divisibleBy(num, 4);
+}
+
+function divisibleBy(num, divider){
+  return num % divider == 0
 }
 
 function isDefined(val){

@@ -117,7 +117,7 @@ class LaunchesController < ApplicationController
       input_page = "No template found"
     end
     @embedded_css = input_page[/EMBEDDED_STYLE(.*)EMBEDDED_STYLE/m, 1] rescue ""
-    engine = Haml::Engine.new(input_page, :suppress_eval => true)
+    engine = Haml::Engine.new(input_page, :suppress_eval => false)
     @input_html = engine.render
   end
   

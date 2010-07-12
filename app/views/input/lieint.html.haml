@@ -58,21 +58,21 @@
             mass 
           %th
             &nbsp;
-        %tr#orbital_0
+        %tr#prototype4orbital
           %td
-            %input{:type => "text", :id => "orbital_a_0"}
+            %input{:type => "text", :id => "orbital_a_1000000"}
           %td
-            %input{:type => "text", :id => "orbital_l_0"}
+            %input{:type => "text", :id => "orbital_l_1000000"}
           %td
-            %input{:type => "text", :id => "orbital_e_0"}
+            %input{:type => "text", :id => "orbital_e_1000000"}
           %td
-            %input{:type => "text", :id => "orbital_w_0"}
+            %input{:type => "text", :id => "orbital_w_1000000"}
           %td
-            %input{:type => "text", :id => "orbital_i_0"}
+            %input{:type => "text", :id => "orbital_i_1000000"}
           %td
-            %input{:type => "text", :id => "orbital_o_0"}
+            %input{:type => "text", :id => "orbital_o_1000000"}
           %td
-            %input{:type => "text", :id => "orbital_mass_0"} 
+            %input{:type => "text", :id => "orbital_mass_1000000"} 
           %td
             %a.clickable.minus{:onclick => "remove_orbital(event)"}
               
@@ -167,6 +167,7 @@
       
     :javascript
     
+    
       function directFlag(name){
         if($(name).checked){
           return " --" + name
@@ -195,43 +196,42 @@
       
        
       var orbital_prefix = 'orbital_';
+      
       function new_orbital(){
         
-        var clone = $('orbital_0').cloneNode(true);
+        var clone = $('prototype4orbital').cloneNode(true);
+        
+        clone.writeAttribute('id', 'orbital_1000000');
+        
+        reindexing(clone, 1000001);
         
         clone.setStyle("display: none");
         
         $('orbitals').appendChild(clone);
         
-        re_indexing_orbitals();
+        reindexing_orbitals();
         Effect.Appear(clone.id, { duration: 0.5 });
       }
       
       function remove_orbital(event){
-        if(Event.element(event).parentNode.parentNode.parentNode.childElements().size() > 2){
+        if(Event.element(event).parentNode.parentNode.parentNode.childElements().size() > 3){
           var element = Event.element(event).parentNode.parentNode;
           Effect.Fade(element.id, {
             duration: 0.5, 
             afterFinish: function(){
               element.remove();
-              re_indexing_orbitals();
+              reindexing_orbitals();
             }});
         }
       }
       
-      function re_indexing_orbitals(){
+      function reindexing_orbitals(){
         var i = 0;
         var trs = [];
         $('orbitals').select("tr[id^='orbital_']").each(function (e){
           trs.push(e);
         });
-        $A(trs).each(function (e){
-          e.select("input").each(function(element){
-            element.writeAttribute("id", element.readAttribute("id").replace(/\d+$/, i));
-          });
-          e.writeAttribute("id", orbital_prefix + i);
-          i++;
-        });
+        $A(trs).each(reindexing);
       }
       
       function buildCommandArgs(){
@@ -253,7 +253,8 @@
    
 :javascript
    $('partial_form').init = function (){
-     
+     $('prototype4orbital').hide();
+     new_orbital();
    }
 
    //

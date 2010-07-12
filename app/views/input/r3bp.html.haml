@@ -475,7 +475,7 @@
   
   function showValidity(element, valid){
     if(!valid){
-      Effect.Pulsate(element.id, { pulses: 1, duration: 0.5});
+      Effect.Pulsate(element.id, { pulses: 1, duration: 0.5, queue: {position: 'front', scope: 'validity'}});
       element.addClassName("invalid");
     }
     else{

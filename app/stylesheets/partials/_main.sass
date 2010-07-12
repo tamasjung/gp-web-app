@@ -15,8 +15,8 @@ $grid_logo = "grid_logo.png"
 =rounded_top($radius : $default_radius)
   border-top-right-radius = $radius
   border-top-left-radius = $radius
-  -moz-border-top-right-radius = $radius
-  -moz-border-top-left-radius = $radius
+  -moz-border-radius-topright = $radius
+  -moz-border-radius-topleft = $radius
   -webkit-border-top-right-radius = $radius
   -webkit-border-top-left-radius = $radius
 
@@ -39,13 +39,20 @@ $grid_logo = "grid_logo.png"
 
   :font-size 2em
   :margin-bottom 0.2em
-  img
-    +rounded
+  .logo
     :float left
+    +rounded(15px)
+    :background= image_url('niif_honlap_logoN_gray2.png') no-repeat
+    min-width: 154px
+    max-width: 154px
+    min-height: 93px
+    //position: relative
+    //top: 15px
   #title
     :margin-left 157px
     :padding-top 25px
     :color #999
+    
   :clear both
     
 #sidebar
@@ -122,7 +129,13 @@ $grid_logo = "grid_logo.png"
     padding-left: 1em
     margin: 3px
 
- 
+#container
+  .action_link
+    text-decoration: none
+    +rounded(3px)
+    border: solid 1px lightgrey
+    //background: grey 
+    
 #container ul.subsection_tabs
 
   :list-style-type none
@@ -159,10 +172,46 @@ $grid_logo = "grid_logo.png"
         
         color: #888
         +embed
+        
+#container ul.group_title_tabs
+  float: right
+  :list-style-type none
+  :list-style-image none
+  :list-style-position outside
+  :display inline-block
+  //:height 5px
+  :margin 0px
+  //:margin-left 0.4em
+  //:margin-top 1em
+  :padding-left 0px
+
+  .tab
+    :display inline-block
+    //float: left
+    :margin 0px
+    :margin-bottom 0px
+    a
+      display: block
+      text-decoration: none
+      margin: 0px
+      margin-bottom: 0px
+      padding: 2px
+      padding-right: 10px
+      padding-left: 10px
+      color: #aaa
+      :background-color $unselected_border_color
+      :background image_url("grad_100_50.png")
+      +rounded_top(7px)
+    
+      &.active
+        :background-color $selected_background_color
+        :background-image none
+      
+        color: #888
+        +embed
 
 .prop_row
   :clear both
-  margin-bottom: 70px
   display: table-row
   
   .label
@@ -170,20 +219,35 @@ $grid_logo = "grid_logo.png"
     :padding-right 20px
     +column(6, true)
     :color grey
+
   .field
     +column(9, true)
+
     input, textarea
       position: relative
-      &[type="checkbox"]
-        background: yellow
-        border: solid
+
       &[type="text"]
         //+column(7)
         padding-top: 2px
         padding-bottom: 2px
         margin-top: 2px
         margin-bottom: 2px
-      
+        
+.long_desc
+  display: block
+  clear: left
+  font-size: 0.82em
+  +rounded(3px)
+  background: white
+  padding-left: 3px
+  color: lightgrey
+  margin-bottom: 1em
+
+.hidden_prototype
+  //display: none
+  //position: fixed
+  //left: -10000
+  
       
 input.invalid
   color: black
@@ -210,8 +274,7 @@ input.invalid
   min-height: 100px
   
 #content
-  a
-    
+  a  
     &.add
       background: image_url("protocons/24px/actions/add.png") no-repeat center center 
       &:hover
@@ -232,6 +295,14 @@ input.invalid
       height: 20px
       display: block
       
+    &.help
+      background: image_url("protocons/24px/status/help.png") no-repeat center center
+      &:hover
+        background: image_url("protocons/32px/status/help.png") no-repeat center center
+        
+.add_image
+  background: image_url("protocons/48px/actions/add.png") no-repeat center center
+      
 .dyn_help
   background: image_url('grey79.png')
   display: block
@@ -241,6 +312,15 @@ input.invalid
   padding-left: 5px
   paddding-right: 5px
   //display: none
+  
+.action_link
+  text-decoration: none
+  +rounded(3px)
+  border: solid 1px lightgrey
+  //background: grey
+  
+.rounded_15
+  +rounded(15)
   
 
         

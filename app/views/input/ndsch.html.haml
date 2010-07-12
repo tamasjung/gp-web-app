@@ -1,0 +1,548 @@
+-#
+  EMBEDDED_STYLE
+    #help_button{
+      float: right
+      margin-top: 50px
+    }
+    .add_image{
+      width: 24px;
+      height: 24px;
+      clear: right;
+    }
+    .add_text{
+      font-size: 1em;
+    }
+    
+    .prop_row .field a.add_body{
+      padding: 3px;
+      margin: 3px;
+      text-decoration: none;
+      color: grey;
+    }
+    
+    table a.remove_body{
+      font-size: 3em;
+      color: inherit;
+      text-decoration: none;
+    }
+    
+    table a.remove_body:hover{
+      color: lightgrey;
+      
+    }
+    
+    #bodies table td, #bodies table th{
+      margin-bottom: 2px;
+      color: grey;
+      
+    }
+    
+    #bodies table tbody tr td input{
+      min-width: 40px; 
+      width: 40px;
+      font-size: inherit;
+    }
+    
+    th.tlabel{
+      border-right: solid 1px lightgrey;
+      margin-right: 50px;
+      min-width: 80px;
+      width: 80px;
+      max-width: 80px;
+      padding: 2px;
+      
+    }
+    
+    tr td.first_cell, tr th.first_cell{
+      //background: yellow;
+      padding-left: 20px; 
+    }
+    
+    tr td:first{
+      border: solid;
+    }
+    
+  
+  EMBEDDED_STYLE
+
+%form#partial_form.panel_in_tab
+  %input{:type => "hidden", :id=>"command_args"}
+  %input{:type => "hidden", :id=>"display_str"}
+
+  %a.clickable.help#help_button{:onClick => "$$('.long_desc').invoke('toggle');"}
+      
+  #model_params.group
+    .group_title
+      Mesh
+    .prop_row
+      .label
+        x size
+      .field
+        %input{:type => "text", :id=>"nx", :valid_if => "divisibleBy4(x)"}
+    .prop_row
+      .label
+        y size
+      .field
+        %input{:type => "text", :id=>"ny", :valid_if => "divisibleBy4(x)"}
+    .prop_row
+      .label
+        z size
+      .field
+        %input{:type => "text", :id=>"nz", :valid_if => "divisibleBy4(x)"}
+          
+    .prop_row
+      .label
+        distance
+      .field
+        %input{:type => "text", :id=>"hr", :valid_if => "isNumber(x)"}  
+      .long_desc
+        Discretization in coordinate space (distance of mesh points). The same value is used in all
+        three directions.
+              
+    .prop_row
+      .label
+        maximum iterations
+      .field
+        %input{:type => "text", :id=>"maxim", :valid_if => "isNumber(x)"}  
+      .long_desc
+        Maximum number of imaginary timestep iterations.
+      
+    .prop_row
+      .label
+        number of states
+      .field
+        %input{:type => "text", :id=>"morb", :valid_if => "isNumber(x)"}  
+      .long_desc
+        Number of states that are propagated. This number may be larger than the number of states calculated to improve convergence.
+
+    .prop_row
+      .label
+        order
+      .field
+        %input{:type => "text", :id=>"order", :valid_if => "isNumber(x)"}  
+      .long_desc
+        Order of the finite-difference approximation of the Laplacian.
+        
+    .prop_row
+      .label
+        multiplicator
+      .field
+        %input{:type => "text", :id=>"rmul", :valid_if => "isNumber(x)", :value=>"0.5"}  
+      .long_desc
+        Multiplicator of timestep ramp.
+        
+    .prop_row
+      .label
+        convergence factor(estp)
+      .field
+        %input{:type => "text", :id=>"estp", :valid_if => "isNumber(x)"}  
+      .long_desc
+        Convergence factor of the imaginary timestep iterations. This is the value at which the
+        iterations start.
+        
+    .prop_row
+      .label
+        convergence factor(este)
+      .field
+        %input{:type => "text", :id=>"este", :valid_if => "isNumber(x)"}  
+      .long_desc
+        Convergence factor of the imaginary timestep iterations. This is the smallest value that is
+        used during the iterations. Setting ESTE = 0 will decrease the time step until the accuracy
+        limit determined by EPSR has been reached.
+        
+    .prop_row
+      .label
+        converged errors 
+      .field
+        %input{:type => "checkbox", :id=>"imsg_0"}
+      .long_desc
+        Show errors and timings after each converged time step.
+        
+    .prop_row
+      .label
+        imaginary errors
+      .field
+        %input{:type => "checkbox", :id=>"imsg_1"}
+      .long_desc
+        Show errors and timing after each imaginary timestep iteration.
+        
+    .prop_row
+      .label
+        timings
+      .field
+        %input{:type => "checkbox", :id=>"imsg_2"}
+      .long_desc
+        Show timings.
+      
+    .prop_row
+      .label
+        dump
+      .field
+        %input{:type => "checkbox", :id=>"imsg_3"}
+      .long_desc
+        Dump eigenvalues and wave functions into a binary data file. 
+        Depending on the grid, this may generate a huge file. 
+        Meant for testing, documentation, and further processing. 
+        The file name is configured in prefix.model.
+        
+    .prop_row
+      .label
+        many
+      .field
+        %input{:type => "text", :id=>"many", :valid_if => "isNumber(x)"}  
+      .long_desc
+        If this is specified, then the “any-order”
+        algorithm with order = 2 × MANY is selected.
+        
+    .prop_row
+      .label
+        epsi
+      .field
+        %input{:type => "text", :id=>"epsi", :valid_if => "isNumber(x)"}  
+      .long_desc
+        Desired limit for the variance of the overlap energies during the iterations at fixed time step
+
+
+    .prop_row
+      .label
+        epsr
+      .field
+        %input{:type => "text", :id=>"many", :valid_if => "isNumber(x)"}  
+      .long_desc
+        Desired accuracy for the variance of the energy as a function of time step.
+
+  #model_params.group
+    .group_title
+      Model
+    .prop_row
+      .label
+        h/2m
+      .field
+        %input{:type => "text", :id=>"nx", :valid_if => "divisibleBy4(x)"}
+      .long_desc
+        Value of h/2m. Can be used to set the unit system to atomic Rydberg or Hartree units, but also to 2m
+        use an effective mass.
+
+    .prop_row
+      .label
+        norb
+      .field
+        %input{:type => "text", :id=>"nx", :valid_if => "divisibleBy4(x)"}
+      .long_desc
+        Number of states that are converged to the desired accuracy.
+
+  #model_params.group
+    .group_title
+      Potential
+      %ul#potential_tabs.group_title_tabs
+        %li.tab
+          %a{:href => '#bodies_panel' }
+            bodies
+        %li.tab
+          %a{:href => '#file_panel' }
+            file upload
+        %li.tab
+          %a{:href => '#reference_panel'}
+            file reference
+    #bodies_panel.tabpanel
+      .prop_row
+        .label
+          default value
+        .field
+          %input{:type => "text", :id=>"default", :valid_if => "isNumber(x)"}
+        
+      .prop_row
+        .label
+          .add_text
+            add
+        .field
+          %a.action_link.add_body{:onClick => "addBody('sphere');"}
+            sphere
+          %a.action_link.add_body{:onClick => "addBody('cuboid');"}
+            rectangular cuboid
+          %a.action_link.add_body{:onClick => "addBody('cylinder');"}
+            cylinder
+          %a.action_link.add_body{:onClick => "addBody('half_space');"}
+            half-space
+        
+      #bodies
+      #sphere.prop_row.hidden_prototype 
+        %table#sphere_1000000.rounded_15
+          %tr
+            %th{:rowspan => '2', :class => 'tlabel'}
+              sphere
+            %th.first_cell       
+              %span<
+                x
+              %sub<>
+                0
+            %th
+              %span<
+                y
+              %sub<>
+                0 
+            %th
+              %span<
+                z
+              %sub<>
+                0
+            %th
+              r
+            %th
+              V
+            %th
+          
+          
+          %tr 
+            %td.first_cell
+              %input{:type => 'text', :id => 'shpere_x0_1000000'}
+            %td
+              %input{:type => 'text', :id => 'shpere_y0_1000000'}
+            %td
+              %input{:type => 'text', :id => 'shpere_z0_1000000'}
+            %td
+              %input{:type => 'text', :id => 'shpere_r_1000000'}
+            %td
+              %input{:type => 'text', :id => 'shpere_v_1000000'}
+            %td
+              %a.remove_body{:onClick => "removeBody(event);"}
+                \-
+      
+        %table#cuboid_1000000
+          %tr
+            %th.tlabel{:rowspan => '4'}
+              rectangular cuboid
+
+            %th.first_cell       
+              %span<
+                x
+              %sub<>
+                0
+            %th
+              %span<
+                y
+              %sub<>
+                0 
+            %th
+              %span<
+                z
+              %sub<>
+                0
+            %th
+              width
+            %th
+              height
+            %th
+              depth
+            %th
+      
+          %tr 
+            %td.first_cell
+              %input{:type => 'text', :id => 'cuboid_x_1000000'}
+            %td
+              %input{:type => 'text', :id => 'cuboid_y_1000000'}
+            %td
+              %input{:type => 'text', :id => 'cuboid_z_1000000'}
+            %td
+              %input{:type => 'text', :id => 'cuboid_width_1000000'}
+            %td
+              %input{:type => 'text', :id => 'cuboid_height_1000000'}
+            %td
+              %input{:type => 'text', :id => 'cuboid_depth_1000000'}
+            %td
+              %a.remove_body{:onClick => "removeBody(event);"}
+                \-
+          %tr
+            %th.first_cell
+              &phi;<sub>1</sub>
+            %th
+              &phi;<sub>2</sub>
+            %th
+              V
+          %tr
+            %td.first_cell
+              %input{:type => 'text', id => 'cuboid_angle1_1000000'}
+            %td
+              %input{:type => 'text', id => 'cuboid_angle1_1000000'}
+            %td
+              %input{:type => 'text', id => 'cuboid_v_1000000'}
+              
+              
+              
+        %table#cylinder_1000000
+          %tr
+            %th.tlabel{:rowspan => '3'}
+              cylinder
+
+            %th.first_cell       
+              %span<
+                x
+              %sub<>
+                0
+            %th
+              %span<
+                y
+              %sub<>
+                0 
+            %th
+              %span<
+                z
+              %sub<>
+                0
+            
+            %th
+              &phi;<sub>1</sub>
+            %th
+              &phi;<sub>2</sub>
+            %th
+              V
+            %th
+
+          %tr 
+            %td.first_cell
+              %input{:type => 'text', :id => 'cylinder_x_1000000'}
+            %td
+              %input{:type => 'text', :id => 'cylinder_y_1000000'}
+            %td
+              %input{:type => 'text', :id => 'cylinder_z_1000000'}
+            %td
+              %input{:type => 'text', :id => 'cylinder_phi1_1000000'}
+            %td
+              %input{:type => 'text', :id => 'cylinder_phi2_1000000'}
+            %td
+              %input{:type => 'text', :id => 'cylinder_v_1000000'}
+            %td
+              %a.remove_body{:onClick => "removeBody(event);"}
+                \-
+        
+        %table#half_space_1000000
+          %tr
+            %th.tlabel{:rowspan => '3'}
+              half-space
+
+            %th.first_cell       
+              %span<
+                x
+              %sub<>
+                0
+            %th
+              %span<
+                y
+              %sub<>
+                0 
+            %th
+              %span<
+                z
+              %sub<>
+                0
+            %th       
+              %span<
+                n
+              %sub<>
+                x
+            %th
+              %span<
+                n
+              %sub<>
+                y 
+            %th
+              %span<
+                n
+              %sub<>
+                z              
+            %th
+              V
+            %th
+
+          %tr 
+            %td.first_cell
+              %input{:type => 'text', :id => 'half_space_x_1000000'}
+            %td
+              %input{:type => 'text', :id => 'half_space_y_1000000'}
+            %td
+              %input{:type => 'text', :id => 'half_space_z_1000000'}
+            %td
+              %input{:type => 'text', :id => 'half_space_nx_1000000'}
+            %td
+              %input{:type => 'text', :id => 'half_space_ny_1000000'}
+            %td
+              %input{:type => 'text', :id => 'half_space_nz_1000000'}
+            %td
+              %input{:type => 'text', :id => 'half_space_v_1000000'}
+            %td
+              %a.remove_body{:onClick => "removeBody(event);"}
+                \-        
+    #file_panel.tabpanel
+      .prop_row
+        .label
+          file
+        .field
+          %input{:type => 'file', :id => 'potencial_file'}
+        .long_desc
+          Only if < 5 MB 
+    #reference_panel.tabpanel
+      .prop_row
+        .label
+          file reference
+        .field
+          %input{:type => "text", :id => 'potential_reference'} 
+        .long_desc
+          For large files (> 5 MBs) an URL can be given
+              
+              
+  %br 
+      
+:javascript 
+
+  function reindexing_bodies(){  
+     var trs = [];
+     $('bodies').select("table").each(function (e){
+       trs.push(e);
+     });
+     $A(trs).each(reindexing);
+   }
+
+  function addBody(prototype_id){
+    var clone = $(prototype_id + "_1000000").cloneNode(true);
+    //clone.setStyle("display: none;");
+    //Element.extend(clone);
+    reindexing(clone, 1000001);
+    $('bodies').appendChild(clone);
+    reindexing_bodies();
+    Effect.Appear(clone.id, { duration: 0.5 });
+    //$('bodies').appendChild(new Element('hr'));
+  }
+  
+  function removeBody(event){
+    var element = Event.element(event).parentNode.parentNode.parentNode.parentNode;
+    Effect.Fade(element.id, {
+      duration: 0.5, 
+      afterFinish: function(){
+        element.remove();
+        reindexing_bodies();
+      }});
+  }
+  
+  function buildCommandArgs(){
+    return "";
+  }
+
+  function prepareSubmit(){
+  
+    $('command_args').value = buildCommandArgs();
+  
+    $('display_str').value = $('command_args').value;
+  }
+
+  $('partial_form').init = function (){
+    $$('.hidden_prototype').invoke('hide');
+    //$$('.long_desc').invoke('hide');
+    $$('input').each(function (e){
+      var ph = e.readAttribute('valid_if');
+      if(ph){
+        e.writeAttribute('placeholder', ph);
+      }
+    });
+    new Control.Tabs('potential_tabs');
+  }
+  
