@@ -165,6 +165,7 @@ $grid_logo = "grid_logo.png"
       :background-color $unselected_border_color
       :background image_url("grad_100_50.png")
       +rounded_top(7px)
+      outline: none
       
       &.active
         :background-color $selected_background_color
@@ -202,13 +203,15 @@ $grid_logo = "grid_logo.png"
       :background-color $unselected_border_color
       :background image_url("grad_100_50.png")
       +rounded_top(7px)
-    
+      
+      
       &.active
         :background-color $selected_background_color
         :background-image none
-      
+        border: none
         color: #888
         +embed
+        
 
 .prop_row
   :clear both
@@ -249,10 +252,24 @@ $grid_logo = "grid_logo.png"
   //left: -10000
   
       
-input.invalid
+input.invalid, div.invalid
   color: black
   background: #F9AEA8
   border: solid 2px #FF8935
+  
+div.invalid
+  +rounded(5px)
+  
+input , textarea
+  //background: #eeeeee 
+  //border-width: 1px
+  //+rounded(5px)
+  //border-color: #ffffff 
+  //border: none
+  //border-bottom: dotted 1px grey
+  
+  //border-left: solid 1px lightgrey 
+  //border-right: solid 1px lightgrey 
   
 .help
   display: none
@@ -321,6 +338,11 @@ input.invalid
   
 .rounded_15
   +rounded(15)
+  
+.error_box
+  padding-left: 10px
+  padding-right: 10px
+  
   
 
         

@@ -1,16 +1,16 @@
 
 %ul#launch_tabs.subsection_tabs
   %li.tab
-    %a{ :href => "#partial" }
-      partial
-  %li.tab
     %a{ :href => "#settings" }
       settings
-#partial.tabpanel
+  %li.tab
+    %a{ :href => "#options" }
+      options
+#settings.tabpanel
   =@input_html
   
 
-#settings.tabpanel
+#options.tabpanel
   -form_for @launch do |f|
     = f.error_messages
     =f.hidden_field :subapp_id

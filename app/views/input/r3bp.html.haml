@@ -14,66 +14,10 @@
 %form#partial_form.panel_in_tab
   %input{:type => "hidden", :id=>"command_args"}
   %input{:type => "hidden", :id=>"display_str"}
-  %ul#k3tabs
-    / %li.tab
-    /   %a{:href => "#model_params"}
-    /     Model parameters
-    / %li.tab
-    /   %a{:href => "#indikator_parametek"}
-    /     Indicator parameters
-    / %li.tab
-    /   %a{:href => "#integrator_params"}
-    /     Integrator parameters
-    / %li.tab
-    /   %a{:href => "#kezdofeltetelek"}
-    /     Initial constraints
-    /     
+  %input{:type => "hidden", :id=>"sequences"}
   #model_params.group
     .group_title
       Model parameters
-      
-    :javascript 
-      
-    
-      function mu_calc(){
-        try{
-          var m0 = parseFloat($F('m0'));
-          var m1 = parseFloat($F('m1'));
-          if(m0 || m1){
-            var mu = m1 / (m0 + m1);
-            $('mu').value = (isNaN(mu)? "" : mu);
-          }
-          validate($('mu'));
-        }
-        catch(err){
-          $('mu').value = ""
-        }
-      }
-      
-      function resetMs(){
-        $('m0').value = $('m1').value = "";
-      }
-      
-      function two_or_three_dim(){
-        var cond = $('dimension_2d').checked;
-        if(cond){
-          $('partial_form').select('.only_3D').invoke('fade');
-        }
-        else{
-          $('partial_form').select('.only_3D').invoke('appear');
-        }
-      }
-      
-      function lci_or_me(){
-        var cond = $('type_lci').checked;
-        if(cond){
-          $('xi').appear();
-        }
-        else{
-          $('xi').fade();
-        }
-      }
-      
     .prop_row
       .label
         &mu; 
@@ -184,6 +128,8 @@
           N
         %th
           &Delta;
+        %th
+          map
       %tr
         %td
           e<sub>1</sub>
@@ -192,9 +138,11 @@
         %td
           %input{:type => "text", :id=>"e1_end", :valid_if => "0 <= x && x < 1"}
         %td
-          %input{:type => "text", :id=>"e1_n", :valid_if => "isInteger(x)"}
+          %input{:type => "text", :id=>"e1_n"}
         %td
           %input{:type => "text", :id=>"e1_d"}
+        %td
+          %input{:type => "checkbox", :id =>"e1_map"}
       
       %tr
         %td
@@ -204,9 +152,11 @@
         %td
           %input{:type => "text", :id=>"w1_end", :valid_if =>  "0 <= x && x < 360"}
         %td
-          %input{:type => "text", :id=>"w1_n", :valid_if => "isInteger(x)"}
+          %input{:type => "text", :id=>"w1_n"}
         %td
           %input{:type => "text", :id=>"w1_d"}
+        %td
+          %input{:type => "checkbox", :id =>"w1_map"}
 
       %tr
         %td{:style => "border-bottom: solid 1px lightgrey"}
@@ -216,21 +166,24 @@
         %td
           %input{:type => "text", :id=>"M1_end", :valid_if =>  "0 <= x && x < 360"}
         %td
-          %input{:type => "text", :id=>"M1_n", :valid_if => "isInteger(x)"}
+          %input{:type => "text", :id=>"M1_n"}
         %td
           %input{:type => "text", :id=>"M1_d"}
-
+        %td
+          %input{:type => "checkbox", :id =>"M1_map"}
       %tr
         %td
           a
         %td
-          %input{:type => "text", :id=>"a_start", :valid_if => "x > 0"}
+          %input{:type => "text", :id=>"a_start", :valid_if => "isDefined(x) && x > 0"}
         %td
           %input{:type => "text", :id=>"a_end", :valid_if => "x > 0"}
         %td
-          %input{:type => "text", :id=>"a_n", :valid_if => "isInteger(x)"}
+          %input{:type => "text", :id=>"a_n"}
         %td
           %input{:type => "text", :id=>"a_d"}
+        %td
+          %input{:type => "checkbox", :id =>"a_map"}  
 
       %tr
         %td
@@ -240,9 +193,11 @@
         %td
           %input{:type => "text", :id=>"e_end", :valid_if => "0 <= x && x < 1"}
         %td
-          %input{:type => "text", :id=>"e_n", :valid_if => "isInteger(x)"}
+          %input{:type => "text", :id=>"e_n"}
         %td
           %input{:type => "text", :id=>"e_d"}
+        %td
+          %input{:type => "checkbox", :id =>"e_map"}  
 
       %tr.only_3D
         %td
@@ -252,9 +207,11 @@
         %td
           %input{:type => "text", :id=>"i_end", :valid_if =>  "0 <= x && x < 180"}
         %td
-          %input{:type => "text", :id=>"i_n", :valid_if => "isInteger(x)"}
+          %input{:type => "text", :id=>"i_n"}
         %td
           %input{:type => "text", :id=>"i_d"}
+        %td
+          %input{:type => "checkbox", :id =>"i_map"}
 
       %tr
         %td
@@ -264,9 +221,11 @@
         %td
           %input{:type => "text", :id=>"w_end", :valid_if =>  "0 <= x && x < 360"}
         %td
-          %input{:type => "text", :id=>"w_n", :valid_if => "isInteger(x)"}
+          %input{:type => "text", :id=>"w_n"}
         %td
           %input{:type => "text", :id=>"w_d"}
+        %td
+          %input{:type => "checkbox", :id =>"w_map"}
 
       %tr.only_3D
         %td
@@ -276,9 +235,11 @@
         %td
           %input{:type => "text", :id=>"O_end", :valid_if =>  "0 <= x && x < 360"}
         %td
-          %input{:type => "text", :id=>"O_n", :valid_if => "isInteger(x)"}
+          %input{:type => "text", :id=>"O_n"}
         %td
           %input{:type => "text", :id=>"O_d"}
+        %td
+          %input{:type => "checkbox", :id =>"O_map"}  
 
       %tr
         %td
@@ -288,9 +249,14 @@
         %td
           %input{:type => "text", :id=>"M_end", :valid_if =>  "0 <= x && x < 360"}
         %td
-          %input{:type => "text", :id=>"M_n", :valid_if => "isInteger(x)"}
+          %input{:type => "text", :id=>"M_n"}
         %td
           %input{:type => "text", :id=>"M_d"}
+        %td
+          %input{:type => "checkbox", :id =>"M_map"}
+          
+    #ic_errors.error_box
+          
   #integrator_params.group
     .group_title
       Output options
@@ -301,18 +267,60 @@
         %input{:type => "checkbox", :id=>"indicator"}
     .prop_row
       .label
-        file name
+        file prefix
       .field
-        %input{:type => "text", :id=>"file_name", :value => "output"}
+        %input{:type => "text", :id=>"file_prefix", :value => "output"}
           
   %br
         
       
 :javascript  
 
-  function initial_condtition_change(event){
+  var job_max = 1000;
+  var job_opt = 100;
+  
+  function mu_calc(){
+    try{
+      var m0 = parseFloat($F('m0'));
+      var m1 = parseFloat($F('m1'));
+      if(m0 || m1){
+        var mu = m1 / (m0 + m1);
+        $('mu').value = (isNaN(mu)? "" : mu);
+      }
+      validate($('mu'));
+    }
+    catch(err){
+      $('mu').value = ""
+    }
+  }
+  
+  function resetMs(){
+    $('m0').value = $('m1').value = "";
+  }
+  
+  function two_or_three_dim(){
+    var cond = $('dimension_2d').checked;
+    if(cond){
+      $('partial_form').select('.only_3D').invoke('fade');
+    }
+    else{
+      $('partial_form').select('.only_3D').invoke('appear');
+    }
+  }
+  
+  function lci_or_me(){
+    var cond = $('type_lci').checked;
+    if(cond){
+      $('xi').appear();
+    }
+    else{
+      $('xi').fade();
+    }
+  }
 
-    if(!/(\w|\d|\u0008)/.test(whichKey(event))){
+  function initial_condtition_change(event){
+    
+    if(!/(\w|\d|\u0008|\u002e)/.test(whichKey(event))){
       return;
     }
     var id = event.element().id;
@@ -325,32 +333,25 @@
     var end = $(prefix + "_end").value;
     var n = $(prefix + "_n").value;
     var d = $(prefix + "_d").value;
-    if(isNumber(start) && isNumber(end)){
-      
+    if(isNumber(start) && isNumber(end)){   
       if(field == 'n'){
-        $(prefix + "_d").value = (end - start)/n;
+        $(prefix + "_d").value = toOrdinaryDecimal((end - start)/n);
       }
       else if(isNumber(d)){
-        $(prefix + "_n").value = (end - start)/d;
-        validate($(prefix + "_n"));
+        $(prefix + "_n").value = toOrdinaryDecimal((end - start)/d);
       }
-      
     }
+    else{
+      if(field == 'start' || field == 'end'){
+        $(prefix + "_n").value = "";
+        $(prefix + "_d").value = "";
+      }
+    }
+    validate($(prefix + "_n"));
+    validateInitialConditions();
     return;
   }
   
-  function checkDelta(element){
-    
-  }
-
-  $('initial_conditions').select('input').each(function(i){
-    i.observe('keyup', initial_condtition_change);
-  });
-  
-  var errors = {};
-
-
-
   function clArg(clName, inputName){
     if(inputName == null){
       inputName = clName;
@@ -369,21 +370,32 @@
     var end = $(cid + "_end").value;
     var n = $(cid + "_n").value;
     var d = $(cid + "_d").value;
+    
+    result.map = $(cid + "_map").checked;
+        
     if(end){
       if(d){
-        result.d = d
+        result.d = d;
+        if(!result.map){
+          result.seq = {name: cid, start: start, end: end, diff: d, type: 'start_end_diff'};
+          result.cl = "$(" + result.seq.name + ")";
+        }
       } 
-      result.end = end
+      result.end = end;
     }
-  
-    result.cl = start;
+    
+    if(!result.cl){
+      result.cl = start;
+    }
 
     return result;
   }
  
+ 
   function buildCommandArgs(){
     var res = "";
     var iterators = [];
+    var sequences = [];//iterators are resolved in the r3bp program, sequences are resolved outside of it (in the portal or on the node)
     var is_3D = radio_value('dimension_radio') == '3D';
     res += clArg('mu');
     res += clArg('Navg');
@@ -413,13 +425,18 @@
       ic.each(function(e, idx){
         comp = buildInitalCondComp(e);
         icVal[e] = comp.cl;
-        if(comp.end){
+        if(comp.map){
           iterators.push(comp);
+        }
+        else{
+          if(comp.seq){
+            sequences.push(comp.seq);
+          }
         }
         comp.idx = idx + 1;
       });
     
-      res += " -P1[1," + [icVal['e1'], icVal['w1'], icVal['M']].join(',') + "]"
+      res += " -P1[1," + [icVal['e1'], icVal['w1'], icVal['M1']].join(',') + "]"
   
       var p2Array = $w("a e i w O M");
       if(!is_3D){
@@ -433,7 +450,7 @@
     catch(error){
       //TODO
     }
-    var file_name = $('file_name').value
+    var file_name = $('file_prefix').value
     if(iterators.length > 0){
       res += " -grid " + iterators.map(function(e){
         return e.idx + "[" + [e.end, e.d].join(',') + "]"
@@ -449,33 +466,26 @@
     else{
       res += " -oI " + file_name;
     }
-    return res;
+    return {command_args: res, sequences: sequences};
   }
   
   function prepareSubmit(){
-    
-    $('command_args').value = buildCommandArgs();
-    
-    $('display_str').value = $('command_args').value;
+    var valid= validatePage();
+    var command_struct = buildCommandArgs();
+    $('command_args').value = command_struct.command_args;
+    $('sequences').value = $A(command_struct.sequences).toJSON();
+    $('display_str').value = $('file_prefix').value;
   }
-  
-  //
-  //setting of the missing name attributes 
-  //
-  $('partial_form').getElements().each(function (e){
-    if(e.type != 'radio'){
-      e.name = e.id;
-    }
-  });
   
   $('partial_form').init = function (){
     two_or_three_dim();
     lci_or_me();
+    validatePage();
+    addDynamic();
   }
   
   function showValidity(element, valid){
     if(!valid){
-      Effect.Pulsate(element.id, { pulses: 1, duration: 0.5, queue: {position: 'front', scope: 'validity'}});
       element.addClassName("invalid");
     }
     else{
@@ -498,34 +508,100 @@
     }
   }
   
-  function addHelpNode(element){
-    
+  function numberOfMaps(){
+    var noMaps = $('initial_conditions').select('input[type="checkbox"]').inject(0, function(acc, e){
+      if(e.id.endsWith("_map") && e.checked){
+        return acc + 1;
+      }
+      else{
+        return acc;
+      }
+    });
+    return noMaps;
+  }
+  
+  function sumOfNs(){
+    var sum = 0;
+    $('initial_conditions').select('input').each(function (e){
+      if(e.id.endsWith("_n")){
+        var val = e.value;
+        if(isNumber(val)){
+          sum += Number(val);
+        }
+      }
+    });
+    return sum;
   }
   
 
   
-  
-  $('partial').select('input').each(function(e){
-    var exp = e.readAttribute('valid_if');
-    if(exp){
-      helpNode = Builder.node(
-         'div', {id:(e.id + "_help") ,'className': 'dyn_help'}, []).update(translate4human(exp));
-      e.parentNode.appendChild(helpNode);
-      helpNode.hide();
-      e.observe('mouseover', function(){
-        Effect.Queues.get('helpOver').invoke('cancel');
-        Effect.Appear($(e.id + '_help'), {queue: {position: 'end', scope: 'helpOver'}});
-      });
-      
-      e.observe('mouseout', function(){
-        Effect.Fade(e.id + '_help');
-      });
-    }    
+  function validateInitialConditions(){
     
-    validate(e);
-    e.observe('change', function(){
-      debug(buildCommandArgs());
-      validate(e);
+    var error_box = $('ic_errors');
+    var valid = true;
+    var errors = [];
+    
+    var noMaps = numberOfMaps();
+    if(noMaps > 2){
+      errors.push("Only 2 initial conditions should be mapped.");
+    }
+    
+    if(sumOfNs() >= Math.pow(10, 10)){
+      errors.push("The sum of Ns should be smaller than 10<sup>10</sup>.")
+    }
+    
+    error_box.update(errors.join("<br/>"));
+    showValidity(error_box, errors.length == 0);    
+  }
+  
+  function validatePage(){
+    var messages = [];
+    var result = true; 
+    $('partial_form').select('input').each(function(e){
+      result = validate(e) && result;
+    });
+    result = validateInitialConditions() && result;
+    return result;
+  }
+  
+  function addDynamic(){
+    $('partial_form').select('input').each(function(e){
+      var exp = e.readAttribute('valid_if');
+      if(exp){
+        helpNode = Builder.node(
+           'div', {id:(e.id + "_help") ,'className': 'dyn_help'}, []).update(translate4human(exp));
+        e.parentNode.appendChild(helpNode);
+        helpNode.hide();
+        e.observe('mouseover', function(){
+          //Effect.Queues.get('helpOver').invoke('cancel');
+          //Effect.Appear($(e.id + '_help'), {queue: {position: 'end', scope: 'helpOver'}});
+          $(e.id + '_help').show();
+        });
       
-    })
-  });
+        e.observe('mouseout', function(){
+          //Effect.Fade(e.id + '_help');
+          $(e.id + '_help').hide();
+        });
+      }    
+    
+      e.observe('change', function(){
+        validate(e);
+      })
+    });
+    $('initial_conditions').select('input').each(function(i){
+      i.observe('keyup', initial_condtition_change);
+    });
+    $('initial_conditions').select('input[type="checkbox"]').each(function(e){
+      e.observe('click', function(){
+        validateInitialConditions();
+      });
+    });
+    //
+    //setting of the missing name attributes 
+    //
+    $('partial_form').getElements().each(function (e){
+      if(e.type != 'radio'){
+        e.name = e.id;
+      }
+    });
+  }

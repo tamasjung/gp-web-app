@@ -567,7 +567,7 @@ body.three-col #content {
   border-radius: 15px;
   -moz-border-radius: 15px;
   -webkit-border-radius: 15px;
-  background: url('/images/niif_honlap_logoN_gray2.png?1278498565') no-repeat;
+  background: url('/images/niif_honlap_logoN_gray2.png?1278971408') no-repeat;
   min-width: 154px;
   max-width: 154px;
   min-height: 93px;
@@ -733,8 +733,9 @@ body.three-col #content {
   -moz-border-radius-topleft: 7px;
   -webkit-border-top-right-radius: 7px;
   -webkit-border-top-left-radius: 7px;
+  outline: none;
 }
-/* line 169, ../../../app/stylesheets/partials/_main.sass */
+/* line 170, ../../../app/stylesheets/partials/_main.sass */
 #container ul.subsection_tabs .tab a.active {
   background-color: #eeeeee;
   background-image: none;
@@ -742,7 +743,7 @@ body.three-col #content {
   text-shadow: white 1px 1px 0px;
 }
 
-/* line 176, ../../../app/stylesheets/partials/_main.sass */
+/* line 177, ../../../app/stylesheets/partials/_main.sass */
 #container ul.group_title_tabs {
   float: right;
   list-style-type: none;
@@ -752,13 +753,13 @@ body.three-col #content {
   margin: 0px;
   padding-left: 0px;
 }
-/* line 188, ../../../app/stylesheets/partials/_main.sass */
+/* line 189, ../../../app/stylesheets/partials/_main.sass */
 #container ul.group_title_tabs .tab {
   display: inline-block;
   margin: 0px;
   margin-bottom: 0px;
 }
-/* line 193, ../../../app/stylesheets/partials/_main.sass */
+/* line 194, ../../../app/stylesheets/partials/_main.sass */
 #container ul.group_title_tabs .tab a {
   display: block;
   text-decoration: none;
@@ -777,20 +778,21 @@ body.three-col #content {
   -webkit-border-top-right-radius: 7px;
   -webkit-border-top-left-radius: 7px;
 }
-/* line 206, ../../../app/stylesheets/partials/_main.sass */
+/* line 208, ../../../app/stylesheets/partials/_main.sass */
 #container ul.group_title_tabs .tab a.active {
   background-color: #eeeeee;
   background-image: none;
+  border: none;
   color: #888888;
   text-shadow: white 1px 1px 0px;
 }
 
-/* line 213, ../../../app/stylesheets/partials/_main.sass */
+/* line 216, ../../../app/stylesheets/partials/_main.sass */
 .prop_row {
   clear: both;
   display: table-row;
 }
-/* line 217, ../../../app/stylesheets/partials/_main.sass */
+/* line 220, ../../../app/stylesheets/partials/_main.sass */
 .prop_row .label {
   text-align: right;
   padding-right: 20px;
@@ -804,7 +806,7 @@ body.three-col #content {
 * html .prop_row .label {
   overflow-x: hidden;
 }
-/* line 223, ../../../app/stylesheets/partials/_main.sass */
+/* line 226, ../../../app/stylesheets/partials/_main.sass */
 .prop_row .field {
   display: inline;
   float: left;
@@ -815,11 +817,11 @@ body.three-col #content {
 * html .prop_row .field {
   overflow-x: hidden;
 }
-/* line 226, ../../../app/stylesheets/partials/_main.sass */
+/* line 229, ../../../app/stylesheets/partials/_main.sass */
 .prop_row .field input, .prop_row .field textarea {
   position: relative;
 }
-/* line 229, ../../../app/stylesheets/partials/_main.sass */
+/* line 232, ../../../app/stylesheets/partials/_main.sass */
 .prop_row .field input[type="text"], .prop_row .field textarea[type="text"] {
   padding-top: 2px;
   padding-bottom: 2px;
@@ -827,7 +829,7 @@ body.three-col #content {
   margin-bottom: 2px;
 }
 
-/* line 236, ../../../app/stylesheets/partials/_main.sass */
+/* line 239, ../../../app/stylesheets/partials/_main.sass */
 .long_desc {
   display: block;
   clear: left;
@@ -841,34 +843,41 @@ body.three-col #content {
   margin-bottom: 1em;
 }
 
-/* line 252, ../../../app/stylesheets/partials/_main.sass */
-input.invalid {
+/* line 255, ../../../app/stylesheets/partials/_main.sass */
+input.invalid, div.invalid {
   color: black;
   background: #f9aea8;
   border: solid 2px #ff8935;
 }
 
-/* line 257, ../../../app/stylesheets/partials/_main.sass */
+/* line 260, ../../../app/stylesheets/partials/_main.sass */
+div.invalid {
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+
+/* line 274, ../../../app/stylesheets/partials/_main.sass */
 .help {
   display: none;
 }
 
-/* line 260, ../../../app/stylesheets/partials/_main.sass */
+/* line 277, ../../../app/stylesheets/partials/_main.sass */
 .help_shown {
   display: inline;
 }
 
-/* line 264, ../../../app/stylesheets/partials/_main.sass */
+/* line 281, ../../../app/stylesheets/partials/_main.sass */
 .debug {
   background: url('/images/grey79.png?1277223885');
 }
 
-/* line 267, ../../../app/stylesheets/partials/_main.sass */
+/* line 284, ../../../app/stylesheets/partials/_main.sass */
 .window {
   min-width: 150px;
   min-height: 100px;
 }
-/* line 268, ../../../app/stylesheets/partials/_main.sass */
+/* line 285, ../../../app/stylesheets/partials/_main.sass */
 .window .window_title {
   margin-top: -7px;
   margin-bottom: 7px;
@@ -876,23 +885,23 @@ input.invalid {
   cursor: move;
 }
 
-/* line 278, ../../../app/stylesheets/partials/_main.sass */
+/* line 295, ../../../app/stylesheets/partials/_main.sass */
 #content a.add {
   background: url('/images/protocons/24px/actions/add.png?1277223885') no-repeat center center;
 }
-/* line 280, ../../../app/stylesheets/partials/_main.sass */
+/* line 297, ../../../app/stylesheets/partials/_main.sass */
 #content a.add:hover {
   background: url('/images/protocons/32px/actions/add.png?1277223885') no-repeat center center;
 }
-/* line 283, ../../../app/stylesheets/partials/_main.sass */
+/* line 300, ../../../app/stylesheets/partials/_main.sass */
 #content a.minus {
   background: url('/images/protocons/24px/actions/minus.png?1277223885') no-repeat center center;
 }
-/* line 285, ../../../app/stylesheets/partials/_main.sass */
+/* line 302, ../../../app/stylesheets/partials/_main.sass */
 #content a.minus:hover {
   background: url('/images/protocons/32px/actions/minus.png?1277223885') no-repeat center center;
 }
-/* line 288, ../../../app/stylesheets/partials/_main.sass */
+/* line 305, ../../../app/stylesheets/partials/_main.sass */
 #content a.clickable {
   opacity: 0.6;
   border: solid 1px #cccccc;
@@ -905,21 +914,21 @@ input.invalid {
   height: 20px;
   display: block;
 }
-/* line 298, ../../../app/stylesheets/partials/_main.sass */
+/* line 315, ../../../app/stylesheets/partials/_main.sass */
 #content a.help {
   background: url('/images/protocons/24px/status/help.png?1277223885') no-repeat center center;
 }
-/* line 300, ../../../app/stylesheets/partials/_main.sass */
+/* line 317, ../../../app/stylesheets/partials/_main.sass */
 #content a.help:hover {
   background: url('/images/protocons/32px/status/help.png?1277223885') no-repeat center center;
 }
 
-/* line 303, ../../../app/stylesheets/partials/_main.sass */
+/* line 320, ../../../app/stylesheets/partials/_main.sass */
 .add_image {
   background: url('/images/protocons/48px/actions/add.png?1277223885') no-repeat center center;
 }
 
-/* line 306, ../../../app/stylesheets/partials/_main.sass */
+/* line 323, ../../../app/stylesheets/partials/_main.sass */
 .dyn_help {
   background: url('/images/grey79.png?1277223885');
   display: block;
@@ -932,7 +941,7 @@ input.invalid {
   paddding-right: 5px;
 }
 
-/* line 316, ../../../app/stylesheets/partials/_main.sass */
+/* line 333, ../../../app/stylesheets/partials/_main.sass */
 .action_link {
   text-decoration: none;
   border-radius: 3px;
@@ -941,11 +950,17 @@ input.invalid {
   border: solid 1px lightgrey;
 }
 
-/* line 322, ../../../app/stylesheets/partials/_main.sass */
+/* line 339, ../../../app/stylesheets/partials/_main.sass */
 .rounded_15 {
   border-radius: 15;
   -moz-border-radius: 15;
   -webkit-border-radius: 15;
+}
+
+/* line 342, ../../../app/stylesheets/partials/_main.sass */
+.error_box {
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 /* line 1, ../../../app/stylesheets/partials/_new_main.scss */

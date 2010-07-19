@@ -1,6 +1,53 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
+function toOrdinaryDecimal(number){
+  var re = /^(-)?(\d+)((\.)(\d+))?(e(-)?(\d+))?$/.exec(number);
+  var full_num = "";
+  
+  //alert(re);
+  if(!re){
+    throw {name: "NaN", message: "Not a number:" + number}
+  }
+  
+
+  var exponent = re[6] ? re[6].slice(1) : 0;
+  var dot_pos = re[2].length + Number(exponent);
+  var fraction = re[5] ? re[5] : "";
+  var integer_part = "";
+  if(/^0+$/.match(re[2]) && fraction.length > 0){
+    integer_part = "";
+    dot_pos --;
+  }
+  else{
+    integer_part = re[2];
+  }
+  full_num += integer_part + fraction;
+  if(dot_pos <= 0){
+    var i = dot_pos;
+    var zeros = "";
+    while(i++<0){
+      zeros += "0";
+    }
+    full_num = "0." + zeros + full_num;
+  }
+  else{
+    if(dot_pos < full_num.length){
+      full_num = full_num.slice(0, dot_pos) + "." + full_num.slice(dot_pos);
+    }
+    else{
+      var i = dot_pos - full_num.length;
+      while(i-->0){
+        full_num += "0";
+      }
+    }
+  }
+  if(re[1]){
+    full_num = "-" + full_num;
+  }
+  return full_num ;//+ "|" + " => " + re;  
+}
+
 
 
 function reindexing(element, index){

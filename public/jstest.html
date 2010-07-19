@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>jstest</title>
+	<script src="/javascripts/prototype.js" type="text/javascript"></script>
+	<script src="/javascripts/application.js" type="text/javascript"></script>
+	<script src="/javascripts/unittest.js" type="text/javascript"></script>
+  
+</head>
+
+<body>
+  <div id="testlog"> </div>
+  <script type="text/javascript" language="javascript">
+  // <![CDATA[
+    new Test.Unit.Runner({
+      // optional setup function, run before each individual test case
+      setup: function() { with(this) {
+        // code
+      }},
+      // optional teardown function, run after each individual test case
+      teardown: function() { with(this) {
+        // code
+      }},
+      
+      
+      
+
+      // test cases follow, each method which starts 
+      // with "test" is considered a test case
+      testToFixedDigitsTest: function() { with(this) {
+        //assertEqual("-1000", toFixedDigits("-1000", 5));
+        // assertEqual("01000", toFixedDigits("1000", 5));
+        // assertEqual("0010", toFixedDigits("10", 4));
+        // assertEqual("01.2", toFixedDigits("1.2", 4));
+        // assertEqual("1.23", toFixedDigits("1.23", 4));
+        // assertEqual("1.23", toFixedDigits("1.234", 4));
+        // assertEqual("1.23", toFixedDigits("1.236", 4));
+        // assertEqual("000120000", toFixedDigits("1.2e5", 10));
+        // assertEqual("000120000", toFixedDigits("1.2+e5", 10));
+        // assertEqual("0.00012340", toFixedDigits("12.34e-5", 10));
+        // assertEqual("", toFixedDigits("", 10));
+        // assertEqual("", toFixedDigits("", 10));
+        // assertEqual("", toFixedDigits("", 10));
+        // assertEqual("", toFixedDigits("", 10));
+        // assertEqual("", toFixedDigits("", 10));
+        // assertEqual("", toFixedDigits("", 10));
+        // assertEqual("", toFixedDigits("", 10));
+        // assertEqual("", toFixedDigits("", 10));
+        // assertEqual("", toFixedDigits("", 10));
+        // assertEqual("", toFixedDigits("", 10));
+        // assertEqual("", toFixedDigits("", 10));
+      
+      }},
+      testToOrdinaryDecimal: function() { with(this) {
+        assertEqual("1",        toOrdinaryDecimal("1"));
+        assertEqual("0.1",      toOrdinaryDecimal("0.1"));
+        assertEqual("100",      toOrdinaryDecimal("1e2"));
+        assertEqual("0.01",     toOrdinaryDecimal("1e-2"));
+        assertEqual("0.01",     toOrdinaryDecimal("0.1e-1"));
+        assertEqual("1234000",  toOrdinaryDecimal("12.34e5"));
+        assertEqual("0.01",     toOrdinaryDecimal(1/100));
+        assertEqual("0.000012", toOrdinaryDecimal("0.0012e-2"));
+        assertEqual("-0",       toOrdinaryDecimal("-0e-0"));
+        assertEqual("-234",     toOrdinaryDecimal("-2.34e2"));
+        assertEqual("-234",     toOrdinaryDecimal("-0.234e3"));
+        for(var i = -10; i <= 10; i++){
+          for(var j = 0; j < 100; j++){
+            for(var k = -10; k < 10; k++){
+              var numStr = i.toString();
+              if(j != 99){
+                numStr += "." + j.toString();
+              }
+              if(k != 9){
+                numStr += "e" + k.toString();
+              }
+              assertEqual(Number(numStr), Number(toOrdinaryDecimal(numStr)));
+            }
+          }
+        }
+      }}
+    });
+  // ]]>
+  </script>
+</body>
+</html>
