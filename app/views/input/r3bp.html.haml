@@ -451,6 +451,10 @@
       //TODO
     }
     var file_name = $('file_prefix').value
+    sequences.each(function(e){
+      file_name = file_name + "_" + e.name + "_$(fixed 64 " + e.name + ")";
+    });
+    file_name += ".out";
     if(iterators.length > 0){
       res += " -grid " + iterators.map(function(e){
         return e.idx + "[" + [e.end, e.d].join(',') + "]"

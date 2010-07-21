@@ -7,7 +7,7 @@
   - @launches.each_with_index do |launch, idx|
     %tr
       %td{:style => "border-bottom: solid 1px grey;"}= h launch.name
-      %td= h ActiveSupport::JSON.decode(launch.settings)['command_args']
+      %td= h ActiveSupport::JSON.decode(launch.settings)['file_prefix']
       %td= h launch.state
       %td= link_to 'Show', launch
       %td= link_to 'Edit', edit_launch_path(launch)
