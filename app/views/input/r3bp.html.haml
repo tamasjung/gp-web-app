@@ -452,7 +452,7 @@
     }
     var file_name = $('file_prefix').value
     sequences.each(function(e){
-      file_name = file_name + "_" + e.name + "_$(fixed 64 " + e.name + ")";
+      file_name = file_name + "_" + e.name + "_$(fixed 10 10 " + e.name + ")";
     });
     file_name += ".out";
     if(iterators.length > 0){
@@ -589,7 +589,8 @@
       }    
     
       e.observe('change', function(){
-        validate(e);
+        prepareSubmit();
+        debug($('command_args').value);
       })
     });
     $('initial_conditions').select('input').each(function(i){
