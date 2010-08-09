@@ -1,6 +1,14 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
+function nameFromId(container){
+  container.getElements().each(function (e){
+    if(e.type != 'radio'){
+      e.name = e.id;
+    }
+  });
+}
+
 function toOrdinaryDecimal(number){
   var re = /^(-)?(\d+)((\.)(\d+))?(e(-)?(\d+))?$/.exec(number);
   var full_num = "";
@@ -49,18 +57,18 @@ function toOrdinaryDecimal(number){
 }
 
 
+function reindexingId(e, index){
+  var e_id = e.readAttribute("id");
+  if(e_id){
+    e.writeAttribute("id", e_id.replace(/_[^_]+$/, "_" + index));
+  }
+}
 
 function reindexing(element, index){
   element.descendants().each(function(e){
-    var e_id = e.readAttribute("id");
-    if(e_id){
-      e.writeAttribute("id", e_id.replace(/\d+$/, index));
-    }
+    reindexingId(e, index);
   });
-  var element_id = element.readAttribute("id");
-  if(element_id){
-    element.writeAttribute("id", element_id.replace(/\d+$/, index));
-  }
+  reindexingId(element, index);
 }
 
 function translate4human(exp){
@@ -119,12 +127,7 @@ function radio_value(group_name){
   return result;
 }
 
-function builder(container_id){
-  $(container_id);
-}
-function text_field(name, type_obj){
-  return new Element('a', { 'class': 'foo', href: '/foo.html' }).update("heheheheheh");
-} 
+
 
 //styled examples use the window factory for a shared set of behavior  
 var window_factory = function(container,options){  

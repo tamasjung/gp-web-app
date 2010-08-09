@@ -11,6 +11,20 @@
       float: left;
       background: green;
     }
+    
+    #sequences{
+      //font-size: 0.8em;
+    }
+    #sequences input{
+      height: 1.1em;
+    }
+    #partial_form  hr{
+      margin-bottom: 0em;
+    }
+    
+    #seqlabel{
+      font-size: 0.85em;
+    }
   
   EMBEDDED_STYLE
 
@@ -19,7 +33,7 @@
   %input{:type => "hidden", :id=>"display_str"}
 
         
-  #model_params.group
+  .group
     .group_title
       Orbitals
       
@@ -58,26 +72,53 @@
             mass 
           %th
             &nbsp;
-        %tr#prototype4orbital
+        %tr#prototype4orbitals
           %td
-            %input{:type => "text", :id => "orbital_a_1000000"}
+            %input{:type => "text", :id => "orbital_a_prototype"}
           %td
-            %input{:type => "text", :id => "orbital_l_1000000"}
+            %input{:type => "text", :id => "orbital_l_prototype"}
           %td
-            %input{:type => "text", :id => "orbital_e_1000000"}
+            %input{:type => "text", :id => "orbital_e_prototype"}
           %td
-            %input{:type => "text", :id => "orbital_w_1000000"}
+            %input{:type => "text", :id => "orbital_w_prototype"}
           %td
-            %input{:type => "text", :id => "orbital_i_1000000"}
+            %input{:type => "text", :id => "orbital_i_prototype"}
           %td
-            %input{:type => "text", :id => "orbital_o_1000000"}
+            %input{:type => "text", :id => "orbital_o_prototype"}
           %td
-            %input{:type => "text", :id => "orbital_mass_1000000"} 
+            %input{:type => "text", :id => "orbital_mass_prototype"} 
           %td
             %a.clickable.minus{:onclick => "remove_orbital(event)"}
+            
+    %hr
+    .label#seqlabel
+      
+    %table
+      %tbody#sequences
+        %tr
+          %th
+            
+          %th
+            start
+          %th
+            end
+          %th
+            step
+        %tr#prototype4sequences
+          %th.sequence_name
+            
+          %td
+            %input{:type => "hidden", :id => "sequence_name_prototype"}
+            %input{:type => "text", :id => "sequence_start_prototype"}
+          %td
+            %input{:type => "text", :id => "sequence_end_prototype"}
+          %td
+            %input{:type => "text", :id => "sequence_step_prototype"}
+          
+      
               
           
-  #model_params.group
+  .group
     .group_title
       Output
         
@@ -94,7 +135,7 @@
         %input{:type => "text", :id=>"format"}
        
 
-  #model_params.group
+  .group
     .group_title
       Integration parameters
     .prop_row
@@ -121,7 +162,7 @@
       .field
         %input{:type => "text", :id=>"time"}
         
-  #model_params.group
+  .group
     .group_title
       Analysis methods
       
@@ -165,106 +206,211 @@
   %br
 
       
-    :javascript
-    
-    
-      function directFlag(name){
-        if($(name).checked){
-          return " --" + name
-        }
-        else{
-          return "";
-        }
-      } 
+:javascript
+
+
+  function directFlag(name){
+    if($(name).checked){
+      return " --" + name
+    }
+    else{
+      return "";
+    }
+  } 
+  
+  function directValue(name){
+    var element = $(name);
+    if(!element){
       
-      function directValue(name){
-        var element = $(name);
-        if(!element){
-          
-        }
-        else{
-          var val = $(name).value;
-          if(val){
-            return " --" + name + " " + val;
-          }
-          else{
-            return "";
-          }
-        }
+    }
+    else{
+      var val = $(name).value;
+      if(val){
+        return " --" + name + " " + val;
       }
-      
-      
-       
-      var orbital_prefix = 'orbital_';
-      
-      function new_orbital(){
-        
-        var clone = $('prototype4orbital').cloneNode(true);
-        
-        clone.writeAttribute('id', 'orbital_1000000');
-        
-        reindexing(clone, 1000001);
-        
-        clone.setStyle("display: none");
-        
-        $('orbitals').appendChild(clone);
-        
-        reindexing_orbitals();
-        Effect.Appear(clone.id, { duration: 0.5 });
+      else{
+        return "";
       }
-      
-      function remove_orbital(event){
-        if(Event.element(event).parentNode.parentNode.parentNode.childElements().size() > 3){
-          var element = Event.element(event).parentNode.parentNode;
-          Effect.Fade(element.id, {
+    }
+  }
+  
+  function new_by_prototype(prototypeName, idPrefix, parentId){
+    
+    var clone = $(prototypeName).cloneNode(true);
+    
+    clone.writeAttribute('id', idPrefix + '_tmp');
+    
+    reindexing(clone, "tmp2");
+    
+    clone.setStyle("display: none");
+    
+    $(parentId).appendChild(clone);
+    
+    reindexing_selected_children(parentId, "tr[id^='" + idPrefix + "_']");
+    
+    Effect.Appear(clone.id, { duration: 0.5 });
+    
+    nameFromId($('partial_form'));  
+    
+    return clone;  
+  }
+  
+  function reindexing_selected_children(parentName, selector){
+    var i = 0;
+    var trs = [];
+    $(parentName).select(selector).each(function (e){
+      trs.push(e);
+    });
+    $A(trs).each(reindexing);
+  }
+   
+  var orbital_prefix = 'orbital_';
+  
+  function new_orbital(){
+    
+    var clone = new_by_prototype('prototype4orbitals', 'orbital', 'orbitals');
+    
+    clone.select("input").each(function(e){
+      e.observe('change', function(event){
+        var val = event.element().value;
+        if(val && val.match(/^\$[a-z_A-z]+$/)){
+          generateSequence(val);
+        }
+        removeUnusedSequences();
+      })
+    });    
+  }
+  
+  function showSequencesStatus(shown){
+    $('seqlabel').update((shown ? "" : "no ") + 'sequences');
+    if(shown){
+      $('sequences').parentNode.show();
+    }
+    else{
+      $('sequences').parentNode.hide();
+    }
+  }
+  
+  function generateSequence(sequenceName){
+    var seq_row = new_by_prototype('prototype4sequences', 'sequence', 'sequences');
+    seq_row.select(".sequence_name").each(function(e){
+      var name = sequenceName.slice(1);
+      e.update(name);
+      seq_row.down("input[type='hidden']").value = name;
+    });
+    showSequencesStatus(true);
+  }
+  
+  function removeUnusedSequences(){
+    var seqs = [];
+    $('orbitals').select('input').each(function(e){
+      if(e.value.startsWith("$")){
+        seqs.push(e.value.slice(1));
+      }
+    });
+    $('sequences').childElements().each(function(e){
+      var nameElement = e.down(".sequence_name");
+      if(nameElement && e.id != 'prototype4sequences' ){
+        if(!seqs.include(nameElement.innerHTML)){
+          Effect.Fade(e.id, {
             duration: 0.5, 
             afterFinish: function(){
-              element.remove();
-              reindexing_orbitals();
+              e.remove();
+              reindexing_selected_children('sequences', "tr[id^='orbital_']");
+              if($('sequences').childElements().size() < 3){
+                showSequencesStatus(false);
+              }
             }});
         }
       }
-      
-      function reindexing_orbitals(){
-        var i = 0;
-        var trs = [];
-        $('orbitals').select("tr[id^='orbital_']").each(function (e){
-          trs.push(e);
-        });
-        $A(trs).each(reindexing);
+    });
+  }
+  
+  function remove_orbital(event){
+    if(Event.element(event).parentNode.parentNode.parentNode.childElements().size() > 3){
+      var element = Event.element(event).parentNode.parentNode;
+      Effect.Fade(element.id, {
+        duration: 0.5, 
+        afterFinish: function(){
+          element.remove();
+          reindexing_orbitals();
+          removeUnusedSequences();
+        }});
+    } 
+  }
+  
+  function reindexing_orbitals(){
+    reindexing_selected_children('orbitals', "tr[id^='orbital_']");
+  }
+  
+  function buildCommandArgs(){
+    var cmdArgs = "";
+    
+    var flags = $A(['final', 'normal', 'lci', 'rli', 'lli', 'dmx']);
+    
+    cmdArgs = flags.inject(cmdArgs, function(res, item){ return res + directFlag(item)});
+    
+    var simpleValues = ['gravitational_constant', 'format', 'precision', 'order', 'delta', 'time', 'difference'];
+    
+    cmdArgs = simpleValues.inject(cmdArgs, function(res, item){ return res + directValue(item)});
+    
+    return cmdArgs
+    
+  }
+  
+  function numberOfOrbitals(json){
+    var index = 0;
+    while(json['orbital_a_' + index] !== undefined){
+      index++;
+    }
+    return index;
+  }
+  
+  function numberOfSequences(json){
+    var index = 0;
+    while(json['sequence_start_' + index]){
+      index++;
+    }
+    return index;
+  }
+  
+  function prepareSubmit(){
+    //mandatory callback, does nothing on this page
+  }
+  
+  $('partial_form').preInit = function(settings){
+    $('prototype4orbitals').hide();
+    $('prototype4sequences').hide();
+    showSequencesStatus(false);
+    new_orbital();
+    if(settings.isJSON()){
+      var json = settings.evalJSON();
+      var orbitalsCount = numberOfOrbitals(json);
+      while(orbitalsCount-- > 1){
+        new_orbital();
       }
-      
-      function buildCommandArgs(){
-        var cmdArgs = "";
-        
-        var flags = $A(['final', 'normal', 'lci', 'rli', 'lli', 'dmx']);
-        
-        cmdArgs = flags.inject(cmdArgs, function(res, item){ return res + directFlag(item)});
-        
-        var simpleValues = ['gravitational_constant', 'format', 'precision', 'order', 'delta', 'time', 'difference'];
-        
-        cmdArgs = simpleValues.inject(cmdArgs, function(res, item){ return res + directValue(item)});
-        
-        return cmdArgs
-        
+      var sequencesCount = numberOfSequences(json);
+      for(var i = 0; i < sequencesCount; i++){
+        generateSequence("$" + json["sequence_name_" + i])
       }
-      
-      
+    }
+    reindexing_orbitals();
+  }
    
-:javascript
-   $('partial_form').init = function (){
-     $('prototype4orbital').hide();
-     new_orbital();
-   }
+  $('partial_form').init = function (){
 
-   //
-   //debug
-   //
+  }
+  
+  nameFromId($('partial_form'));
 
-   $('partial').select('input').each(function(e){
-     e.observe('change', function(){
-       debug(buildCommandArgs());
-       //validate(e);
-     })
-   });
+  //
+  //debug
+  //
+
+  $('partial_form').select('input').each(function(e){
+   e.observe('change', function(){
+     debug(buildCommandArgs());
+     //validate(e);
+   })
+  });
 

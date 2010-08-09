@@ -23,7 +23,7 @@
         &mu; 
         \= m<sub>1</sub>/(m<sub>0</sub> + m<sub>1</sub>)
       .field
-        %input{:type => "text", :id=>"mu", :onKeyUp=>"resetMs()", :valid_if => "isDefined(x)"}
+        %input{:type => "text", :id=>"mu", :value => "0.001", :onKeyUp=>"resetMs()", :valid_if => "isDefined(x)"}
 
     .prop_row
       .label
@@ -452,7 +452,7 @@
     }
     var file_name = $('file_prefix').value
     sequences.each(function(e){
-      file_name = file_name + "_" + e.name + "_$(fixed 10 10 " + e.name + ")";
+      file_name = file_name + "_" + e.name + "_$(fixed 4 14 " + e.name + ")";
     });
     file_name += ".out";
     if(iterators.length > 0){
@@ -604,9 +604,5 @@
     //
     //setting of the missing name attributes 
     //
-    $('partial_form').getElements().each(function (e){
-      if(e.type != 'radio'){
-        e.name = e.id;
-      }
-    });
+    nameFromId($('partial_form'));
   }

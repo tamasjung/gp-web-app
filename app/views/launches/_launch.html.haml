@@ -41,6 +41,10 @@
   }     
   
   var settings = $('launch_settings').value;
+  var partial_form = $('partial_form');
+  if(partial_form.preInit){
+    partial_form.preInit(settings);
+  }
   if(settings.isJSON()){
     Form.deserializeJSON('partial_form', settings);
   }
