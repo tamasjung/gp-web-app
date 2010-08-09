@@ -316,7 +316,7 @@
             duration: 0.5, 
             afterFinish: function(){
               e.remove();
-              reindexing_selected_children('sequences', "tr[id^='orbital_']");
+              reindexing_selected_children('sequences', "tr[id^='orbital_']");  
               if($('sequences').childElements().size() < 3){
                 showSequencesStatus(false);
               }
@@ -368,7 +368,7 @@
   
   function numberOfSequences(json){
     var index = 0;
-    while(json['sequence_start_' + index]){
+    while(json['sequence_start_' + index] !== undefined){
       index++;
     }
     return index;
