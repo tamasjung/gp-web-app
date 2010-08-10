@@ -391,9 +391,9 @@
       }
       var sequencesCount = numberOfSequences(json);
       for(var i = 0; i < sequencesCount; i++){
-        generateSequence("$" + json["sequence_name_" + i])
+        generateSequence("$" + json["sequence_name_" + i]);
       }
-    }
+    } 
     reindexing_orbitals();
   }
    
