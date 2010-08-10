@@ -273,7 +273,7 @@
     clone.select("input").each(function(e){
       e.observe('change', function(event){
         var val = event.element().value;
-        if(val && val.match(/^\$[a-z_A-z]+$/)){
+        if(val && val.match(/^\$\w+$/)){
           generateSequence(val);
         }
         removeUnusedSequences();
@@ -375,7 +375,7 @@
   }
   
   function prepareSubmit(){
-    //mandatory callback, does nothing on this page
+    nameFromId($('partial_form'));
   }
   
   $('partial_form').preInit = function(settings){
