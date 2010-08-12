@@ -1,6 +1,50 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
+function NodeBuilder(list){
+  if(list === undefined){
+    throw {
+      name: 'NodeBuilderException',
+      message: "list is undefined"
+    }
+  }
+  if(list.size === undefined){
+    throw{
+      name: 'NodeBuildeException',
+      message: 'wrong list type'
+    }
+  }
+  var listSize = list.size();
+  if(listSize ==   0){
+    throw{
+      name: 'NodeBuilderException',
+      message: 'list is empty'
+    }
+  }
+  
+  var elementName = list[0];
+  var attrs;
+  if(listSize > 1){
+    attrs = list[1];
+  }
+  var children;
+  if(listSize > 2){
+    children = list[2];
+  }
+  var element = document.createElement(elementName);
+  if(attrs !== undefined){
+    Object.keys(attrs).each(function (k){
+      element.setAttribute(k, attrs[k]);
+    });
+  }
+  if(children !== undefined){
+    children.each(function(child){
+      element.appendChild(NodeBuilder(child));
+    });
+  }
+  return element;
+}
+
 function nameFromId(container){
   container.getElements().each(function (e){
     if(e.type != 'radio'){
@@ -76,10 +120,13 @@ function translate4human(exp){
   dict = [
     { regexp: /&&/g, replacement: "and"},
     { regexp: /<=/g, replacement: "&le;"},
+    { regexp: />=/g, replacement: "&ge;"},
     { regexp: /\|\|/g, replacement: "or"},
     { regexp: /==/g, replacement: "="},
     { regexp: /isInteger\(x\)/g, replacement: "integer"},
     { regexp: /isDefined\(x\)/g, replacement: "defined"},
+    { regexp: /isNumber\(x\)/g, replacement: "number"},
+    { regexp: /divisibleBy(\d+)\(x\)/g, replacement: "divisible by $1"},
 
      
     ];

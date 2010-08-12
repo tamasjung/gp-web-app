@@ -267,7 +267,7 @@
         
       #bodies
       #sphere.prop_row.hidden_prototype 
-        %table#sphere_1000000.rounded_15
+        %table#sphere_prototype.rounded_15
           %tr
             %th{:rowspan => '2', :class => 'tlabel'}
               sphere
@@ -295,20 +295,20 @@
           
           %tr 
             %td.first_cell
-              %input{:type => 'text', :id => 'shpere_x0_1000000'}
+              %input{:type => 'text', :id => 'shpere_x0_prototype'}
             %td
-              %input{:type => 'text', :id => 'shpere_y0_1000000'}
+              %input{:type => 'text', :id => 'shpere_y0_prototype'}
             %td
-              %input{:type => 'text', :id => 'shpere_z0_1000000'}
+              %input{:type => 'text', :id => 'shpere_z0_prototype'}
             %td
-              %input{:type => 'text', :id => 'shpere_r_1000000'}
+              %input{:type => 'text', :id => 'shpere_r_prototype'}
             %td
-              %input{:type => 'text', :id => 'shpere_v_1000000'}
+              %input{:type => 'text', :id => 'shpere_v_prototype'}
             %td
               %a.remove_body{:onClick => "removeBody(event);"}
                 \-
       
-        %table#cuboid_1000000
+        %table#cuboid_prototype
           %tr
             %th.tlabel{:rowspan => '4'}
               rectangular cuboid
@@ -338,17 +338,17 @@
       
           %tr 
             %td.first_cell
-              %input{:type => 'text', :id => 'cuboid_x_1000000'}
+              %input{:type => 'text', :id => 'cuboid_x_prototype'}
             %td
-              %input{:type => 'text', :id => 'cuboid_y_1000000'}
+              %input{:type => 'text', :id => 'cuboid_y_prototype'}
             %td
-              %input{:type => 'text', :id => 'cuboid_z_1000000'}
+              %input{:type => 'text', :id => 'cuboid_z_prototype'}
             %td
-              %input{:type => 'text', :id => 'cuboid_width_1000000'}
+              %input{:type => 'text', :id => 'cuboid_width_prototype'}
             %td
-              %input{:type => 'text', :id => 'cuboid_height_1000000'}
+              %input{:type => 'text', :id => 'cuboid_height_prototype'}
             %td
-              %input{:type => 'text', :id => 'cuboid_depth_1000000'}
+              %input{:type => 'text', :id => 'cuboid_depth_prototype'}
             %td
               %a.remove_body{:onClick => "removeBody(event);"}
                 \-
@@ -361,15 +361,15 @@
               V
           %tr
             %td.first_cell
-              %input{:type => 'text', id => 'cuboid_angle1_1000000'}
+              %input{:type => 'text', id => 'cuboid_angle1_prototype'}
             %td
-              %input{:type => 'text', id => 'cuboid_angle1_1000000'}
+              %input{:type => 'text', id => 'cuboid_angle1_prototype'}
             %td
-              %input{:type => 'text', id => 'cuboid_v_1000000'}
+              %input{:type => 'text', id => 'cuboid_v_prototype'}
               
               
               
-        %table#cylinder_1000000
+        %table#cylinder_prototype
           %tr
             %th.tlabel{:rowspan => '3'}
               cylinder
@@ -400,22 +400,22 @@
 
           %tr 
             %td.first_cell
-              %input{:type => 'text', :id => 'cylinder_x_1000000'}
+              %input{:type => 'text', :id => 'cylinder_x_prototype'}
             %td
-              %input{:type => 'text', :id => 'cylinder_y_1000000'}
+              %input{:type => 'text', :id => 'cylinder_y_prototype'}
             %td
-              %input{:type => 'text', :id => 'cylinder_z_1000000'}
+              %input{:type => 'text', :id => 'cylinder_z_prototype'}
             %td
-              %input{:type => 'text', :id => 'cylinder_phi1_1000000'}
+              %input{:type => 'text', :id => 'cylinder_phi1_prototype'}
             %td
-              %input{:type => 'text', :id => 'cylinder_phi2_1000000'}
+              %input{:type => 'text', :id => 'cylinder_phi2_prototype'}
             %td
-              %input{:type => 'text', :id => 'cylinder_v_1000000'}
+              %input{:type => 'text', :id => 'cylinder_v_prototype'}
             %td
               %a.remove_body{:onClick => "removeBody(event);"}
                 \-
         
-        %table#half_space_1000000
+        %table#half_space_prototype
           %tr
             %th.tlabel{:rowspan => '3'}
               half-space
@@ -456,19 +456,19 @@
 
           %tr 
             %td.first_cell
-              %input{:type => 'text', :id => 'half_space_x_1000000'}
+              %input{:type => 'text', :id => 'half_space_x_prototype'}
             %td
-              %input{:type => 'text', :id => 'half_space_y_1000000'}
+              %input{:type => 'text', :id => 'half_space_y_prototype'}
             %td
-              %input{:type => 'text', :id => 'half_space_z_1000000'}
+              %input{:type => 'text', :id => 'half_space_z_prototype'}
             %td
-              %input{:type => 'text', :id => 'half_space_nx_1000000'}
+              %input{:type => 'text', :id => 'half_space_nx_prototype'}
             %td
-              %input{:type => 'text', :id => 'half_space_ny_1000000'}
+              %input{:type => 'text', :id => 'half_space_ny_prototype'}
             %td
-              %input{:type => 'text', :id => 'half_space_nz_1000000'}
+              %input{:type => 'text', :id => 'half_space_nz_prototype'}
             %td
-              %input{:type => 'text', :id => 'half_space_v_1000000'}
+              %input{:type => 'text', :id => 'half_space_v_prototype'}
             %td
               %a.remove_body{:onClick => "removeBody(event);"}
                 \-        
@@ -491,8 +491,32 @@
               
               
   %br 
+  %x3d#renderer{:height => "650px", :showstat => "false", :width => "650px", :x => "0px", :y => "0px"}
+    %scene#root
+      %background{:def => "bgnd", :skycolor => "1 1 1", :transparency => "1.0"}
+      %viewpoint{:orientation => "-0.69017 0.723467 -0.0161809 0.735134", :position => "4.88104 4.59865 7.4181"}
+      
+
       
 :javascript 
+  var renderer = {
+
+    
+    addSphere: function(){      
+      
+      $('root').appendChild(
+        NodeBuilder(
+        ['transform', {translation: "0 0 0", scale: "2 2 2"}, [
+          ['shape', {}, [
+            ['appearance', {}, [
+              ['material', {diffuseColor: "0.41 0.39 0.03", specularColor: "0.94 0.72 0", shininess: '0.12', transparency: "0.4"}]
+            ]],
+            ['cylinder']
+          ]]
+        ]])
+      );
+    }
+  };
 
   function reindexing_bodies(){  
      var trs = [];
@@ -503,7 +527,7 @@
    }
 
   function addBody(prototype_id){
-    var clone = $(prototype_id + "_1000000").cloneNode(true);
+    var clone = $(prototype_id + "_prototype").cloneNode(true);
     //clone.setStyle("display: none;");
     //Element.extend(clone);
     reindexing(clone, 1000001);
@@ -511,6 +535,7 @@
     reindexing_bodies();
     Effect.Appear(clone.id, { duration: 0.5 });
     //$('bodies').appendChild(new Element('hr'));
+    renderer.addSphere();
   }
   
   function removeBody(event){
@@ -540,7 +565,7 @@
     $$('input').each(function (e){
       var ph = e.readAttribute('valid_if');
       if(ph){
-        e.writeAttribute('placeholder', ph);
+        e.writeAttribute('placeholder', translate4human(ph));
       }
     });
     new Control.Tabs('potential_tabs');
