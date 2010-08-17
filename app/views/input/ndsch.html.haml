@@ -21,7 +21,7 @@
     }
     
     table a.remove_body{
-      font-size: 3em;
+      font-size: 1em;
       color: inherit;
       text-decoration: none;
     }
@@ -60,6 +60,19 @@
     
     tr td:first{
       border: solid;
+    }
+    
+    
+    .repeater{
+      margin-top: 10px;
+      border-top: solid lightgray 1px
+    }
+    .repeater * {
+      margin-top: 10px;
+      font-size: 0.8em;
+      height: 0.9em;
+      padding-left: 5px;
+      padding-right: 5px;
     }
     
   
@@ -256,7 +269,7 @@
           .add_text
             add
         .field
-          %a.action_link.add_body{:onClick => "addBody('sphere');"}
+          %a.action_link.add_body{:onClick => "addSphere();"}
             sphere
           %a.action_link.add_body{:onClick => "addBody('cuboid');"}
             rectangular cuboid
@@ -295,15 +308,15 @@
           
           %tr 
             %td.first_cell
-              %input{:type => 'text', :id => 'shpere_x0_prototype'}
+              %input{:type => 'text', :id => 'sphere_x0_prototype', :value => '0'}
             %td
-              %input{:type => 'text', :id => 'shpere_y0_prototype'}
+              %input{:type => 'text', :id => 'sphere_y0_prototype', :value => '0'}
             %td
-              %input{:type => 'text', :id => 'shpere_z0_prototype'}
+              %input{:type => 'text', :id => 'sphere_z0_prototype', :value => '0'}
             %td
-              %input{:type => 'text', :id => 'shpere_r_prototype'}
+              %input{:type => 'text', :id => 'sphere_r_prototype', :value => '1'}
             %td
-              %input{:type => 'text', :id => 'shpere_v_prototype'}
+              %input{:type => 'text', :id => 'sphere_v_prototype', :value => '0'}
             %td
               %a.remove_body{:onClick => "removeBody(event);"}
                 \-
@@ -492,28 +505,104 @@
               
   %br 
   %x3d#renderer{:height => "650px", :showstat => "false", :width => "650px", :x => "0px", :y => "0px"}
-    %scene#root
+    %scene
       %background{:def => "bgnd", :skycolor => "1 1 1", :transparency => "1.0"}
       %viewpoint{:orientation => "-0.69017 0.723467 -0.0161809 0.735134", :position => "4.88104 4.59865 7.4181"}
-      
-
+      %group#root
       
 :javascript 
-  var renderer = {
 
+  function centerCoords(prefix, index){
+    return pointCoords(prefix, "0", index);
+  }
+  
+  function pointCoords(prefix, postfix, index){
+    return $w('x y z').map(function(axisName){
+      return (+$(prefix + "_" + axisName + postfix + "_" + index).value);
+    });    
+  }
+
+  function addSphere(){
+    var editorId = addBody('sphere');
+    $(editorId).createX3D = function(){
+      createX3DSphere(editorId);
+    }
+    $(editorId).createX3D();
+  }
+  
+  function createX3DSphere(editorId){
+    transformAttrs = {};
     
-    addSphere: function(){      
-      
+    var index = getIndex(editorId);
+    var r = $("sphere_r_" + index).value;
+    var v = $("sphere_v_" + index).value;
+    
+    createX3DNode(editorId, 'sphere', transformAttrs, {radius: r});
+  }
+  
+  function createX3DNode(editorId, bodyType, transformAttrs, bodyAttrs){
+    
+    transformAttrs.id = "tr_" + editorId;
+    
+    var index = getIndex(transformAttrs.id);
+    
+    var vector = $w('x y z').map(function(axis){
+      return (+$('repeater_' + axis + '_' + index).value);
+    });
+    
+    var n = $('repeater_n_' + index).value;
+    
+    var translation = centerCoords(bodyType, index);
+ 
+    for(var i = 0; i < n; i++){
+      var trAttrs = Object.clone(transformAttrs);
+      trAttrs.translation = translation.join(" ");
+      trAttrs.id += "_" + i; 
+      renderer.addX3DNode(bodyType, trAttrs, bodyAttrs);
+      translation = translation.map(function(i, index){
+        return i + vector[index];
+      });
+    };
+  }
+  
+  
+  function createX3DBody(editorId){
+    
+  }
+  
+  function rebuildScene(){
+    var rootParent = $('root').parentNode;
+    $('root').remove();
+    rootParent.appendChild(NodeBuilder(
+      ['group', {id: 'root'}]
+    ));
+    $('bodies').select('table').each(function(e){
+      e.createX3D();
+    })    
+  }
+  
+  function addCuboid(){
+    
+  }
+
+  var renderer = {
+    
+    diffuseColor: "0.41 0.39 0.03",
+    specularColor: "0.94 0.72 0",
+    
+    addX3DNode: function(bodyType, transformAttrs, bodyAttrs){
       $('root').appendChild(
         NodeBuilder(
-        ['transform', {translation: "0 0 0", scale: "2 2 2"}, [
-          ['shape', {}, [
-            ['appearance', {}, [
-              ['material', {diffuseColor: "0.41 0.39 0.03", specularColor: "0.94 0.72 0", shininess: '0.12', transparency: "0.4"}]
-            ]],
-            ['cylinder']
-          ]]
-        ]])
+        ['group', {},
+          ['transform', transformAttrs,
+            ['shape', {},
+              ['appearance', {},
+                ['material', {diffuseColor:this.diffuseColor , specularColor: this.specularColor, shininess: '0.12', transparency: "0.4"}]
+              ],
+              [bodyType, bodyAttrs]
+            ]
+          ]
+        ])
       );
     }
   };
@@ -535,7 +624,38 @@
     reindexing_bodies();
     Effect.Appear(clone.id, { duration: 0.5 });
     //$('bodies').appendChild(new Element('hr'));
-    renderer.addSphere();
+    $(clone.id).down('tbody').appendChild(addRepeater(clone.id));
+    $(clone.id).select('input').each(function(e){
+      e.observe('change', rebuildScene);
+    });
+    return clone.id;
+  }
+  
+  function addRepeater(id){
+    var index = getIndex(id);
+    var tr = NodeBuilder(
+      ['tr', {},
+        ['td', {colspan: 100}, 
+          ['div', {class: 'repeater'}, 
+            ['span', {onclick: "Effect.toggle(event.element().next())"}, 'repeat'],
+            ['span', {id: 'repeater_container_' + index}, 
+              ['input', {id: 'repeater_n_' + index, type: 'text', value: '1'}],
+              ['span', {}, ' time(s) '],
+          
+              ['span', {}, 'by ['],
+              ['input', {id: 'repeater_x_' + index, type: 'text', value: '0'}],
+              ['span', {}, ','],
+              ['input', {id: 'repeater_y_' + index, type: 'text', value: '0'}],
+              ['span', {}, ','],
+              ['input', {id: 'repeater_z_' + index, type: 'text', value: '0'}],
+              ['span', {}, ']']
+            ]
+          ]
+        ]
+      ]
+      );
+    
+    return tr;
   }
   
   function removeBody(event){
@@ -545,6 +665,7 @@
       afterFinish: function(){
         element.remove();
         reindexing_bodies();
+        rebuildScene();
       }});
   }
   

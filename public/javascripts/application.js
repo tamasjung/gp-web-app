@@ -1,20 +1,30 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
+
+
+function LL(list){
+  if(list.shift !== undefined && list.map !== undefined){
+    var f = list.shift();
+    f.apply({}, list.map(LL));
+  }
+  else{
+    return list;
+  }
+}
+
 function NodeBuilder(list){
+  
   if(list === undefined){
     throw {
       name: 'NodeBuilderException',
       message: "list is undefined"
     }
   }
-  if(list.size === undefined){
-    throw{
-      name: 'NodeBuildeException',
-      message: 'wrong list type'
-    }
+  if(typeof list === 'string'){
+    return document.createTextNode(list);
   }
-  var listSize = list.size();
+  var listSize = list.length;
   if(listSize ==   0){
     throw{
       name: 'NodeBuilderException',
@@ -29,7 +39,7 @@ function NodeBuilder(list){
   }
   var children;
   if(listSize > 2){
-    children = list[2];
+    children = list.slice(2);
   }
   var element = document.createElement(elementName);
   if(attrs !== undefined){
@@ -100,6 +110,9 @@ function toOrdinaryDecimal(number){
   return full_num ;//+ "|" + " => " + re;  
 }
 
+function getIndex(string){
+  return /_(\d+)$/.exec(string)[1];
+}
 
 function reindexingId(e, index){
   var e_id = e.readAttribute("id");
