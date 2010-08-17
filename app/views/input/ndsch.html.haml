@@ -272,15 +272,19 @@
           %a.action_link.add_body{:onClick => "addSphere();"}
             sphere
           %a.action_link.add_body{:onClick => "addBody('cuboid');"}
-            rectangular cuboid
+            cuboid
           %a.action_link.add_body{:onClick => "addBody('cylinder');"}
             cylinder
           %a.action_link.add_body{:onClick => "addBody('half_space');"}
             half-space
+          %a.action_link.add_body{:onClick => "addBody('atom');"}
+            atom
+
+
         
       #bodies
       #sphere.prop_row.hidden_prototype 
-        %table#sphere_prototype.rounded_15
+        %table#sphere_prototype
           %tr
             %th{:rowspan => '2', :class => 'tlabel'}
               sphere
