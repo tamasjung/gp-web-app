@@ -679,6 +679,8 @@
   
     $('display_str').value = $('command_args').value;
   }
+  
+  $('partial_form').preInit = function(){}
 
   $('partial_form').init = function (){
     $$('.hidden_prototype').invoke('hide');
