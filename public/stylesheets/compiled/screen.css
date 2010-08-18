@@ -796,6 +796,7 @@ body.three-col #content {
 .prop_row {
   clear: both;
   display: table-row;
+  margin-top: 20px;
 }
 /* line 222, ../../../app/stylesheets/partials/_main.sass */
 .prop_row .label {

@@ -14,8 +14,11 @@
     }
     
     .prop_row .field a.add_body{
-      padding: 3px;
-      margin: 3px;
+      padding-left: 3px;
+      padding-right: 3px;
+      margin-left: 3px;
+      margin-right: 3px;
+      
       text-decoration: none;
       color: grey;
     }
@@ -279,216 +282,261 @@
             half-space
           %a.action_link.add_body{:onClick => "addBody('atom');"}
             atom
+    
+      .prop_row
+        .label
+          upload
+        .field
+          %a.action_link.add_body{:onClick => "addUploadedAtoms();"}
+            atoms
 
 
         
-      #bodies
-      #sphere.prop_row.hidden_prototype 
-        %table#sphere_prototype
-          %tr
-            %th{:rowspan => '2', :class => 'tlabel'}
-              sphere
-            %th.first_cell       
-              %span<
-                x
-              %sub<>
-                0
-            %th
-              %span<
-                y
-              %sub<>
-                0 
-            %th
-              %span<
-                z
-              %sub<>
-                0
-            %th
-              r
-            %th
-              V
-            %th
-          
-          
-          %tr 
-            %td.first_cell
-              %input{:type => 'text', :id => 'sphere_x0_prototype', :value => '0'}
-            %td
-              %input{:type => 'text', :id => 'sphere_y0_prototype', :value => '0'}
-            %td
-              %input{:type => 'text', :id => 'sphere_z0_prototype', :value => '0'}
-            %td
-              %input{:type => 'text', :id => 'sphere_r_prototype', :value => '1'}
-            %td
-              %input{:type => 'text', :id => 'sphere_v_prototype', :value => '0'}
-            %td
-              %a.remove_body{:onClick => "removeBody(event);"}
-                \-
-      
-        %table#cuboid_prototype
-          %tr
-            %th.tlabel{:rowspan => '4'}
-              rectangular cuboid
+    #bodies
+    .prop_row.hidden_prototype 
+      %table#sphere_prototype
+        %tr
+          %th{:rowspan => '2', :class => 'tlabel'}
+            sphere
+          %th.first_cell       
+            %span<
+              x
+            %sub<>
+              0
+          %th
+            %span<
+              y
+            %sub<>
+              0 
+          %th
+            %span<
+              z
+            %sub<>
+              0
+          %th
+            r
+          %th
+            V
+          %th
+        
+        
+        %tr 
+          %td.first_cell
+            %input{:type => 'text', :id => 'sphere_x0_prototype', :value => '0'}
+          %td
+            %input{:type => 'text', :id => 'sphere_y0_prototype', :value => '0'}
+          %td
+            %input{:type => 'text', :id => 'sphere_z0_prototype', :value => '0'}
+          %td
+            %input{:type => 'text', :id => 'sphere_r_prototype', :value => '1'}
+          %td
+            %input{:type => 'text', :id => 'sphere_v_prototype', :value => '0'}
+          %td
+            %a.remove_body{:onClick => "removeBody(event);"}
+              \-
+    
+     
+      %table#atom_prototype
+        %tr
+          %th{:rowspan => '2', :class => 'tlabel'}
+            atom
+          %th.first_cell       
+            %span<
+              x
+            %sub<>
+              0
+          %th
+            %span<
+              y
+            %sub<>
+              0 
+          %th
+            %span<
+              z
+            %sub<>
+              0
+          %th
+            type
+          %th
 
-            %th.first_cell       
-              %span<
-                x
-              %sub<>
-                0
-            %th
-              %span<
-                y
-              %sub<>
-                0 
-            %th
-              %span<
-                z
-              %sub<>
-                0
-            %th
-              width
-            %th
-              height
-            %th
-              depth
-            %th
-      
-          %tr 
-            %td.first_cell
-              %input{:type => 'text', :id => 'cuboid_x_prototype'}
-            %td
-              %input{:type => 'text', :id => 'cuboid_y_prototype'}
-            %td
-              %input{:type => 'text', :id => 'cuboid_z_prototype'}
-            %td
-              %input{:type => 'text', :id => 'cuboid_width_prototype'}
-            %td
-              %input{:type => 'text', :id => 'cuboid_height_prototype'}
-            %td
-              %input{:type => 'text', :id => 'cuboid_depth_prototype'}
-            %td
-              %a.remove_body{:onClick => "removeBody(event);"}
-                \-
-          %tr
-            %th.first_cell
-              &phi;<sub>1</sub>
-            %th
-              &phi;<sub>2</sub>
-            %th
-              V
-          %tr
-            %td.first_cell
-              %input{:type => 'text', id => 'cuboid_angle1_prototype'}
-            %td
-              %input{:type => 'text', id => 'cuboid_angle1_prototype'}
-            %td
-              %input{:type => 'text', id => 'cuboid_v_prototype'}
-              
-              
-              
-        %table#cylinder_prototype
-          %tr
-            %th.tlabel{:rowspan => '3'}
-              cylinder
 
-            %th.first_cell       
-              %span<
-                x
-              %sub<>
-                0
-            %th
-              %span<
-                y
-              %sub<>
-                0 
-            %th
-              %span<
-                z
-              %sub<>
-                0
+        %tr 
+          %td.first_cell
+            %input{:type => 'text', :id => 'atom_x0_prototype', :value => '0'}
+          %td
+            %input{:type => 'text', :id => 'atom_y0_prototype', :value => '0'}
+          %td
+            %input{:type => 'text', :id => 'atom_z0_prototype', :value => '0'}
+          %td
+            %select{:id => 'atom_select_prototype'}
+          %td
+            %a.remove_body{:onClick => "removeBody(event);"}
+              \-
+
+      %table#cuboid_prototype
+        %tr
+          %th.tlabel{:rowspan => '4'}
+            rectangular cuboid
+
+          %th.first_cell       
+            %span<
+              x
+            %sub<>
+              0
+          %th
+            %span<
+              y
+            %sub<>
+              0 
+          %th
+            %span<
+              z
+            %sub<>
+              0
+          %th
+            width
+          %th
+            height
+          %th
+            depth
+          %th
+    
+        %tr 
+          %td.first_cell
+            %input{:type => 'text', :id => 'cuboid_x_prototype'}
+          %td
+            %input{:type => 'text', :id => 'cuboid_y_prototype'}
+          %td
+            %input{:type => 'text', :id => 'cuboid_z_prototype'}
+          %td
+            %input{:type => 'text', :id => 'cuboid_width_prototype'}
+          %td
+            %input{:type => 'text', :id => 'cuboid_height_prototype'}
+          %td
+            %input{:type => 'text', :id => 'cuboid_depth_prototype'}
+          %td
+            %a.remove_body{:onClick => "removeBody(event);"}
+              \-
+        %tr
+          %th.first_cell
+            &phi;<sub>1</sub>
+          %th
+            &phi;<sub>2</sub>
+          %th
+            V
+        %tr
+          %td.first_cell
+            %input{:type => 'text', id => 'cuboid_angle1_prototype'}
+          %td
+            %input{:type => 'text', id => 'cuboid_angle1_prototype'}
+          %td
+            %input{:type => 'text', id => 'cuboid_v_prototype'}
             
-            %th
-              &phi;<sub>1</sub>
-            %th
-              &phi;<sub>2</sub>
-            %th
-              V
-            %th
+            
+            
+      %table#cylinder_prototype
+        %tr
+          %th.tlabel{:rowspan => '3'}
+            cylinder
 
-          %tr 
-            %td.first_cell
-              %input{:type => 'text', :id => 'cylinder_x_prototype'}
-            %td
-              %input{:type => 'text', :id => 'cylinder_y_prototype'}
-            %td
-              %input{:type => 'text', :id => 'cylinder_z_prototype'}
-            %td
-              %input{:type => 'text', :id => 'cylinder_phi1_prototype'}
-            %td
-              %input{:type => 'text', :id => 'cylinder_phi2_prototype'}
-            %td
-              %input{:type => 'text', :id => 'cylinder_v_prototype'}
-            %td
-              %a.remove_body{:onClick => "removeBody(event);"}
-                \-
-        
-        %table#half_space_prototype
-          %tr
-            %th.tlabel{:rowspan => '3'}
-              half-space
+          %th.first_cell       
+            %span<
+              x
+            %sub<>
+              0
+          %th
+            %span<
+              y
+            %sub<>
+              0 
+          %th
+            %span<
+              z
+            %sub<>
+              0
+          
+          %th
+            &phi;<sub>1</sub>
+          %th
+            &phi;<sub>2</sub>
+          %th
+            V
+          %th
 
-            %th.first_cell       
-              %span<
-                x
-              %sub<>
-                0
-            %th
-              %span<
-                y
-              %sub<>
-                0 
-            %th
-              %span<
-                z
-              %sub<>
-                0
-            %th       
-              %span<
-                n
-              %sub<>
-                x
-            %th
-              %span<
-                n
-              %sub<>
-                y 
-            %th
-              %span<
-                n
-              %sub<>
-                z              
-            %th
-              V
-            %th
+        %tr 
+          %td.first_cell
+            %input{:type => 'text', :id => 'cylinder_x_prototype'}
+          %td
+            %input{:type => 'text', :id => 'cylinder_y_prototype'}
+          %td
+            %input{:type => 'text', :id => 'cylinder_z_prototype'}
+          %td
+            %input{:type => 'text', :id => 'cylinder_phi1_prototype'}
+          %td
+            %input{:type => 'text', :id => 'cylinder_phi2_prototype'}
+          %td
+            %input{:type => 'text', :id => 'cylinder_v_prototype'}
+          %td
+            %a.remove_body{:onClick => "removeBody(event);"}
+              \-
+      
+      %table#half_space_prototype
+        %tr
+          %th.tlabel{:rowspan => '3'}
+            half-space
 
-          %tr 
-            %td.first_cell
-              %input{:type => 'text', :id => 'half_space_x_prototype'}
-            %td
-              %input{:type => 'text', :id => 'half_space_y_prototype'}
-            %td
-              %input{:type => 'text', :id => 'half_space_z_prototype'}
-            %td
-              %input{:type => 'text', :id => 'half_space_nx_prototype'}
-            %td
-              %input{:type => 'text', :id => 'half_space_ny_prototype'}
-            %td
-              %input{:type => 'text', :id => 'half_space_nz_prototype'}
-            %td
-              %input{:type => 'text', :id => 'half_space_v_prototype'}
-            %td
-              %a.remove_body{:onClick => "removeBody(event);"}
-                \-        
+          %th.first_cell       
+            %span<
+              x
+            %sub<>
+              0
+          %th
+            %span<
+              y
+            %sub<>
+              0 
+          %th
+            %span<
+              z
+            %sub<>
+              0
+          %th       
+            %span<
+              n
+            %sub<>
+              x
+          %th
+            %span<
+              n
+            %sub<>
+              y 
+          %th
+            %span<
+              n
+            %sub<>
+              z              
+          %th
+            V
+          %th
+
+        %tr 
+          %td.first_cell
+            %input{:type => 'text', :id => 'half_space_x_prototype'}
+          %td
+            %input{:type => 'text', :id => 'half_space_y_prototype'}
+          %td
+            %input{:type => 'text', :id => 'half_space_z_prototype'}
+          %td
+            %input{:type => 'text', :id => 'half_space_nx_prototype'}
+          %td
+            %input{:type => 'text', :id => 'half_space_ny_prototype'}
+          %td
+            %input{:type => 'text', :id => 'half_space_nz_prototype'}
+          %td
+            %input{:type => 'text', :id => 'half_space_v_prototype'}
+          %td
+            %a.remove_body{:onClick => "removeBody(event);"}
+              \-        
     #file_panel.tabpanel
       .prop_row
         .label
@@ -515,6 +563,19 @@
       %group#root
       
 :javascript 
+
+  var ATOMS = [
+    {id: ' O', label: "oxigen", gauss: [[1,2],[3,4],[5,6]]},
+    {id: ' C', label: "coal", gauss: [[7,8],[9,10],[11,12]]}    
+  ];
+  
+  function generateAtomOptions(){
+    ATOMS.sortBy(function(e){
+      return e.label;
+    }).each(function (e){
+      $('atom_select_prototype').appendChild(NodeBuilder(['option', {value: e.id}, e.label]));
+    })
+  }
 
   function centerCoords(prefix, index){
     return pointCoords(prefix, "0", index);
@@ -684,7 +745,9 @@
     $('display_str').value = $('command_args').value;
   }
   
-  $('partial_form').preInit = function(){}
+  $('partial_form').preInit = function(){
+    generateAtomOptions();
+  }
 
   $('partial_form').init = function (){
     $$('.hidden_prototype').invoke('hide');
