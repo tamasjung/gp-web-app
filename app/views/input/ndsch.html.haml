@@ -81,6 +81,8 @@
   
   EMBEDDED_STYLE
 
+
+
 %form#partial_form.panel_in_tab
   %input{:type => "hidden", :id=>"command_args"}
   %input{:type => "hidden", :id=>"display_str"}
@@ -272,10 +274,10 @@
           .add_text
             add
         .field
-          %a.action_link.add_body{:onClick => "addSphere();"}
+          %a.action_link.add_body{:onClick => "addBody('sphere');"}
             sphere
-          %a.action_link.add_body{:onClick => "addBody('cuboid');"}
-            cuboid
+          %a.action_link.add_body{:onClick => "addBody('box');"}
+            box
           %a.action_link.add_body{:onClick => "addBody('cylinder');"}
             cylinder
           %a.action_link.add_body{:onClick => "addBody('half_space');"}
@@ -285,10 +287,10 @@
     
       .prop_row
         .label
-          upload
+          upload atoms
         .field
-          %a.action_link.add_body{:onClick => "addUploadedAtoms();"}
-            atoms
+          %iframe.upload_iframe{:src => '/upload'}
+            
 
 
         
@@ -372,11 +374,32 @@
           %td
             %a.remove_body{:onClick => "removeBody(event);"}
               \-
+              
+      %table#multi_atom_prototype
+        %tr
+          %th{:rowspan => '2', :class => 'tlabel'}
+            atoms
+          %th.first_cell       
+            Number of atoms
+            %input{:type => 'hidden', :id => 'multi_atom_coords_prototype'}
+          %th
+            type
+          %th
 
-      %table#cuboid_prototype
+
+        %tr 
+          %td.first_cell#multi_atom_no_atoms_prototype
+            0
+          %td
+            %select{:id => 'multi_atom_select_prototype'}
+          %td
+            %a.remove_body{:onClick => "removeBody(event);"}
+              \-              
+
+      %table#box_prototype
         %tr
           %th.tlabel{:rowspan => '4'}
-            rectangular cuboid
+            rectangular box
 
           %th.first_cell       
             %span<
@@ -403,17 +426,17 @@
     
         %tr 
           %td.first_cell
-            %input{:type => 'text', :id => 'cuboid_x_prototype'}
+            %input{:type => 'text', :id => 'box_x0_prototype', :value => '0'}
           %td
-            %input{:type => 'text', :id => 'cuboid_y_prototype'}
+            %input{:type => 'text', :id => 'box_y0_prototype', :value => '0'}
           %td
-            %input{:type => 'text', :id => 'cuboid_z_prototype'}
+            %input{:type => 'text', :id => 'box_z0_prototype', :value => '0'}
           %td
-            %input{:type => 'text', :id => 'cuboid_width_prototype'}
+            %input{:type => 'text', :id => 'box_width_prototype', :value => '2'}
           %td
-            %input{:type => 'text', :id => 'cuboid_height_prototype'}
+            %input{:type => 'text', :id => 'box_height_prototype', :value => '2'}
           %td
-            %input{:type => 'text', :id => 'cuboid_depth_prototype'}
+            %input{:type => 'text', :id => 'box_depth_prototype', :value => '2'}
           %td
             %a.remove_body{:onClick => "removeBody(event);"}
               \-
@@ -426,11 +449,11 @@
             V
         %tr
           %td.first_cell
-            %input{:type => 'text', id => 'cuboid_angle1_prototype'}
+            %input{:type => 'text', id => 'box_angle1_prototype'}
           %td
-            %input{:type => 'text', id => 'cuboid_angle1_prototype'}
+            %input{:type => 'text', id => 'box_angle1_prototype'}
           %td
-            %input{:type => 'text', id => 'cuboid_v_prototype'}
+            %input{:type => 'text', id => 'box_v_prototype'}
             
             
             
@@ -454,7 +477,12 @@
               z
             %sub<>
               0
-          
+          %th
+            %span<
+              r
+          %th
+            %span<
+              h         
           %th
             &phi;<sub>1</sub>
           %th
@@ -465,11 +493,16 @@
 
         %tr 
           %td.first_cell
-            %input{:type => 'text', :id => 'cylinder_x_prototype'}
+            %input{:type => 'text', :id => 'cylinder_x0_prototype', :value => '0'}
           %td
-            %input{:type => 'text', :id => 'cylinder_y_prototype'}
+            %input{:type => 'text', :id => 'cylinder_y0_prototype', :value => '0'}
           %td
-            %input{:type => 'text', :id => 'cylinder_z_prototype'}
+            %input{:type => 'text', :id => 'cylinder_z0_prototype', :value => '0'}
+          %td
+            %input{:type => 'text', :id => 'cylinder_r_prototype', :value => '1'}
+          %td
+            %input{:type => 'text', :id => 'cylinder_h_prototype', :value => '2'}
+            
           %td
             %input{:type => 'text', :id => 'cylinder_phi1_prototype'}
           %td
@@ -521,11 +554,11 @@
 
         %tr 
           %td.first_cell
-            %input{:type => 'text', :id => 'half_space_x_prototype'}
+            %input{:type => 'text', :id => 'half_space_x0_prototype', :value => '0'}
           %td
-            %input{:type => 'text', :id => 'half_space_y_prototype'}
+            %input{:type => 'text', :id => 'half_space_y0_prototype', :value => '0'}
           %td
-            %input{:type => 'text', :id => 'half_space_z_prototype'}
+            %input{:type => 'text', :id => 'half_space_z0_prototype', :value => '0'}
           %td
             %input{:type => 'text', :id => 'half_space_nx_prototype'}
           %td
@@ -564,17 +597,30 @@
       
 :javascript 
 
+  function file_upload(result){
+    //alert(result);
+    if(result !== ''){
+      addUploadedAtoms(result);
+    }
+  }
+
   var ATOMS = [
-    {id: ' O', label: "oxigen", gauss: [[1,2],[3,4],[5,6]]},
-    {id: ' C', label: "coal", gauss: [[7,8],[9,10],[11,12]]}    
+    {id: ' O', label: "oxigen", gauss: [[0.1,2],[3,4],[5,6]]},
+    {id: ' C', label: "coal", gauss: [[0.7,8],[9,10],[11,12]]}    
   ];
+  
+  var atom_dictionary = [];
   
   function generateAtomOptions(){
     ATOMS.sortBy(function(e){
       return e.label;
     }).each(function (e){
-      $('atom_select_prototype').appendChild(NodeBuilder(['option', {value: e.id}, e.label]));
+      $w('atom_select_prototype multi_atom_select_prototype').each(function(item){
+        $(item).appendChild(NodeBuilder(['option', {value: e.id}, e.label]));
+      });
+      atom_dictionary[e.id] = e;
     })
+    
   }
 
   function centerCoords(prefix, index){
@@ -587,16 +633,18 @@
     });    
   }
 
-  function addSphere(){
-    var editorId = addBody('sphere');
+
+  
+  function addBody(prototype_id){
+    var editorId = addBodyEditor(prototype_id);
     $(editorId).createX3D = function(){
-      createX3DSphere(editorId);
+      eval('createX3D_' + prototype_id).apply({}, [editorId]);
     }
-    $(editorId).createX3D();
+    $(editorId).createX3D();   
   }
   
-  function createX3DSphere(editorId){
-    transformAttrs = {};
+  function createX3D_sphere(editorId){
+    var transformAttrs = {};
     
     var index = getIndex(editorId);
     var r = $("sphere_r_" + index).value;
@@ -605,7 +653,74 @@
     createX3DNode(editorId, 'sphere', transformAttrs, {radius: r});
   }
   
-  function createX3DNode(editorId, bodyType, transformAttrs, bodyAttrs){
+  function createX3D_box(editorId){
+    var transformAttrs = {}
+    
+    var index = getIndex(editorId)
+    var size = $w("width height depth").map(function(dim){return +$F("box_" + dim + "_" + index)}).join(' ');
+    
+    createX3DNode(editorId, 'box', transformAttrs, {size: size});
+  }
+  
+  function createX3D_cylinder(editorId){
+    var transformAttrs = {}
+    
+    var index = getIndex(editorId)
+    var r = +$F("cylinder_r_" + index);
+    var height = +$F('cylinder_h_' + index);
+    createX3DNode(editorId, 'cylinder', transformAttrs, {radius: r, height: height});
+  }
+  
+  function createX3D_half_space(editorId){
+    var transformAttrs = {}
+    
+    var index = getIndex(editorId)
+    
+    //TODO eltolni
+    createX3DNode(editorId, 'cylinder', transformAttrs, {radius: 100, height: 1, bottom: false}, 'half_space');
+    
+  }
+  
+  function getAtomRadius(atom_type){
+    return atom_dictionary[atom_type].gauss[0][0]
+  }
+  
+  function createX3D_atom(editorId){
+    var transformAttrs = {};
+    
+    var index = getIndex(editorId);
+    var atom_type = $F("atom_select_" + index);
+    var r = getAtomRadius(atom_type);
+    createX3DNode(editorId, 'sphere', transformAttrs, {radius: r}, 'atom');
+  }
+  
+  function createX3D_multi_atom(editorId){
+    var index = getIndex(editorId);
+    
+    var coordsString = $F('multi_atom_coords_' + index);
+    
+    var coords = coordsString.evalJSON(true);
+    $('multi_atom_no_atoms_' + index).update(coords.length)
+    var atom_type = $F("multi_atom_select_" + index);
+    var r = getAtomRadius(atom_type);
+    coords.each(function(triad){
+      renderer.addX3DNode('sphere', {translation: triad.join(' ')}, {radius: r});
+    });
+  }
+  
+  function addUploadedAtoms(result){
+    var editorId = addBodyEditor('multi_atom', false);
+    var index = getIndex(editorId);
+    $('multi_atom_coords_' + index).value = result;
+    $(editorId).createX3D = function(){
+      createX3D_multi_atom.apply({}, [editorId]);
+    }
+    $(editorId).createX3D();
+    
+  }
+  
+  
+  function createX3DNode(editorId, bodyType, transformAttrs, bodyAttrs, editorType){
     
     transformAttrs.id = "tr_" + editorId;
     
@@ -617,7 +732,10 @@
     
     var n = $('repeater_n_' + index).value;
     
-    var translation = centerCoords(bodyType, index);
+    if(editorType === undefined){
+      editorType = bodyType;
+    }
+    var translation = centerCoords(editorType, index);
  
     for(var i = 0; i < n; i++){
       var trAttrs = Object.clone(transformAttrs);
@@ -631,9 +749,7 @@
   }
   
   
-  function createX3DBody(editorId){
-    
-  }
+
   
   function rebuildScene(){
     var rootParent = $('root').parentNode;
@@ -652,7 +768,8 @@
 
   var renderer = {
     
-    diffuseColor: "0.41 0.39 0.03",
+    //diffuseColor: "0.41 0.39 0.03",
+    diffuseColor: "0.1 0.1 1",
     specularColor: "0.94 0.72 0",
     
     addX3DNode: function(bodyType, transformAttrs, bodyAttrs){
@@ -680,7 +797,7 @@
      $A(trs).each(reindexing);
    }
 
-  function addBody(prototype_id){
+  function addBodyEditor(prototype_id, with_repeater){
     var clone = $(prototype_id + "_prototype").cloneNode(true);
     //clone.setStyle("display: none;");
     //Element.extend(clone);
@@ -689,8 +806,10 @@
     reindexing_bodies();
     Effect.Appear(clone.id, { duration: 0.5 });
     //$('bodies').appendChild(new Element('hr'));
-    $(clone.id).down('tbody').appendChild(addRepeater(clone.id));
-    $(clone.id).select('input').each(function(e){
+    if(with_repeater === undefined || with_repeater){
+      $(clone.id).down('tbody').appendChild(addRepeater(clone.id));
+    }
+    $(clone.id).select('input, select').each(function(e){
       e.observe('change', rebuildScene);
     });
     return clone.id;
@@ -737,6 +856,8 @@
   function buildCommandArgs(){
     return "";
   }
+  
+
 
   function prepareSubmit(){
   
@@ -759,5 +880,6 @@
       }
     });
     new Control.Tabs('potential_tabs');
+    $$('.long_desc').invoke('toggle');
   }
   

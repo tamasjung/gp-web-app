@@ -1,0 +1,31 @@
+!!!
+%html{ "xml:lang" => "en", :lang => "en", :xmlns => "http://www.w3.org/1999/xhtml" }
+  %head
+    =render :partial => 'layouts/common_head' 
+
+    
+  %body.bp
+    = yield
+
+          
+#main_debug.debug{:title => "DEBUG"}
+  
+:javascript
+  
+  var debug_window = window_factory($('main_debug'), 
+    {'position' : [20, 300], 
+    'fade' : true, 
+    'resizable' : true, 
+    'min-width' : 300, 
+    'min-height' : 100
+    });  
+  //debug_window.open();
+  
+  function debug(str){
+    $('main_debug').down('.window_contents').update(str);
+  }
+  
+  
+  
+
+

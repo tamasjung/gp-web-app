@@ -1,0 +1,12 @@
+-form_for (:input_file, :url => {:action => 'create'}, :html => { :multipart => true }) do |f|
+  = f.file_field :bytes, :onchange => 'submit(event)'
+  
+:javascript
+
+  function submit(event){
+    $(event.element()).up("form").submit();
+  }
+  
+  var result = #{@upload_result};
+  window.parent.file_upload(result);
+  
