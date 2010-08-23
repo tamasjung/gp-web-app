@@ -225,7 +225,7 @@
       .label
         epsr
       .field
-        %input{:type => "text", :id=>"many", :valid_if => "isNumber(x)"}  
+        %input{:type => "text", :id=>"epsr", :valid_if => "isNumber(x)"}  
       .long_desc
         Desired accuracy for the variance of the energy as a function of time step.
 
@@ -236,7 +236,7 @@
       .label
         h/2m
       .field
-        %input{:type => "text", :id=>"nx", :valid_if => "divisibleBy4(x)"}
+        %input{:type => "text", :id=>"h2m", :valid_if => "divisibleBy4(x)"}
       .long_desc
         Value of h/2m. Can be used to set the unit system to atomic Rydberg or Hartree units, but also to 2m
         use an effective mass.
@@ -245,7 +245,7 @@
       .label
         norb
       .field
-        %input{:type => "text", :id=>"nx", :valid_if => "divisibleBy4(x)"}
+        %input{:type => "text", :id=>"norb", :valid_if => "divisibleBy4(x)"}
       .long_desc
         Number of states that are converged to the desired accuracy.
 
@@ -280,8 +280,8 @@
             box
           %a.action_link.add_body{:onClick => "addBody('cylinder');"}
             cylinder
-          %a.action_link.add_body{:onClick => "addBody('half_space');"}
-            half-space
+          %a.action_link.add_body{:onClick => "addBody('halfspace');"}
+            halfspace
           %a.action_link.add_body{:onClick => "addBody('atom');"}
             atom
     
@@ -375,23 +375,23 @@
             %a.remove_body{:onClick => "removeBody(event);"}
               \-
               
-      %table#multi_atom_prototype
+      %table#multiatom_prototype
         %tr
           %th{:rowspan => '2', :class => 'tlabel'}
             atoms
           %th.first_cell       
             Number of atoms
-            %input{:type => 'hidden', :id => 'multi_atom_coords_prototype'}
+            %input{:type => 'hidden', :id => 'multiatom_coords_prototype'}
           %th
             type
           %th
 
 
         %tr 
-          %td.first_cell#multi_atom_no_atoms_prototype
+          %td.first_cell#multiatom_no_atoms_prototype
             0
           %td
-            %select{:id => 'multi_atom_select_prototype'}
+            %select{:id => 'multiatom_select_prototype'}
           %td
             %a.remove_body{:onClick => "removeBody(event);"}
               \-              
@@ -513,10 +513,10 @@
             %a.remove_body{:onClick => "removeBody(event);"}
               \-
       
-      %table#half_space_prototype
+      %table#halfspace_prototype
         %tr
           %th.tlabel{:rowspan => '3'}
-            half-space
+            halfspace
 
           %th.first_cell       
             %span<
@@ -554,19 +554,19 @@
 
         %tr 
           %td.first_cell
-            %input{:type => 'text', :id => 'half_space_x0_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'halfspace_x0_prototype', :value => '0'}
           %td
-            %input{:type => 'text', :id => 'half_space_y0_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'halfspace_y0_prototype', :value => '0'}
           %td
-            %input{:type => 'text', :id => 'half_space_z0_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'halfspace_z0_prototype', :value => '0'}
           %td
-            %input{:type => 'text', :id => 'half_space_nx_prototype'}
+            %input{:type => 'text', :id => 'halfspace_nx_prototype'}
           %td
-            %input{:type => 'text', :id => 'half_space_ny_prototype'}
+            %input{:type => 'text', :id => 'halfspace_ny_prototype'}
           %td
-            %input{:type => 'text', :id => 'half_space_nz_prototype'}
+            %input{:type => 'text', :id => 'halfspace_nz_prototype'}
           %td
-            %input{:type => 'text', :id => 'half_space_v_prototype'}
+            %input{:type => 'text', :id => 'halfspace_v_prototype'}
           %td
             %a.remove_body{:onClick => "removeBody(event);"}
               \-        
@@ -615,7 +615,7 @@
     ATOMS.sortBy(function(e){
       return e.label;
     }).each(function (e){
-      $w('atom_select_prototype multi_atom_select_prototype').each(function(item){
+      $w('atom_select_prototype multiatom_select_prototype').each(function(item){
         $(item).appendChild(NodeBuilder(['option', {value: e.id}, e.label]));
       });
       atom_dictionary[e.id] = e;
@@ -635,12 +635,15 @@
 
 
   
-  function addBody(prototype_id){
+  function addBody(prototype_id, call){
     var editorId = addBodyEditor(prototype_id);
     $(editorId).createX3D = function(){
       eval('createX3D_' + prototype_id).apply({}, [editorId]);
     }
-    $(editorId).createX3D();   
+    if(call === undefined || call){
+      $(editorId).createX3D(); 
+    }
+    return editorId;  
   }
   
   function createX3D_sphere(editorId){
@@ -671,13 +674,13 @@
     createX3DNode(editorId, 'cylinder', transformAttrs, {radius: r, height: height});
   }
   
-  function createX3D_half_space(editorId){
+  function createX3D_halfspace(editorId){
     var transformAttrs = {}
     
     var index = getIndex(editorId)
     
     //TODO eltolni
-    createX3DNode(editorId, 'cylinder', transformAttrs, {radius: 100, height: 1, bottom: false}, 'half_space');
+    createX3DNode(editorId, 'cylinder', transformAttrs, {radius: 100, height: 1, bottom: false}, 'halfspace');
     
   }
   
@@ -694,14 +697,13 @@
     createX3DNode(editorId, 'sphere', transformAttrs, {radius: r}, 'atom');
   }
   
-  function createX3D_multi_atom(editorId){
+  function createX3D_multiatom(editorId){
     var index = getIndex(editorId);
     
-    var coordsString = $F('multi_atom_coords_' + index);
-    
+    var coordsString = $F('multiatom_coords_' + index);
     var coords = coordsString.evalJSON(true);
-    $('multi_atom_no_atoms_' + index).update(coords.length)
-    var atom_type = $F("multi_atom_select_" + index);
+    $('multiatom_no_atoms_' + index).update(coords.length)
+    var atom_type = $F("multiatom_select_" + index);
     var r = getAtomRadius(atom_type);
     coords.each(function(triad){
       renderer.addX3DNode('sphere', {translation: triad.join(' ')}, {radius: r});
@@ -709,14 +711,10 @@
   }
   
   function addUploadedAtoms(result){
-    var editorId = addBodyEditor('multi_atom', false);
+    var editorId = addBody('multiatom', false);
     var index = getIndex(editorId);
-    $('multi_atom_coords_' + index).value = result;
-    $(editorId).createX3D = function(){
-      createX3D_multi_atom.apply({}, [editorId]);
-    }
+    $('multiatom_coords_' + index).value = result;
     $(editorId).createX3D();
-    
   }
   
   
@@ -797,7 +795,7 @@
      $A(trs).each(reindexing);
    }
 
-  function addBodyEditor(prototype_id, with_repeater){
+  function addBodyEditor(prototype_id){
     var clone = $(prototype_id + "_prototype").cloneNode(true);
     //clone.setStyle("display: none;");
     //Element.extend(clone);
@@ -806,7 +804,7 @@
     reindexing_bodies();
     Effect.Appear(clone.id, { duration: 0.5 });
     //$('bodies').appendChild(new Element('hr'));
-    if(with_repeater === undefined || with_repeater){
+    if(prototype_id != 'multiatom'){
       $(clone.id).down('tbody').appendChild(addRepeater(clone.id));
     }
     $(clone.id).select('input, select').each(function(e){
@@ -866,8 +864,21 @@
     $('display_str').value = $('command_args').value;
   }
   
-  $('partial_form').preInit = function(){
+  $('partial_form').preInit = function(settings){
     generateAtomOptions();
+    if(settings.isJSON()){
+      var json = settings.evalJSON(true);
+      var editors = $H(json).keys().inject([], function(result, key){
+        var match = /^([^_]+).+?_(\d+)$/.exec(key)
+        if(match && match[1] != 'repeater'){
+          result[match[2]] = match[1];
+        }
+        return result;
+      });
+      editors.each(function(editor_type){
+        addBody(editor_type, false);
+      });   
+    }
   }
 
   $('partial_form').init = function (){
@@ -881,5 +892,6 @@
     });
     new Control.Tabs('potential_tabs');
     $$('.long_desc').invoke('toggle');
+    rebuildScene();
   }
   

@@ -31,7 +31,8 @@
   new Control.Tabs('launch_tabs');
   
   function collect_and_submit(){
-  
+    
+    nameFromId($('partial_form'));
     prepareSubmit();
     var object = $('partial_form').serialize(true);
     var serString = Object.toJSON(object);
@@ -45,8 +46,10 @@
   if(partial_form.preInit){
     partial_form.preInit(settings);
   }
+  nameFromId($('partial_form'))
   if(settings.isJSON()){
     Form.deserializeJSON('partial_form', settings);
   }
-  $('partial_form').init();  
+  $('partial_form').init(); 
+  nameFromId($('partial_form')) ;
    
