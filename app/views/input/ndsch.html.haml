@@ -86,10 +86,13 @@
 %form#partial_form.panel_in_tab
   %input{:type => "hidden", :id=>"command_args"}
   %input{:type => "hidden", :id=>"display_str"}
+  %input{:type => "hidden", :id=>"file_f.mesh"}
+  %input{:type => "hidden", :id=>"file_f.model"}
+  
 
   %a.clickable.help#help_button{:onClick => "$$('.long_desc').invoke('toggle');"}
       
-  #model_params.group
+  #mesh_params.group
     .group_title
       Mesh
     .prop_row
@@ -249,7 +252,7 @@
       .long_desc
         Number of states that are converged to the desired accuracy.
 
-  #model_params.group
+  #potential_params.group
     .group_title
       Potential
       %ul#potential_tabs.group_title_tabs
@@ -298,7 +301,7 @@
     .prop_row.hidden_prototype 
       %table#sphere_prototype
         %tr
-          %th{:rowspan => '2', :class => 'tlabel'}
+          %th{:rowspan => '3', :class => 'tlabel'}
             sphere
           %th.first_cell       
             %span<
@@ -340,7 +343,7 @@
      
       %table#atom_prototype
         %tr
-          %th{:rowspan => '2', :class => 'tlabel'}
+          %th{:rowspan => '3', :class => 'tlabel'}
             atom
           %th.first_cell       
             %span<
@@ -398,7 +401,7 @@
 
       %table#box_prototype
         %tr
-          %th.tlabel{:rowspan => '4'}
+          %th.tlabel{:rowspan => '5'}
             rectangular box
 
           %th.first_cell       
@@ -589,10 +592,38 @@
               
               
   %br 
+  
   %x3d#renderer{:height => "650px", :showstat => "false", :width => "650px", :x => "0px", :y => "0px"}
     %scene
       %background{:def => "bgnd", :skycolor => "1 1 1", :transparency => "1.0"}
-      %viewpoint{:orientation => "-0.69017 0.723467 -0.0161809 0.735134", :position => "4.88104 4.59865 7.4181"}
+      %viewpoint{:position => '4.88104 4.59865 7.4181', :orientation => '-0.69017 0.723467 -0.0161809 0.735134'}
+      
+      %transform{:translation => "0 5 0"}
+        %shape
+          %appearance
+            %material{:diffuseColor => "0 1 0"}
+          %sphere{:radius => "0.05"}
+          %cylinder{:height => "10", :radius => "0.01"}
+      %transform{:rotation => "1 0 0 #{Math::PI/2}", :translation => "0 0 5"}
+        %shape
+          %appearance
+            %material{:diffuseColor => "0 0 1"}
+          %cylinder{:height => "10", :radius => "0.01"}
+      %transform{:rotation => "0 0 1 #{Math::PI/2}", :translation => "5 0 0"}
+        %shape
+          %appearance
+            %material{:diffuseColor => "1 0 0"}
+          %cylinder{:height => "10", :radius => "0.01"}
+          
+          
+      -#
+        %transform{:rotation => "0 0 1 1.57", :translation => "0 5 0"}
+          %shape
+            %appearance
+              %material{:diffuseColor => "0 0 1"}
+            %cone{:height => "0.0001", :bottomRadius => "0.0001"}
+
+          
       %group#root
       
 :javascript 
@@ -632,16 +663,16 @@
       return (+$(prefix + "_" + axisName + postfix + "_" + index).value);
     });    
   }
-
-
-  
+ 
   function addBody(prototype_id, call){
     var editorId = addBodyEditor(prototype_id);
+    var editor = $(editorId)
     $(editorId).createX3D = function(){
-      eval('createX3D_' + prototype_id).apply({}, [editorId]);
+      //dont use editorId directly because it may change and the closure remembers the old one
+      eval('createX3D_' + prototype_id).apply({}, [editor.id]);
     }
     if(call === undefined || call){
-      $(editorId).createX3D(); 
+      $(editorId).createX3D();
     }
     return editorId;  
   }
@@ -675,12 +706,11 @@
   }
   
   function createX3D_halfspace(editorId){
-    var transformAttrs = {}
+    var transformAttrs = {translation: "0 -5 0"}
     
     var index = getIndex(editorId)
     
-    //TODO eltolni
-    createX3DNode(editorId, 'cylinder', transformAttrs, {radius: 100, height: 1, bottom: false}, 'halfspace');
+    createX3DNode(editorId, 'cylinder', transformAttrs, {radius: 100, height: 10, bottom: false}, 'halfspace');
     
   }
   
@@ -733,8 +763,16 @@
     if(editorType === undefined){
       editorType = bodyType;
     }
+    var baseTranslation = [0, 0, 0]
+    if(transformAttrs.translation){
+      baseTranslation = $w(transformAttrs.translation)
+    }
     var translation = centerCoords(editorType, index);
- 
+  
+    translation = translation.map(function (i, index){
+      return i + +baseTranslation[index]
+    })
+  
     for(var i = 0; i < n; i++){
       var trAttrs = Object.clone(transformAttrs);
       trAttrs.translation = translation.join(" ");
@@ -746,9 +784,6 @@
     };
   }
   
-  
-
-  
   function rebuildScene(){
     var rootParent = $('root').parentNode;
     $('root').remove();
@@ -758,10 +793,6 @@
     $('bodies').select('table').each(function(e){
       e.createX3D();
     })    
-  }
-  
-  function addCuboid(){
-    
   }
 
   var renderer = {
@@ -789,7 +820,7 @@
 
   function reindexing_bodies(){  
      var trs = [];
-     $('bodies').select("table").each(function (e){
+     $('bodies').childElements().each(function (e){
        trs.push(e);
      });
      $A(trs).each(reindexing);
@@ -836,12 +867,11 @@
         ]
       ]
       );
-    
     return tr;
   }
   
   function removeBody(event){
-    var element = Event.element(event).parentNode.parentNode.parentNode.parentNode;
+    var element = Event.element(event).up('table');
     Effect.Fade(element.id, {
       duration: 0.5, 
       afterFinish: function(){
@@ -851,8 +881,48 @@
       }});
   }
   
+  function buildMeshFile(){
+    var content = []
+    $w('x y z').each(function (item){
+      content.push(("m" + item).toUpperCase() + "\t=" + $F('n' + item)/2)
+    })
+    $w('hr morb order estp este imsg maxim many rmul epsi epsr').each(function(item){
+      var value;
+      if(item == 'imsg'){
+        value = 0
+        $R(0, 3).each(function(bit){
+          var checked = $F('imsg_' + bit) == 'on'
+          if(checked){
+            value |= 1 << bit
+          }
+        })
+        if($F('many') != ''){
+          value |= 16
+        }
+      }
+      else{
+        value = $F(item)
+      }
+      content.push(item.toUpperCase() + "=" + value)
+    })
+    var fileContent = content.join('\n')
+    
+    $('file_f.mesh').value = fileContent
+  }
+  
+  function buildModelFile(){
+    var content = []
+    $w('h2m norb').each(function(item){
+      var value;
+      value = $F(item)
+      content.push(item.toUpperCase() + "\t=" + value)
+    })    
+    var fileContent = content.join('\n')
+    $('file_f.model').value = fileContent
+  }
+  
   function buildCommandArgs(){
-    return "";
+    return "3dsch f";
   }
   
 
@@ -860,8 +930,9 @@
   function prepareSubmit(){
   
     $('command_args').value = buildCommandArgs();
-  
-    $('display_str').value = $('command_args').value;
+    buildMeshFile()
+    buildModelFile()
+    $('display_str').value = $('command_args').value
   }
   
   $('partial_form').preInit = function(settings){

@@ -122,9 +122,11 @@ function reindexingId(e, index){
 }
 
 function reindexing(element, index){
-  element.descendants().each(function(e){
-    reindexingId(e, index);
-  });
+  if(element.descendants()){
+    element.descendants().each(function(e){
+      reindexing(e, index);
+    });
+  }
   reindexingId(element, index);
 }
 

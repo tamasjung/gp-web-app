@@ -327,8 +327,8 @@
   }
   
   function remove_orbital(event){
-    if(Event.element(event).parentNode.parentNode.parentNode.childElements().size() > 3){
-      var element = Event.element(event).parentNode.parentNode;
+    if(Event.element(event).up('tbody').childElements().size() > 3){
+      var element = Event.element(event).up('tr');
       Effect.Fade(element.id, {
         duration: 0.5, 
         afterFinish: function(){

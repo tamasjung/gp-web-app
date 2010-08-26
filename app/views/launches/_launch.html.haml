@@ -32,12 +32,12 @@
   
   function collect_and_submit(){
     
-    nameFromId($('partial_form'));
-    prepareSubmit();
-    var object = $('partial_form').serialize(true);
-    var serString = Object.toJSON(object);
-    $('launch_settings').value = serString;
-    return true;
+    prepareSubmit()
+    nameFromId($('partial_form'))
+    var object = $('partial_form').serialize(true)
+    var serString = Object.toJSON(object)
+    $('launch_settings').value = serString
+    return true
     
   }     
   
