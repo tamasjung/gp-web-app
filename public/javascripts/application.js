@@ -1,7 +1,35 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
+function parseCSV(str, settings){
+  if(!settings){
+    settings = {lineSeparator: "\n", recordSeparator: ","}
+  }
+  var lines = str.split(settings.lineSeparator)
+  return lines.map(function(line){
+    return line.split(settings.recordSeparator)
+  })
+}
 
+function spherical2rotation(theta, phi){
+  var r_theta = theta*Math.PI/180
+  var r_phi = phi*Math.PI/180
+  var point = Vector.create([Math.sin(r_theta) * Math.cos(r_phi), Math.sin(r_theta) * Math.sin(r_phi), Math.cos(r_theta)])
+  return {
+    angle: point.angleFrom(Vector.k),
+    direction: point.cross(Vector.k)
+  }
+}
+
+function spherical2rotationAttribute(theta, phi){
+  var rotation = spherical2rotation(theta, phi)
+  var result = [];
+  rotation.direction.each(function (item, index){
+    result.push(item)
+  })
+  result.push(rotation.angle)
+  return result.join(" ")
+}
 
 function LL(list){
   if(list.shift !== undefined && list.map !== undefined){

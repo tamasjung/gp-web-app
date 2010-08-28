@@ -1,0 +1,80 @@
+-#
+  EMBEDDED_STYLE
+
+    
+  
+  EMBEDDED_STYLE
+
+
+
+%form#partial_form.panel_in_tab
+  %input{:type => "hidden", :id=>"command_args"}
+  %input{:type => "hidden", :id=>"display_str"}
+
+  
+
+  %a.clickable.help#help_button{:onClick => "$$('.long_desc').invoke('toggle');"}
+      
+  #parameters.group
+    .group_title
+      Parameters
+     
+  #computational_cell.group 
+    .group_title
+      Computational cell
+    .prop_row
+      .label
+        
+      
+    .prop_row
+      .label
+        x
+      .field
+        %input{:type => "text", :id=>"nx", :valid_if => "divisibleBy4(x)"}
+
+              
+  %br 
+  
+
+
+      
+:javascript 
+
+  function file_upload(result){
+    //alert(result);
+    if(result !== ''){
+      //
+    }
+  }
+
+
+  function buildCommandArgs(){
+    return "meep f g";
+  }
+  
+
+
+  function prepareSubmit(){
+  
+    $('command_args').value = buildCommandArgs();
+    $('display_str').value = $('command_args').value
+  }
+  
+  $('partial_form').preInit = function(settings){
+    
+  }
+
+  $('partial_form').init = function (){
+    $$('.hidden_prototype').invoke('hide');
+    //$$('.long_desc').invoke('hide');
+    $$('input').each(function (e){
+      var ph = e.readAttribute('valid_if');
+      if(ph){
+        e.writeAttribute('placeholder', translate4human(ph));
+      }
+    });
+    new Control.Tabs('potential_tabs');
+    $$('.long_desc').invoke('toggle');
+  }
+  
+

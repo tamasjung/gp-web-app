@@ -386,15 +386,11 @@
             Number of atoms
             %input{:type => 'hidden', :id => 'multiatom_coords_prototype'}
           %th
-            type
-          %th
 
 
         %tr 
           %td.first_cell#multiatom_no_atoms_prototype
             0
-          %td
-            %select{:id => 'multiatom_select_prototype'}
           %td
             %a.remove_body{:onClick => "removeBody(event);"}
               \-              
@@ -445,18 +441,18 @@
               \-
         %tr
           %th.first_cell
-            &phi;<sub>1</sub>
+            &theta;
           %th
-            &phi;<sub>2</sub>
+            &phi;
           %th
             V
         %tr
           %td.first_cell
-            %input{:type => 'text', id => 'box_angle1_prototype'}
+            %input{:type => 'text', :id => 'box_theta_prototype', :value => '0'}
           %td
-            %input{:type => 'text', id => 'box_angle1_prototype'}
+            %input{:type => 'text', :id => 'box_phi_prototype', :value => '0'}
           %td
-            %input{:type => 'text', id => 'box_v_prototype'}
+            %input{:type => 'text', :id => 'box_v_prototype', :value => '0'}
             
             
             
@@ -487,9 +483,9 @@
             %span<
               h         
           %th
-            &phi;<sub>1</sub>
+            &theta;
           %th
-            &phi;<sub>2</sub>
+            &phi;
           %th
             V
           %th
@@ -507,11 +503,11 @@
             %input{:type => 'text', :id => 'cylinder_h_prototype', :value => '2'}
             
           %td
-            %input{:type => 'text', :id => 'cylinder_phi1_prototype'}
+            %input{:type => 'text', :id => 'cylinder_theta_prototype', :value => '0'}
           %td
-            %input{:type => 'text', :id => 'cylinder_phi2_prototype'}
+            %input{:type => 'text', :id => 'cylinder_phi_prototype', :value => '0'}
           %td
-            %input{:type => 'text', :id => 'cylinder_v_prototype'}
+            %input{:type => 'text', :id => 'cylinder_v_prototype', :value => '0'}
           %td
             %a.remove_body{:onClick => "removeBody(event);"}
               \-
@@ -537,20 +533,9 @@
             %sub<>
               0
           %th       
-            %span<
-              n
-            %sub<>
-              x
+            &theta;
           %th
-            %span<
-              n
-            %sub<>
-              y 
-          %th
-            %span<
-              n
-            %sub<>
-              z              
+            &phi;         
           %th
             V
           %th
@@ -563,11 +548,9 @@
           %td
             %input{:type => 'text', :id => 'halfspace_z0_prototype', :value => '0'}
           %td
-            %input{:type => 'text', :id => 'halfspace_nx_prototype'}
+            %input{:type => 'text', :id => 'halfspace_theta_prototype', :value => '0'}
           %td
-            %input{:type => 'text', :id => 'halfspace_ny_prototype'}
-          %td
-            %input{:type => 'text', :id => 'halfspace_nz_prototype'}
+            %input{:type => 'text', :id => 'halfspace_phi_prototype', :value => '0'}
           %td
             %input{:type => 'text', :id => 'halfspace_v_prototype'}
           %td
@@ -597,6 +580,7 @@
     %scene
       %background{:def => "bgnd", :skycolor => "1 1 1", :transparency => "1.0"}
       %viewpoint{:position => '4.88104 4.59865 7.4181', :orientation => '-0.69017 0.723467 -0.0161809 0.735134'}
+      
       
       %transform{:translation => "0 5 0"}
         %shape
@@ -646,10 +630,11 @@
     ATOMS.sortBy(function(e){
       return e.label;
     }).each(function (e){
-      $w('atom_select_prototype multiatom_select_prototype').each(function(item){
+      $w('atom_select_prototype').each(function(item){
         $(item).appendChild(NodeBuilder(['option', {value: e.id}, e.label]));
       });
       atom_dictionary[e.id] = e;
+      atom_dictionary[e.id.strip()] = e;
     })
     
   }
@@ -668,7 +653,7 @@
     var editorId = addBodyEditor(prototype_id);
     var editor = $(editorId)
     $(editorId).createX3D = function(){
-      //dont use editorId directly because it may change and the closure remembers the old one
+      //dont use editorId directly because it may change but the closure remembers the old one
       eval('createX3D_' + prototype_id).apply({}, [editor.id]);
     }
     if(call === undefined || call){
@@ -693,6 +678,8 @@
     var index = getIndex(editorId)
     var size = $w("width height depth").map(function(dim){return +$F("box_" + dim + "_" + index)}).join(' ');
     
+    setRotationBySpherical('box', index, transformAttrs)
+    
     createX3DNode(editorId, 'box', transformAttrs, {size: size});
   }
   
@@ -702,16 +689,32 @@
     var index = getIndex(editorId)
     var r = +$F("cylinder_r_" + index);
     var height = +$F('cylinder_h_' + index);
+    setRotationBySpherical('cylinder', index, transformAttrs)
     createX3DNode(editorId, 'cylinder', transformAttrs, {radius: r, height: height});
   }
   
   function createX3D_halfspace(editorId){
-    var transformAttrs = {translation: "0 -5 0"}
+    var width = 1e-12
+    var transformAttrs = {translation: "0 " + width/2 + " 0"}
     
     var index = getIndex(editorId)
     
-    createX3DNode(editorId, 'cylinder', transformAttrs, {radius: 100, height: 10, bottom: false}, 'halfspace');
+    setRotationBySpherical('halfspace', index, transformAttrs)
     
+    createX3DNode(editorId, 'cylinder', transformAttrs, {radius: 100, height: width}, 'halfspace')
+    transformAttrs.translation = "0 " + width + " 0"
+    createX3DNode(editorId, 'cylinder', transformAttrs, {radius: 100, height: width}, 'halfspace', function(node){
+      $(node).down('material').writeAttribute('diffuseColor', "1 1 0")
+      return node;
+    })
+    
+  }
+  
+  function setRotationBySpherical(prefix, index, transformAttrs){
+    var theta = $F(prefix + '_theta_' + index)
+    var phi = $F(prefix + '_phi_' + index)
+    
+    transformAttrs.rotation = spherical2rotationAttribute(theta, phi)
   }
   
   function getAtomRadius(atom_type){
@@ -731,12 +734,14 @@
     var index = getIndex(editorId);
     
     var coordsString = $F('multiatom_coords_' + index);
-    var coords = coordsString.evalJSON(true);
+    var coords = parseCSV(coordsString);
     $('multiatom_no_atoms_' + index).update(coords.length)
-    var atom_type = $F("multiatom_select_" + index);
-    var r = getAtomRadius(atom_type);
-    coords.each(function(triad){
-      renderer.addX3DNode('sphere', {translation: triad.join(' ')}, {radius: r});
+    
+    coords.each(function(atom_spec){
+      var atom_type = atom_spec[0].strip();
+      var r = getAtomRadius(atom_type);
+      var translation = atom_spec.slice(1).join(' ')
+      renderer.addX3DNode('sphere', {translation: translation}, {radius: r});
     });
   }
   
@@ -748,7 +753,7 @@
   }
   
   
-  function createX3DNode(editorId, bodyType, transformAttrs, bodyAttrs, editorType){
+  function createX3DNode(editorId, bodyType, transformAttrs, bodyAttrs, editorType, decorator){
     
     transformAttrs.id = "tr_" + editorId;
     
@@ -777,7 +782,7 @@
       var trAttrs = Object.clone(transformAttrs);
       trAttrs.translation = translation.join(" ");
       trAttrs.id += "_" + i; 
-      renderer.addX3DNode(bodyType, trAttrs, bodyAttrs);
+      renderer.addX3DNode(bodyType, trAttrs, bodyAttrs, decorator);
       translation = translation.map(function(i, index){
         return i + vector[index];
       });
@@ -801,19 +806,24 @@
     diffuseColor: "0.1 0.1 1",
     specularColor: "0.94 0.72 0",
     
-    addX3DNode: function(bodyType, transformAttrs, bodyAttrs){
+    addX3DNode: function(bodyType, transformAttrs, bodyAttrs, decorator){
+      if(decorator === undefined){
+        decorator = Prototype.K
+      }
       $('root').appendChild(
-        NodeBuilder(
-        ['group', {},
-          ['transform', transformAttrs,
-            ['shape', {},
-              ['appearance', {},
-                ['material', {diffuseColor:this.diffuseColor , specularColor: this.specularColor, shininess: '0.12', transparency: "0.4"}]
-              ],
-              [bodyType, bodyAttrs]
+        decorator(
+          NodeBuilder(
+          ['group', {},
+            ['transform', transformAttrs,
+              ['shape', {},
+                ['appearance', {},
+                  ['material', {diffuseColor:this.diffuseColor , specularColor: this.specularColor, shininess: '0.12', transparency: "0.4"}]
+                ],
+                [bodyType, bodyAttrs]
+              ]
             ]
-          ]
-        ])
+          ])
+        )
       );
     }
   };
