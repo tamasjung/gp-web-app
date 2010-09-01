@@ -1,6 +1,40 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
+function confirm_dialog(title, question, onOkFunction, onCancelFunction){
+  var window;
+  var destroyFunction = function(){
+    window.close();
+    //window.destroy();
+  };
+  var okWrapper = function(event){
+    destroyFunction.apply();
+    (onOkFunction || Prototype.K).apply(event);
+  };
+  var cancelWrapper = function(event){
+    destroyFunction.apply()
+    onCancelFunction.apply()
+  };
+  
+  var container = NodeBuilder(
+    ["div", {title: title}, 
+      ["div", {class: "confirm_question"}, question],
+      ["input", {type: "button", 'class': "confirm_button", value: "yes"} ],
+      ["input", {type: "button", 'class': "confirm_button", value: "no"}]
+    ]
+  );
+  container.select("input[value='yes']")[0].observe('click', okWrapper);
+  container.select("input[value='no']")[0].observe('click', cancelWrapper);
+  
+  document.body.appendChild(container);
+  //var element = NodeBuilder(["div",{title: title}]);
+  //document.body.appendChild(element);
+  window = window_factory(container, {fade: true});
+  //element.down(".window_contents").insert(container)
+  
+  window.open();
+}
+
 function parseCSV(str, settings){
   if(!settings){
     settings = {lineSeparator: "\n", recordSeparator: ","}
@@ -158,6 +192,15 @@ function reindexing(element, index){
   reindexingId(element, index);
 }
 
+function reindexing_selected_children(parentName, selector){
+  var i = 0;
+  var trs = [];
+  $(parentName).select(selector).each(function (e){
+    trs.push(e);
+  });
+  $A(trs).each(reindexing);
+}
+
 function translate4human(exp){
   var result = exp;
   dict = [
@@ -243,7 +286,7 @@ var window_factory = function(container,options){
         }
           
     },options || {}));  
-    w.container.insert(window_header);  
+    w.container.insert({top: window_header});  
     window_header.insert(window_title);  
     window_header.insert(window_close);  
     w.container.insert(window_contents);  

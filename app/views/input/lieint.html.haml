@@ -254,15 +254,6 @@
     
     return clone;  
   }
-  
-  function reindexing_selected_children(parentName, selector){
-    var i = 0;
-    var trs = [];
-    $(parentName).select(selector).each(function (e){
-      trs.push(e);
-    });
-    $A(trs).each(reindexing);
-  }
    
   var orbital_prefix = 'orbital_';
   
