@@ -51,6 +51,19 @@
       width: 625px;
       height: 200px;
     }
+    
+    .sub2panel a.minus{
+      margin-left: 12px;
+      margin-bottom: 6px;
+    }
+    
+    a.clickable{
+      margin-left: 12px;
+    }
+    
+    .not_alone{
+      display: none;
+    }
   
   EMBEDDED_STYLE
 
@@ -99,54 +112,62 @@
         %input{:type => "text", :id=>"k_point_x"}
         %input{:type => "text", :id=>"k_point_y"}
         %input{:type => "text", :id=>"k_point_z"}
-        
-    .prop_row
-      .label
-        pml thickness
-      .field
-        %input{:type=>"text", :id=>"pml_thickness"}
-        
-    .prop_row
-      .label
-        pml direction
-      .field
-        %select{:id=>"pml_direction"}
-          %option{:value=>"ALL", :selected=>"true"}
-            all
-          %option{:value=>"X"}
-            x
-          %option{:value=>"Y"}
-            y
-          %option{:value=>"Z"}
-            z
-    .prop_row
-      .label
-        pml side
-      .field
-        %select{:id=>"pml_direction"}
-          %option{:value=>"ALL", :selected=>"true"}
-            all
-          %option{:value=>"Low"}
-            low
-          %option{:value=>"High"}
-            high
-    .prop_row
-      .label
-        pml strength
-      .field
-        %input{:type=>"text", :id=>"strength", :value=>"1"}
-        
-    .prop_row
-      .label
-        pml R-asymptotic
-      .field
-        %input{:type=>"text", :id=>"r_asymptotic", :value=>"1e-15"}
-        
-    .prop_row
-      .label
-        pml-profile
-      .field
-        %input{:type=>"text", :id=>"pml_profile"}
+
+  #pml.group 
+    .group_title
+      Boundary conditions
+    %a.clickable.add{:onclick => "new_pml()"}
+    .hidden_prototype
+      #pml_prototype.sub2panel
+        .prop_row
+          .label
+            thickness
+          .field
+            %input{:type=>"text", :id=>"pml_thickness_prototype"}
+      
+        .prop_row
+          .label
+            direction
+          .field
+            %select{:id=>"pml_direction_prototype"}
+              %option{:value=>"ALL", :selected=>"true"}
+                all
+              %option{:value=>"X"}
+                x
+              %option{:value=>"Y"}
+                y
+              %option{:value=>"Z"}
+                z
+        .prop_row
+          .label
+            side
+          .field
+            %select{:id=>"pml_direction_prototype"}
+              %option{:value=>"ALL", :selected=>"true"}
+                all
+              %option{:value=>"Low"}
+                low
+              %option{:value=>"High"}
+                high
+        .prop_row
+          .label
+            strength
+          .field
+            %input{:type=>"text", :id=>"strength_prototype", :value=>"1"}
+      
+        .prop_row
+          .label
+            R-asymptotic
+          .field
+            %input{:type=>"text", :id=>"r_asymptotic_prototype", :value=>"1e-15"}
+      
+        .prop_row
+          .label
+            pml-profile
+          .field
+            %input{:type=>"text", :id=>"pml_profile_prototype"}
+        %a.minus.clickable{:onClick => "removePml(event);"}
+    #pmls  
         
   #computational_cell.group 
     .group_title
@@ -155,16 +176,16 @@
       .label
         add
       .field
-        %a.action_link{:onClick => "new_symmetry(event, 'mirror-sym');"}
+        %a.action_link.button_like{:onClick => "new_symmetry(event, 'mirror-sym');"}
           mirror
-        %a.action_link{:onClick => "new_symmetry(event, 'rotate2-sym');"}
+        %a.action_link.button_like{:onClick => "new_symmetry(event, 'rotate2-sym');"}
           180&deg; rotational
-        %a.action_link{:onClick => "new_symmetry(event, 'rotate4-sym');"}
+        %a.action_link.button_like{:onClick => "new_symmetry(event, 'rotate4-sym');"}
           90&deg; rotational
         
     %table
       %tbody#symmetry_container
-        %tr
+        %tr#aaa.not_alone
           %th
             type
           %th
@@ -180,12 +201,12 @@
       .label
         add 
       .field
-        %a.action_link{:onclick => "new_material()"}
+        %a.action_link.button_like{:onclick => "new_material()"}
           medium
         
     %table
       %tbody#material_container
-        %tr
+        %tr.not_alone
           %th
             name
           %th
@@ -199,520 +220,231 @@
         add
       .field
         -%w"sphere cylinder cone block ellipsoid".each do |item|
-          %a.action_link{:onClick => "new_object(event, '#{item}');"}
+          %a.action_link.button_like{:onClick => "new_object(event, '#{item}');"}
             =item
     #objects
     .prop_row.hidden_prototype 
-      %table#sphere_prototype
-        %tr
-          %th{:rowspan => '2', :class => 'tlabel'}
-            sphere
-          %th.first_cell
+      #sphere_prototype.sub2panel
+        .sub2panel_title
+          sphere
+        .prop_row
+          .label
             material
-          %th
-            %span<
-              x
-            %sub<>
-              0
-          %th
-            %span<
-              y
-            %sub<>
-              0 
-          %th
-            %span<
-              z
-            %sub<>
-              0
-          %th
-            r
-          %th
-
-        %tr 
-          %td.first_cell
+          .field
             %input{:type => 'text', :id => 'sphere_material_prototype'}
-          %td
+        .prop_row
+          .label
+            center
+          .field.vector3
             %input{:type => 'text', :id => 'sphere_x0_prototype', :value => '0'}
-          %td
             %input{:type => 'text', :id => 'sphere_y0_prototype', :value => '0'}
-          %td
             %input{:type => 'text', :id => 'sphere_z0_prototype', :value => '0'}
-          %td
+          
+        .prop_row
+          .label
+            r
+          .field
             %input{:type => 'text', :id => 'sphere_r_prototype', :value => '1'}
-          %td
-            %a.minus.clickable{:onClick => "removeObject(event);"}
+
+        
+        %a.minus.clickable{:onClick => "removeObject(event);"}
 
 
-      %table#cylinder_prototype
-        %tr
-          %th.tlabel{:rowspan => '4'}
-            cylinder
-
-          %th.first_cell
+      #cylinder_prototype.sub2panel
+        .sub2panel_title
+          cylinder
+        .prop_row
+          .label
             material
-          %th
-            %span<
-              x
-            %sub<>
-              0
-          %th
-            %span<
-              y
-            %sub<>
-              0 
-          %th
-            %span<
-              z
-            %sub<>
-              0
-          %th
-            %span<
-              r
-
-        %tr 
-          %td.first_cell
-            %input{:type => 'text', :id => 'cylinder_material'}
-          %td
+          .field
+            %input{:type => 'text', :id => 'cylinder_material_prototype'}
+        .prop_row
+          .label
+            center
+          .field.vector3
             %input{:type => 'text', :id => 'cylinder_x0_prototype', :value => '0'}
-          %td
             %input{:type => 'text', :id => 'cylinder_y0_prototype', :value => '0'}
-          %td
             %input{:type => 'text', :id => 'cylinder_z0_prototype', :value => '0'}
-          %td
+        .prop_row
+          .label
+            r
+          .field
             %input{:type => 'text', :id => 'cylinder_r_prototype', :value => '1'}
             
-        %tr
-          %th.first_cell
-            %span<
-              height         
-          %th
-            %span<
-              x
-            %sub<>
-              axis
-          %th
-            %span<
-              y
-            %sub<>
-              axis
-          %th
-            %span<
-              z
-            %sub<>
-              axis
-
-          %th
-
-        %tr
-          %td.first_cell
+        .prop_row
+          .label
+            height
+          .field
             %input{:type => 'text', :id => 'cylinder_height_prototype', :value => '2'}
-          %td
+        
+        .prop_row
+          .label
+            axis
+          .field.vector3
             %input{:type => 'text', :id => 'cylinder_axis_x_prototype', :value => '0'}
-          %td
             %input{:type => 'text', :id => 'cylinder_axis_y_prototype', :value => '0'}
-          %td
             %input{:type => 'text', :id => 'cylinder_axis_z_prototype', :value => '0'}
-          %td
-            %a.minus.clickable{:onClick => "removeObject(event);"}
+
+        %a.minus.clickable{:onClick => "removeObject(event);"}
               
-      %table#cone_prototype
-        %tr
-          %th.tlabel{:rowspan => '4'}
-            cone
-
-          %th.first_cell
+      #cone_prototype.sub2panel
+        .sub2panel_title
+          cone
+        .prop_row
+          .label
             material
-          %th
-            %span<
-              x
-            %sub<>
-              0
-          %th
-            %span<
-              y
-            %sub<>
-              0 
-          %th
-            %span<
-              z
-            %sub<>
-              0
-          %th
-            %span<
-              r
-
-        %tr 
-          %td.first_cell
-            %input{:type => 'text', :id => 'cone_material'}
-          %td
+          .field
+            %input{:type => 'text', :id => 'cone_material_prototype'}
+        .prop_row
+          .label
+            center
+          .field.vector3
             %input{:type => 'text', :id => 'cone_x0_prototype', :value => '0'}
-          %td
             %input{:type => 'text', :id => 'cone_y0_prototype', :value => '0'}
-          %td
             %input{:type => 'text', :id => 'cone_z0_prototype', :value => '0'}
-          %td
+        .prop_row
+          .label
+            r
+          .field
             %input{:type => 'text', :id => 'cone_r_prototype', :value => '1'}
-
-        %tr
-          %th.first_cell
-            %span<
-              height         
-          %th
-            %span<
-              x
-            %sub<>
-              axis
-          %th
-            %span<
-              y
-            %sub<>
-              axis
-          %th
-            %span<
-              z
-            %sub<>
-              axis
-          %th
-            %span<
-              r
-            %sub<>
-              2
-          %th
-
-        %tr
-          %td.first_cell
+        .prop_row
+          .label
+            height
+          .field
             %input{:type => 'text', :id => 'cone_height_prototype', :value => '2'}
-          %td
+        .prop_row
+          .label
+            axis
+          .field.vector3
             %input{:type => 'text', :id => 'cone_axis_x_prototype', :value => '0'}
-          %td
             %input{:type => 'text', :id => 'cone_axis_y_prototype', :value => '0'}
-          %td
             %input{:type => 'text', :id => 'cone_axis_z_prototype', :value => '0'}
-          %td
+        .prop_row
+          .label
+            r2
+          .field
             %input{:type => 'text', :id => 'cone_r_2_prototype', :value => '0'}
-          %td
-            %a.minus.clickable{:onClick => "removeObject(event);"}        
+          
+        %a.minus.clickable{:onClick => "removeObject(event);"}        
 
               
-      %table#block_prototype
-        %tr
-          %th.tlabel{:rowspan => '40'}
-            block
-
-          %th.first_cell
+      #block_prototype.sub2panel
+        .sub2panel_title
+          block
+        .prop_row
+          .label
             material
-          %th
-            %span<
-              x
-            %sub<>
-              0
-          %th
-            %span<
-              y
-            %sub<>
-              0 
-          %th
-            %span<
-              z
-            %sub<>
-              0
-          
-
-        %tr 
-          %td.first_cell
-            %input{:type => 'text', :id => 'block_material'}
-          %td
+          .field
+            %input{:type => 'text', :id => 'block_material_prototype'}
+        .prop_row
+          .label
+            center
+          .field.vector3
             %input{:type => 'text', :id => 'block_x0_prototype', :value => '0'}
-          %td
             %input{:type => 'text', :id => 'block_y0_prototype', :value => '0'}
-          %td
             %input{:type => 'text', :id => 'block_z0_prototype', :value => '0'}
-          
-
-        %tr
-          %th.first_cell
-            %span<
-              size
-            %sub<>
-              1
-          %th
-            %span<
-              size
-            %sub<>
-              2
-          %th
-            %span<
-              size
-            %sub<>
-              3
-
-        %tr
-          %td.first_cell
+        .prop_row
+          .label
+            size
+          .field.vector3
             %input{:type => 'text', :id => 'block_size_1_prototype', :value => '1'}
-          %td
             %input{:type => 'text', :id => 'block_size_2_prototype', :value => '1'}
-          %td
             %input{:type => 'text', :id => 'block_size_3_prototype', :value => '1'}
-            
-        %tr
-          %th.first_cell
+        .prop_row
+          .label
             %span<
               edge
             %sub<>
               1
-              %sub<>
-                x
-          %th
-            %span<
-              edge
-            %sub<>
-              1
-              %sub<>
-                y
-          %th
-            %span<
-              edge
-            %sub<>
-              1
-              %sub<>
-                z
-
-        %tr
-          %td.first_cell
+          .field.vector3
             %input{:type => 'text', :id => 'block_edge_1_x_prototype', :value => '1'}
-          %td
             %input{:type => 'text', :id => 'block_edge_1_y_prototype', :value => '1'}
-          %td
             %input{:type => 'text', :id => 'block_edge_1_z_prototype', :value => '1'}
             
-
-        %tr
-          %th.first_cell
+        .prop_row
+          .label
             %span<
               edge
             %sub<>
               2
-              %sub<>
-                x
-          %th
-            %span<
-              edge
-            %sub<>
-              2
-              %sub<>
-                y
-          %th
-            %span<
-              edge
-            %sub<>
-              2
-              %sub<>
-                z
-
-        %tr
-          %td.first_cell
+          .field.vector3
             %input{:type => 'text', :id => 'block_edge_2_x_prototype', :value => '1'}
-          %td
             %input{:type => 'text', :id => 'block_edge_2_y_prototype', :value => '1'}
-          %td
             %input{:type => 'text', :id => 'block_edge_2_z_prototype', :value => '1'}
-            
-        %tr
-          %th.first_cell
-            %span<
-              edge
-            %sub<>
-              3
-              %sub<>
-                x
-          %th
-            %span<
-              edge
-            %sub<>
-              3
-              %sub<>
-                y
-          %th
-            %span<
-              edge
-            %sub<>
-              3
-              %sub<>
-                z
 
-        %tr
-          %td.first_cell
+
+        .prop_row
+          .label
+            %span<
+              edge
+            %sub<>
+              3
+          .field.vector3
             %input{:type => 'text', :id => 'block_edge_3_x_prototype', :value => '1'}
-          %td
             %input{:type => 'text', :id => 'block_edge_3_y_prototype', :value => '1'}
-          %td
-            %input{:type => 'text', :id => 'block_edge_3_z_prototype', :value => '1'}            
-        
+            %input{:type => 'text', :id => 'block_edge_3_z_prototype', :value => '1'}
             
-        %tr
-          %td
-            %a.minus.clickable{:onClick => "removeObject(event);"}      
+        %a.minus.clickable{:onClick => "removeObject(event);"}      
               
-              
-
-      %table#ellipsoid_prototype
-        %tr
-          %th.tlabel{:rowspan => '40'}
-            ellipsoid
-
-          %th.first_cell
+      #ellipsoid_prototype.sub2panel
+        .sub2panel_title
+          ellipsoid
+        .prop_row
+          .label
             material
-          %th
-            %span<
-              x
-            %sub<>
-              0
-          %th
-            %span<
-              y
-            %sub<>
-              0 
-          %th
-            %span<
-              z
-            %sub<>
-              0
-    
-
-        %tr 
-          %td.first_cell
-            %input{:type => 'text', :id => 'ellipsoid_material'}
-          %td
+          .field
+            %input{:type => 'text', :id => 'ellipsoid_material_prototype'}
+        .prop_row
+          .label
+            center
+          .field.vector3
             %input{:type => 'text', :id => 'ellipsoid_x0_prototype', :value => '0'}
-          %td
             %input{:type => 'text', :id => 'ellipsoid_y0_prototype', :value => '0'}
-          %td
             %input{:type => 'text', :id => 'ellipsoid_z0_prototype', :value => '0'}
-    
-
-        %tr
-          %th.first_cell
-            %span<
-              size
-            %sub<>
-              1
-          %th
-            %span<
-              size
-            %sub<>
-              2
-          %th
-            %span<
-              size
-            %sub<>
-              3
-
-        %tr
-          %td.first_cell
+        .prop_row
+          .label
+            size
+          .field.vector3
             %input{:type => 'text', :id => 'ellipsoid_size_1_prototype', :value => '1'}
-          %td
             %input{:type => 'text', :id => 'ellipsoid_size_2_prototype', :value => '1'}
-          %td
             %input{:type => 'text', :id => 'ellipsoid_size_3_prototype', :value => '1'}
-      
-        %tr
-          %th.first_cell
+        .prop_row
+          .label
             %span<
               edge
             %sub<>
               1
-              %sub<>
-                x
-          %th
-            %span<
-              edge
-            %sub<>
-              1
-              %sub<>
-                y
-          %th
-            %span<
-              edge
-            %sub<>
-              1
-              %sub<>
-                z
-
-        %tr
-          %td.first_cell
+          .field.vector3
             %input{:type => 'text', :id => 'ellipsoid_edge_1_x_prototype', :value => '1'}
-          %td
             %input{:type => 'text', :id => 'ellipsoid_edge_1_y_prototype', :value => '1'}
-          %td
             %input{:type => 'text', :id => 'ellipsoid_edge_1_z_prototype', :value => '1'}
-      
 
-        %tr
-          %th.first_cell
+        .prop_row
+          .label
             %span<
               edge
             %sub<>
               2
-              %sub<>
-                x
-          %th
-            %span<
-              edge
-            %sub<>
-              2
-              %sub<>
-                y
-          %th
-            %span<
-              edge
-            %sub<>
-              2
-              %sub<>
-                z
-
-        %tr
-          %td.first_cell
+          .field.vector3
             %input{:type => 'text', :id => 'ellipsoid_edge_2_x_prototype', :value => '1'}
-          %td
             %input{:type => 'text', :id => 'ellipsoid_edge_2_y_prototype', :value => '1'}
-          %td
             %input{:type => 'text', :id => 'ellipsoid_edge_2_z_prototype', :value => '1'}
-      
-        %tr
-          %th.first_cell
-            %span<
-              edge
-            %sub<>
-              3
-              %sub<>
-                x
-          %th
-            %span<
-              edge
-            %sub<>
-              3
-              %sub<>
-                y
-          %th
-            %span<
-              edge
-            %sub<>
-              3
-              %sub<>
-                z
 
-        %tr
-          %td.first_cell
+
+        .prop_row
+          .label
+            %span<
+              edge
+            %sub<>
+              3
+          .field.vector3
             %input{:type => 'text', :id => 'ellipsoid_edge_3_x_prototype', :value => '1'}
-          %td
             %input{:type => 'text', :id => 'ellipsoid_edge_3_y_prototype', :value => '1'}
-          %td
-            %input{:type => 'text', :id => 'ellipsoid_edge_3_z_prototype', :value => '1'}            
-  
-      
-        %tr
-          %td
-            %a.minus.clickable{:onClick => "removeObject(event);"}             
+            %input{:type => 'text', :id => 'ellipsoid_edge_3_z_prototype', :value => '1'}
+
+        %a.minus.clickable{:onClick => "removeObject(event);"}              
+
+          
   
   .group
     .group_title
@@ -724,36 +456,7 @@
       #source_panel_prototype.sub2panel
         .prop_row
           .label
-            component
-          .field
-            %input{:type => "text", :id => "source_component_prototype"}
-        .prop_row
-          .label
-            center
-          .field.vector3
-            %input{:type => "text", :id => "source_center_x_prototype"}
-            %input{:type => "text", :id => "source_center_y_prototype"}
-            %input{:type => "text", :id => "source_center_z_prototype"}
-        .prop_row
-          .label
-            size
-          .field.vector3
-            %input{:type => "text", :id => "source_size_x_prototype"}
-            %input{:type => "text", :id => "source_size_y_prototype"}
-            %input{:type => "text", :id => "source_size_z_prototype"}
-        .prop_row
-          .label
-            amplitude
-          .field
-            %input{:type => "text", :id => "source_amplitude_prototype"}
-        .prop_row
-          .label
-            amplitude function
-          .field
-            %input{:type => "text", :id => "source_amp_func_prototype"}
-        .prop_row
-          .label
-            subclasses
+            source type
           .field
             %input{:type => "radio", :name => "source_subclass_prototype", :value => 'continuous', :id => "source_subclass_continuous_prototype", :checked => "true"}
               continuous
@@ -791,14 +494,44 @@
             .label
               src-function
             .field
-              %input{:type => "text", :id => "source_src_function_prototype"}
+              %input{:type => "text", :id => "source_src_function_prototype"}      
+        .prop_row
+          .label
+            component
+          .field
+            %input{:type => "text", :id => "source_component_prototype"}
+        .prop_row
+          .label
+            center
+          .field.vector3
+            %input{:type => "text", :id => "source_center_x_prototype"}
+            %input{:type => "text", :id => "source_center_y_prototype"}
+            %input{:type => "text", :id => "source_center_z_prototype"}
+        .prop_row
+          .label
+            size
+          .field.vector3
+            %input{:type => "text", :id => "source_size_x_prototype"}
+            %input{:type => "text", :id => "source_size_y_prototype"}
+            %input{:type => "text", :id => "source_size_z_prototype"}
+        .prop_row
+          .label
+            amplitude
+          .field
+            %input{:type => "text", :id => "source_amplitude_prototype"}
+        .prop_row
+          .label
+            amplitude function
+          .field
+            %input{:type => "text", :id => "source_amp_func_prototype"}
+
         %a.minus.clickable{:onClick => "removeSource(event);"}      
         
     #sources
 
   .group
     .group_title
-      flux region
+      Flux region
     .prop_row
       .label
         center
@@ -823,10 +556,27 @@
         weight
       .field
         %input{:type => "text", :id => "flux_weight_prototype"}
+    .prop_row
+      .label
+        frequency center
+      .field
+        %input{:type => "text", :id => "flux_fcen_prototype"}
+        
+    .prop_row
+      .label
+        frequency width
+      .field
+        %input{:type => "text", :id => "flux_df_prototype"}
+            
+    .prop_row
+      .label
+        number of frequencies
+      .field
+        %input{:type => "text", :id => "flux_nfreq_prototype"}        
     
   .group
     .group_title
-      running parameters
+      Running parameters
     .prop_row
       .label
         run until
@@ -842,6 +592,11 @@
         additional
       .field
         %input{:type => "text", :id => "run_additional"}
+    .prop_row
+      .label
+        output epsilon
+      .field
+        %input{:type => "checkbox", :id => "run_output_epsilon"}
 
        
 
@@ -891,6 +646,25 @@
     reindexing_selected_children(container, "div[id^='parameter_']")
   }
 
+  function new_pml(event){
+    var prototype_id = 'pml';
+    var clone = $(prototype_id + "_prototype").cloneNode(true);
+    
+    reindexing(clone, 1000001);
+    $('pmls').appendChild(clone);
+    reindexing(clone);
+    Effect.Appear(clone.id, { duration: 0.5 });
+    return clone.id;    
+  }
+  
+  function removePml(event){
+    var container = event.element().up('#pmls')
+    event.element().up('.sub2panel').remove();
+    reindexing_selected_children(container, "div")
+  }
+  
+  
+
   function new_symmetry(event, sym_type){
     var index = $('symmetry_container').childElements().size() - 1
     $('symmetry_container').appendChild(
@@ -911,7 +685,7 @@
           ]
         ]
       )
-    )
+    ).previous().removeClassName('not_alone')
   }
   
   function new_material(){
@@ -930,7 +704,7 @@
           ]
         ]
       )
-    )    
+    ).previous().removeClassName('not_alone')    
   }
   
   
@@ -939,6 +713,9 @@
     var container = event.element().up('tbody')
     event.element().up('tr').remove();
     reindexing_selected_children(container, "tr[id^='" + prefix + "_']")
+    if(container.childElements().size() == 1){
+      container.firstDescendant().addClassName('not_alone')
+    }
   }
   
   function new_object(event, object_type){
@@ -954,8 +731,8 @@
   
   function removeObject(event){
     var container = event.element().up('#objects')
-    event.element().up('table').remove();
-    reindexing_selected_children(container, "table")
+    event.element().up('.sub2panel').remove();
+    reindexing_selected_children(container, "div")
   }
   
   function checkSourceSubclasses(container_id){

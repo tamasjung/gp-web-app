@@ -680,8 +680,15 @@ body.three-col #content {
   -webkit-border-radius: 5px;
   border: solid 1px white;
 }
+/* line 129, ../../../app/stylesheets/partials/_main.sass */
+.tabpanel .sub2panel .sub2panel_title {
+  font-weight: bold;
+  margin: 3px;
+  margin-left: 12px;
+  padding: 3px;
+}
 
-/* line 131, ../../../app/stylesheets/partials/_main.sass */
+/* line 137, ../../../app/stylesheets/partials/_main.sass */
 .panel_in_tab {
   background-color: #f6f6f6;
   border-radius: 3px;
@@ -689,12 +696,12 @@ body.three-col #content {
   -webkit-border-radius: 3px;
 }
 
-/* line 135, ../../../app/stylesheets/partials/_main.sass */
+/* line 141, ../../../app/stylesheets/partials/_main.sass */
 .group {
   margin: 8px;
   padding: 10px;
 }
-/* line 138, ../../../app/stylesheets/partials/_main.sass */
+/* line 144, ../../../app/stylesheets/partials/_main.sass */
 .group .group_title {
   background-color: #eff2b2;
   border-radius: 5px;
@@ -705,7 +712,7 @@ body.three-col #content {
   margin: 3px;
 }
 
-/* line 146, ../../../app/stylesheets/partials/_main.sass */
+/* line 152, ../../../app/stylesheets/partials/_main.sass */
 #container .action_link {
   text-decoration: none;
   border-radius: 3px;
@@ -714,7 +721,7 @@ body.three-col #content {
   border: solid 1px lightgrey;
 }
 
-/* line 152, ../../../app/stylesheets/partials/_main.sass */
+/* line 158, ../../../app/stylesheets/partials/_main.sass */
 #container ul.subsection_tabs {
   list-style-type: none;
   list-style-image: none;
@@ -726,14 +733,14 @@ body.three-col #content {
   margin-top: 1em;
   padding-left: 0px;
 }
-/* line 164, ../../../app/stylesheets/partials/_main.sass */
+/* line 170, ../../../app/stylesheets/partials/_main.sass */
 #container ul.subsection_tabs .tab {
   display: block;
   float: left;
   margin: 0px;
   margin-bottom: 0px;
 }
-/* line 169, ../../../app/stylesheets/partials/_main.sass */
+/* line 175, ../../../app/stylesheets/partials/_main.sass */
 #container ul.subsection_tabs .tab a {
   display: block;
   text-decoration: none;
@@ -753,7 +760,7 @@ body.three-col #content {
   -webkit-border-top-left-radius: 7px;
   outline: none;
 }
-/* line 183, ../../../app/stylesheets/partials/_main.sass */
+/* line 189, ../../../app/stylesheets/partials/_main.sass */
 #container ul.subsection_tabs .tab a.active {
   background-color: #eeeeee;
   background-image: none;
@@ -761,7 +768,7 @@ body.three-col #content {
   text-shadow: white 1px 1px 0px;
 }
 
-/* line 190, ../../../app/stylesheets/partials/_main.sass */
+/* line 196, ../../../app/stylesheets/partials/_main.sass */
 #container ul.group_title_tabs {
   float: right;
   list-style-type: none;
@@ -771,13 +778,13 @@ body.three-col #content {
   margin: 0px;
   padding-left: 0px;
 }
-/* line 202, ../../../app/stylesheets/partials/_main.sass */
+/* line 208, ../../../app/stylesheets/partials/_main.sass */
 #container ul.group_title_tabs .tab {
   display: inline-block;
   margin: 0px;
   margin-bottom: 0px;
 }
-/* line 207, ../../../app/stylesheets/partials/_main.sass */
+/* line 213, ../../../app/stylesheets/partials/_main.sass */
 #container ul.group_title_tabs .tab a {
   display: block;
   text-decoration: none;
@@ -796,7 +803,7 @@ body.three-col #content {
   -webkit-border-top-right-radius: 7px;
   -webkit-border-top-left-radius: 7px;
 }
-/* line 221, ../../../app/stylesheets/partials/_main.sass */
+/* line 227, ../../../app/stylesheets/partials/_main.sass */
 #container ul.group_title_tabs .tab a.active {
   background-color: #eeeeee;
   background-image: none;
@@ -805,18 +812,18 @@ body.three-col #content {
   text-shadow: white 1px 1px 0px;
 }
 
-/* line 228, ../../../app/stylesheets/partials/_main.sass */
+/* line 234, ../../../app/stylesheets/partials/_main.sass */
 .label {
   color: grey;
 }
 
-/* line 231, ../../../app/stylesheets/partials/_main.sass */
+/* line 237, ../../../app/stylesheets/partials/_main.sass */
 .prop_row {
   clear: both;
   display: table-row;
   margin-top: 20px;
 }
-/* line 235, ../../../app/stylesheets/partials/_main.sass */
+/* line 241, ../../../app/stylesheets/partials/_main.sass */
 .prop_row .label {
   text-align: right;
   padding-right: 20px;
@@ -829,7 +836,7 @@ body.three-col #content {
 * html .prop_row .label {
   overflow-x: hidden;
 }
-/* line 240, ../../../app/stylesheets/partials/_main.sass */
+/* line 246, ../../../app/stylesheets/partials/_main.sass */
 .prop_row .field {
   display: inline;
   float: left;
@@ -840,11 +847,11 @@ body.three-col #content {
 * html .prop_row .field {
   overflow-x: hidden;
 }
-/* line 243, ../../../app/stylesheets/partials/_main.sass */
+/* line 249, ../../../app/stylesheets/partials/_main.sass */
 .prop_row .field input, .prop_row .field textarea {
   position: relative;
 }
-/* line 246, ../../../app/stylesheets/partials/_main.sass */
+/* line 252, ../../../app/stylesheets/partials/_main.sass */
 .prop_row .field input[type="text"], .prop_row .field textarea[type="text"] {
   padding-top: 2px;
   padding-bottom: 2px;
@@ -852,7 +859,7 @@ body.three-col #content {
   margin-bottom: 2px;
 }
 
-/* line 253, ../../../app/stylesheets/partials/_main.sass */
+/* line 259, ../../../app/stylesheets/partials/_main.sass */
 .long_desc {
   display: block;
   clear: left;
@@ -866,37 +873,37 @@ body.three-col #content {
   margin-bottom: 1em;
 }
 
-/* line 268, ../../../app/stylesheets/partials/_main.sass */
+/* line 274, ../../../app/stylesheets/partials/_main.sass */
 .upload_iframe {
   height: 2em;
 }
 
-/* line 271, ../../../app/stylesheets/partials/_main.sass */
+/* line 277, ../../../app/stylesheets/partials/_main.sass */
 input.invalid, div.invalid {
   color: black;
   background: #f9aea8;
   border: solid 2px #ff8935;
 }
 
-/* line 276, ../../../app/stylesheets/partials/_main.sass */
+/* line 282, ../../../app/stylesheets/partials/_main.sass */
 div.invalid {
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
 }
 
-/* line 292, ../../../app/stylesheets/partials/_main.sass */
+/* line 298, ../../../app/stylesheets/partials/_main.sass */
 .help_shown {
   display: inline;
 }
 
-/* line 299, ../../../app/stylesheets/partials/_main.sass */
+/* line 305, ../../../app/stylesheets/partials/_main.sass */
 .window {
   min-width: 150px;
   min-height: 100px;
   background: url('/images/grey79.png?1277223885');
 }
-/* line 300, ../../../app/stylesheets/partials/_main.sass */
+/* line 306, ../../../app/stylesheets/partials/_main.sass */
 .window .window_title {
   margin-top: -7px;
   margin-bottom: 7px;
@@ -904,31 +911,31 @@ div.invalid {
   cursor: move;
 }
 
-/* line 312, ../../../app/stylesheets/partials/_main.sass */
+/* line 318, ../../../app/stylesheets/partials/_main.sass */
 body a.add {
   background: url('/images/protocons/24px/actions/add.png?1277223885') no-repeat center center;
 }
-/* line 314, ../../../app/stylesheets/partials/_main.sass */
+/* line 320, ../../../app/stylesheets/partials/_main.sass */
 body a.add:hover {
   background: url('/images/protocons/32px/actions/add.png?1277223885') no-repeat center center;
 }
-/* line 317, ../../../app/stylesheets/partials/_main.sass */
+/* line 323, ../../../app/stylesheets/partials/_main.sass */
 body a.minus {
   background: url('/images/protocons/24px/actions/minus.png?1277223885') no-repeat center center;
 }
-/* line 319, ../../../app/stylesheets/partials/_main.sass */
+/* line 325, ../../../app/stylesheets/partials/_main.sass */
 body a.minus:hover {
   background: url('/images/protocons/32px/actions/minus.png?1277223885') no-repeat center center;
 }
-/* line 322, ../../../app/stylesheets/partials/_main.sass */
+/* line 328, ../../../app/stylesheets/partials/_main.sass */
 body a.edit {
   background: url('/images/protocons/24px/actions/edit.png?1277223885') no-repeat center center;
 }
-/* line 324, ../../../app/stylesheets/partials/_main.sass */
+/* line 330, ../../../app/stylesheets/partials/_main.sass */
 body a.edit:hover {
   background: url('/images/protocons/32px/actions/edit.png?1277223885') no-repeat center center;
 }
-/* line 327, ../../../app/stylesheets/partials/_main.sass */
+/* line 333, ../../../app/stylesheets/partials/_main.sass */
 body a.clickable {
   opacity: 0.6;
   border: solid 1px #cccccc;
@@ -941,21 +948,31 @@ body a.clickable {
   height: 20px;
   display: block;
 }
-/* line 337, ../../../app/stylesheets/partials/_main.sass */
+/* line 343, ../../../app/stylesheets/partials/_main.sass */
 body a.help {
   background: url('/images/protocons/32px/status/help.png?1277223885') no-repeat center center;
 }
-/* line 339, ../../../app/stylesheets/partials/_main.sass */
+/* line 345, ../../../app/stylesheets/partials/_main.sass */
 body a.help_off {
   background: url('/images/protocons/24px/status/help.png?1277223885') no-repeat center center;
 }
+/* line 347, ../../../app/stylesheets/partials/_main.sass */
+body a.button_like {
+  padding-left: 6px;
+  padding-right: 3px;
+  margin-left: 3px;
+  margin-right: 3px;
+  padding-bottom: 2px;
+  text-decoration: none;
+  color: grey;
+}
 
-/* line 342, ../../../app/stylesheets/partials/_main.sass */
+/* line 357, ../../../app/stylesheets/partials/_main.sass */
 .add_image {
   background: url('/images/protocons/48px/actions/add.png?1277223885') no-repeat center center;
 }
 
-/* line 345, ../../../app/stylesheets/partials/_main.sass */
+/* line 360, ../../../app/stylesheets/partials/_main.sass */
 .dyn_help {
   background: url('/images/grey79.png?1277223885');
   display: block;
@@ -968,7 +985,7 @@ body a.help_off {
   paddding-right: 5px;
 }
 
-/* line 355, ../../../app/stylesheets/partials/_main.sass */
+/* line 370, ../../../app/stylesheets/partials/_main.sass */
 .action_link {
   text-decoration: none;
   border-radius: 3px;
@@ -977,14 +994,14 @@ body a.help_off {
   border: solid 1px lightgrey;
 }
 
-/* line 361, ../../../app/stylesheets/partials/_main.sass */
+/* line 376, ../../../app/stylesheets/partials/_main.sass */
 .rounded_15 {
   border-radius: 15;
   -moz-border-radius: 15;
   -webkit-border-radius: 15;
 }
 
-/* line 364, ../../../app/stylesheets/partials/_main.sass */
+/* line 379, ../../../app/stylesheets/partials/_main.sass */
 .error_box {
   padding-left: 10px;
   padding-right: 10px;

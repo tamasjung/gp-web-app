@@ -18,7 +18,7 @@ function confirm_dialog(title, question, onOkFunction, onCancelFunction){
   
   var container = NodeBuilder(
     ["div", {title: title}, 
-      ["div", {class: "confirm_question"}, question],
+      ["div", {'class': "confirm_question"}, question],
       ["input", {type: "button", 'class': "confirm_button", value: "yes"} ],
       ["input", {type: "button", 'class': "confirm_button", value: "no"}]
     ]
