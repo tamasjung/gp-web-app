@@ -46,6 +46,8 @@
     }
     
     .source_editor{
+      background: #f0f0f0;
+      //color: ligthgrey;
       width: 625px;
       height: 200px;
     }
@@ -57,14 +59,11 @@
 %form#partial_form.panel_in_tab
   %input{:type => "hidden", :id=>"command_args"}
   %input{:type => "hidden", :id=>"display_str"}
-
-  
-
-  %a.clickable.help#help_button{:onClick => "$$('.long_desc').invoke('toggle');"}
   
   .group    
     %a.clickable.edit{:onClick => "toggleEditor('editor_0')", :title => 'click to see or hide the editor'}
-    
+    .long_desc
+      The following text will be insert at the begining of the scheme file.
     
     %textarea.source_editor{:id => 'editor_0'}
       
@@ -72,6 +71,8 @@
     .group_title
       Parameters
     %a.clickable.add{:onclick => "new_parameter()"}
+    .long_desc
+      Simple name-value pairs can be given as parameters. You can use the names below in place of direct values.
     #parameters
      
   #computational_cell.group 
@@ -239,71 +240,7 @@
           %td
             %input{:type => 'text', :id => 'sphere_r_prototype', :value => '1'}
           %td
-            %a.remove_body{:onClick => "removeBody(event);"}
-              \-
-
-
-
-
-      %table#box_prototype
-        %tr
-          %th.tlabel{:rowspan => '5'}
-            rectangular box
-
-          %th.first_cell       
-            %span<
-              x
-            %sub<>
-              0
-          %th
-            %span<
-              y
-            %sub<>
-              0 
-          %th
-            %span<
-              z
-            %sub<>
-              0
-          %th
-            width
-          %th
-            height
-          %th
-            depth
-          %th
-
-        %tr 
-          %td.first_cell
-            %input{:type => 'text', :id => 'box_x0_prototype', :value => '0'}
-          %td
-            %input{:type => 'text', :id => 'box_y0_prototype', :value => '0'}
-          %td
-            %input{:type => 'text', :id => 'box_z0_prototype', :value => '0'}
-          %td
-            %input{:type => 'text', :id => 'box_width_prototype', :value => '2'}
-          %td
-            %input{:type => 'text', :id => 'box_height_prototype', :value => '2'}
-          %td
-            %input{:type => 'text', :id => 'box_depth_prototype', :value => '2'}
-          %td
-            %a.remove_body{:onClick => "removeBody(event);"}
-              \-
-        %tr
-          %th.first_cell
-            &theta;
-          %th
-            &phi;
-          %th
-            V
-        %tr
-          %td.first_cell
-            %input{:type => 'text', :id => 'box_theta_prototype', :value => '0'}
-          %td
-            %input{:type => 'text', :id => 'box_phi_prototype', :value => '0'}
-          %td
-            %input{:type => 'text', :id => 'box_v_prototype', :value => '0'}
-
+            %a.minus.clickable{:onClick => "removeObject(event);"}
 
 
       %table#cylinder_prototype
@@ -375,12 +312,8 @@
             %input{:type => 'text', :id => 'cylinder_axis_y_prototype', :value => '0'}
           %td
             %input{:type => 'text', :id => 'cylinder_axis_z_prototype', :value => '0'}
-          
-          
-          
           %td
-            %a.remove_body{:onClick => "removeObject(event);"}
-              \-
+            %a.minus.clickable{:onClick => "removeObject(event);"}
               
       %table#cone_prototype
         %tr
@@ -458,8 +391,7 @@
           %td
             %input{:type => 'text', :id => 'cone_r_2_prototype', :value => '0'}
           %td
-            %a.remove_body{:onClick => "removeObject(event);"}
-              \-        
+            %a.minus.clickable{:onClick => "removeObject(event);"}        
 
               
       %table#block_prototype
@@ -619,8 +551,7 @@
             
         %tr
           %td
-            %a.remove_body{:onClick => "removeObject(event);"}
-              \-      
+            %a.minus.clickable{:onClick => "removeObject(event);"}      
               
               
 
@@ -781,21 +712,15 @@
       
         %tr
           %td
-            %a.remove_body{:onClick => "removeObject(event);"}
-              \-              
+            %a.minus.clickable{:onClick => "removeObject(event);"}             
   
   .group
     .group_title
       Source
     .prop_row
-      .label
-        add
-      .field
-        -%w"continuous gaussian custom".each do |item|
-          %a.action_link{:onClick => "new_object(event, '#{item}');"}
-            =item    
+      %a.clickable.add{:onclick => "new_source()"}   
             
-    .hiddden_prototype
+    .hidden_prototype
       #source_panel_prototype.sub2panel
         .prop_row
           .label
@@ -830,43 +755,46 @@
           .label
             subclasses
           .field
-            %input{:type => "radio", :name => "source_subclass_prototype", :id => "source_subclass_continuous_prototype", :checked => "checked"}
+            %input{:type => "radio", :name => "source_subclass_prototype", :value => 'continuous', :id => "source_subclass_continuous_prototype", :checked => "true"}
               continuous
-            %input{:type => "radio", :name => "source_subclass_prototype", :id => "source_subclass_gaussian_prototype"}
+            %input{:type => "radio", :name => "source_subclass_prototype", :value => 'gaussian', :id => "source_subclass_gaussian_prototype"}
               gaussian
-            %input{:type => "radio", :name => "source_subclass_prototype", :id => "source_subclass_custom_prototype"}
+            %input{:type => "radio", :name => "source_subclass_prototype",:value => 'custom'  ,:id => "source_subclass_custom_prototype"}
               custom
-        #continuous.source_fields
-          .prop_row.cont.gaussian
+        .source_fields
+          .prop_row.continuous.gaussian
             .label
               frequency
             .field
-              %input{:type => "text", :id => "source_cont_frequency_prototype"}
-          .prop_row.cont.gaussian.custom
+              %input{:type => "text", :id => "source_frequency_prototype"}
+          .prop_row.continuous.gaussian.custom
             .label
               start-time
             .field
               %input{:type => "text", :id => "source_start_time_prototype"}
-          .prop_row.cont.custom
+          .prop_row.continuous.custom
             .label
               end-time
             .field
               %input{:type => "text", :id => "source_end_time_prototype"}
-          .prop_row.cont.gaussian
+          .prop_row.continuous.gaussian
             .label
               width
             .field
               %input{:type => "text", :id => "source_width_prototype"}
-          .prop_row.cont.gaussian
+          .prop_row.continuous.gaussian
             .label
               cutoff
             .field
-              %input{:type => "text", :id => "source_cont_start_time_prototype"}
+              %input{:type => "text", :id => "source_start_time_prototype"}
           .prop_row.custom
             .label
               src-function
             .field
               %input{:type => "text", :id => "source_src_function_prototype"}
+        %a.minus.clickable{:onClick => "removeSource(event);"}      
+        
+    #sources
 
   .group
     .group_title
@@ -925,15 +853,21 @@
 :javascript 
   
   function toggleEditor(id){
+    var options = {queue: 'end', duration: 0.3}
     var toggle = true
-    if($(id).visible() && $(id).value != ''){
-      confirm_dialog('confirm', 'The content will also be deleted', function(){
-        $(id).value = '';
-        $(id).toggle();
-      });
+    if($(id).visible()){
+      if($(id).value != ''){
+        confirm_dialog('confirm', 'The content will also be deleted', function(){
+          $(id).value = '';
+          $(id).blindUp(options)
+        });
+      }
+      else{
+        $(id).blindUp(options)
+      }
     }
     else{
-      $(id).toggle();
+      $(id).blindDown({queue: 'end', duration: 0.3})
     }
   }
   
@@ -973,9 +907,7 @@
             ['input', {type: 'text', id: 'sym_phase_' + index}]
           ],
           ["td", {}, 
-            ['a', { class: 'remove_symmetry', onClick: "removeRow(event, 'sym');"}, 
-              "-"
-            ]
+            ['a', { class: 'minus clickable', onClick: "removeRow(event, 'sym');"}]
           ]
         ]
       )
@@ -994,16 +926,14 @@
             ['input', {type: 'text', id: 'medium_epsilon_' + index}]
           ],
           ["td", {}, 
-            ['a', { class: 'remove_medium', onClick: "removeRow(event, 'medium');"},
-              "-"
-            ]
+            ['a', { class: 'minus clickable', onClick: "removeRow(event, 'medium');"}]
           ]
         ]
       )
     )    
   }
   
-
+  
 
   function removeRow(event, prefix){
     var container = event.element().up('tbody')
@@ -1019,13 +949,62 @@
     $('objects').appendChild(clone);
     //reindexing_bodies();
     Effect.Appear(clone.id, { duration: 0.5 });
+    return clone.id;
+  }
+  
+  function removeObject(event){
+    var container = event.element().up('#objects')
+    event.element().up('table').remove();
+    reindexing_selected_children(container, "table")
+  }
+  
+  function checkSourceSubclasses(container_id){
+    var index = getIndex(container_id)
+    var subclass = radio_value('source_subclass_' + index) 
+    if(!subclass){
+      subclass = 'continuous'
+      $('source_subclass_continuous_' + index).checked = true
+    }
+    $(container_id).select(".source_fields .prop_row").each(function(e){
+      if(e.hasClassName(subclass)){
+        if(!e.visible()){
+          e.show()
+        }
+      }
+      else{
+        if(e.visible()){
+          e.hide()
+        }
+      }
+    }) 
+  }
+  
+  function new_source(){
+    var prototype_id = 'source_panel';
+    var clone = $(prototype_id + "_prototype").cloneNode(true);
+    var index = $('sources').select('.sub2panel').size()
+    reindexing(clone, 1000001);
+    $('sources').appendChild(clone);
+    reindexing(clone, index);
+    Effect.Appear(clone.id, { duration: 0.5 });
     
     
-    $(clone.id).select('input, select').each(function(e){
-      //e.observe('change', XXX);
+    checkSourceSubclasses(clone.id)
+
+    
+    $(clone.id).select('input[type="radio"]').each(function(e){
+      e.observe('change', function(event){
+        checkSourceSubclasses(event.element().up('.sub2panel').id)
+      });
     });
     return clone.id;
   }  
+
+  function removeSource(event){
+    var container = event.element().up('#sources')
+    event.element().up('.sub2panel').remove();
+    reindexing_selected_children(container, "div")
+  }
 
   function file_upload(result){
     //alert(result);

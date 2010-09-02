@@ -10,6 +10,9 @@
         =link_to "", {:controller => :dashboard}, {:class => 'logo'}
         #title
           =":Grid:Portál"
+        #static_header_panel
+          %a.clickable.help#help_button
+          
       #sidebar
         .place_holder
           %a{:onClick => "debug_window.open()"}
@@ -35,6 +38,30 @@
 
   
 :javascript
+
+  var sessStorage = sessionStorage || {}
+
+  function checkHelp(){
+    if(sessStorage.helpIsOn == 1){
+      $$('.long_desc').invoke('appear', { duration: 1});
+      $('help_button').removeClassName('help_off').addClassName('help')
+      
+    }
+    else{
+      $$('.long_desc').invoke('fade');
+      $('help_button').removeClassName('help').addClassName('help_off')
+    }
+  }
+
+  if(sessStorage.helpIsOn === undefined){
+    sessStorage.helpIsOn = 0
+  }
+  checkHelp();
+  $('help_button').observe('click', function(){
+    
+    sessStorage.helpIsOn = Math.abs(+sessStorage.helpIsOn - 1)
+    checkHelp();
+  })
   var debug_window = window_factory($('main_debug'), 
     {'position' : [20, 300], 
     'fade' : true, 
@@ -45,7 +72,7 @@
   //debug_window.open();
   
   function debug(str){
-    $('main_debug').down('.window_contents').update(str);
+    $('main_debug').update(str);
   }
   
   

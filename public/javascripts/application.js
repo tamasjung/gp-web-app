@@ -9,11 +9,11 @@ function confirm_dialog(title, question, onOkFunction, onCancelFunction){
   };
   var okWrapper = function(event){
     destroyFunction.apply();
-    (onOkFunction || Prototype.K).apply(event);
+    (onOkFunction || Prototype.K).call(event);
   };
   var cancelWrapper = function(event){
-    destroyFunction.apply()
-    onCancelFunction.apply()
+    destroyFunction.apply();
+    (onCancelFunction || Prototype.K).call()
   };
   
   var container = NodeBuilder(
@@ -33,6 +33,7 @@ function confirm_dialog(title, question, onOkFunction, onCancelFunction){
   //element.down(".window_contents").insert(container)
   
   window.open();
+  container.select("input[value='yes']")[0].focus()
 }
 
 function parseCSV(str, settings){
@@ -176,6 +177,13 @@ function getIndex(string){
   return /_(\d+)$/.exec(string)[1];
 }
 
+function reindexingAttr(attrName, e, index){
+  var e_attr = e.readAttribute(attrName);
+  if(e_attr){
+    e.writeAttribute(attrName, e_attr.replace(/_[^_]+$/, "_" + index));
+  }
+}
+
 function reindexingId(e, index){
   var e_id = e.readAttribute("id");
   if(e_id){
@@ -190,6 +198,9 @@ function reindexing(element, index){
     });
   }
   reindexingId(element, index);
+  if(element.tagName.toLowerCase() == 'input' && element.type == 'radio'){
+    reindexingAttr('name', element, index);
+  }
 }
 
 function reindexing_selected_children(parentName, selector){
@@ -263,32 +274,31 @@ function radio_value(group_name){
 
 
 //styled examples use the window factory for a shared set of behavior  
-var window_factory = function(container,options){  
-    var window_header = new Element('div',{  
-        className: 'window_header'  
-    });  
-    var window_title = new Element('div',{  
-        className: 'window_title'  
-    });  
-    var window_close = new Element('div',{  
-        className: 'window_close'  
-    });  
-    var window_contents = new Element('div',{  
-        className: 'window_contents'  
-    });  
+var window_factory = function(content,options){  
+
+    var container = NodeBuilder(
+      ['div',{},
+        ['div', {'class': 'window_header'},
+          ['div', {'class': 'window_title'}],
+          ['div', {'class': 'window_close'}]
+        ]
+      ]
+    );
+    container.appendChild(content);  
+    document.body.appendChild(container);
     var w = new Control.Window(container,Object.extend({  
         className: 'window',  
-        closeOnClick: window_close,  
-        draggable: window_header,  
+        closeOnClick: container.down("[class='window_close']"),  
+        draggable: container.down("[class='window_header']"),  
         //insertRemoteContentAt: window_contents,  
         afterOpen: function(){  
-            window_title.update(container.readAttribute('title'))  
+            container.down("[class='window_title']").update(content.readAttribute('title'))  
         }
           
     },options || {}));  
-    w.container.insert({top: window_header});  
-    window_header.insert(window_title);  
-    window_header.insert(window_close);  
-    w.container.insert(window_contents);  
+    // w.container.insert({top: window_header});  
+    //     window_header.insert(window_title);  
+    //     window_header.insert(window_close);  
+    //     w.container.insert(window_contents);  
     return w;  
 };  

@@ -50,8 +50,14 @@ $grid_logo = "grid_logo.png"
     //top: 15px
   #title
     :margin-left 157px
+    :width 200px
     :padding-top 25px
     :color #999
+  #static_header_panel
+    :margin-left 740px
+    :float left
+    :position static
+    
     
   :clear both
     
@@ -281,8 +287,7 @@ input , textarea
   //border-left: solid 1px lightgrey 
   //border-right: solid 1px lightgrey 
   
-.help
-  display: none
+
 
 .help_shown
   display: inline
@@ -302,7 +307,7 @@ input , textarea
   background: image_url('grey79.png')
   
   
-#content
+body
   a  
     &.add
       background: image_url("protocons/24px/actions/add.png") no-repeat center center 
@@ -330,9 +335,9 @@ input , textarea
       display: block
       
     &.help
+      background: image_url("protocons/32px/status/help.png") no-repeat center center
+    &.help_off
       background: image_url("protocons/24px/status/help.png") no-repeat center center
-      &:hover
-        background: image_url("protocons/32px/status/help.png") no-repeat center center
         
 .add_image
   background: image_url("protocons/48px/actions/add.png") no-repeat center center
