@@ -95,19 +95,25 @@
       Mesh
     .prop_row
       .label
-        x size
+        NX
       .field
         %input{:type => "text", :id=>"nx", :valid_if => "divisibleBy4(x)"}
+      .long_desc
+        Mesh points in x-direction.
     .prop_row
       .label
-        y size
+        NY
       .field
         %input{:type => "text", :id=>"ny", :valid_if => "divisibleBy4(x)"}
+      .long_desc
+        Mesh points in y-direction.
     .prop_row
       .label
-        z size
+        NZ
       .field
         %input{:type => "text", :id=>"nz", :valid_if => "divisibleBy4(x)"}
+      .long_desc
+        Mesh points in z-direction.
           
     .prop_row
       .label
@@ -335,8 +341,7 @@
           %td
             %input{:type => 'text', :id => 'sphere_v_prototype', :value => '0'}
           %td
-            %a.remove_body{:onClick => "removeBody(event);"}
-              \-
+            %a.clickable.minus{:onClick => "removeBody(event);"}
     
      
       %table#atom_prototype
@@ -373,8 +378,7 @@
           %td
             %select{:id => 'atom_select_prototype'}
           %td
-            %a.remove_body{:onClick => "removeBody(event);"}
-              \-
+            %a.clickable.minus{:onClick => "removeBody(event);"}
               
       %table#multiatom_prototype
         %tr
@@ -390,8 +394,7 @@
           %td.first_cell#multiatom_no_atoms_prototype
             0
           %td
-            %a.remove_body{:onClick => "removeBody(event);"}
-              \-              
+            %a.clickable.minus{:onClick => "removeBody(event);"}              
 
       %table#box_prototype
         %tr
@@ -435,8 +438,8 @@
           %td
             %input{:type => 'text', :id => 'box_depth_prototype', :value => '2'}
           %td
-            %a.remove_body{:onClick => "removeBody(event);"}
-              \-
+            %a.clickable.minus{:onClick => "removeBody(event);"}
+              
         %tr
           %th.first_cell
             &theta;
@@ -507,8 +510,7 @@
           %td
             %input{:type => 'text', :id => 'cylinder_v_prototype', :value => '0'}
           %td
-            %a.remove_body{:onClick => "removeBody(event);"}
-              \-
+            %a.clickable.minus{:onClick => "removeBody(event);"}
       
       %table#halfspace_prototype
         %tr
@@ -552,8 +554,8 @@
           %td
             %input{:type => 'text', :id => 'halfspace_v_prototype'}
           %td
-            %a.remove_body{:onClick => "removeBody(event);"}
-              \-        
+            %a.clickable.minus{:onClick => "removeBody(event);"}
+                 
     #file_panel.tabpanel
       .prop_row
         .label
@@ -576,7 +578,7 @@
   
   %x3d#renderer{:height => "650px", :showstat => "false", :width => "650px", :x => "0px", :y => "0px"}
     %scene
-      %background{:def => "bgnd", :skycolor => "1 1 1", :transparency => "1.0"}
+      %background{:def => "bgnd", :transparency => "1.0"}
       %viewpoint{:position => '4.88104 4.59865 7.4181', :orientation => '-0.69017 0.723467 -0.0161809 0.735134'}
       
       
@@ -586,7 +588,7 @@
             %material{:diffuseColor => "0 1 0"}
           %sphere{:radius => "0.05"}
           %cylinder{:height => "10", :radius => "0.01"}
-      %transform{:rotation => "1 0 0 #{Math::PI/2}", :translation => "0 0 5"}
+      %transform{:rotation => "1 0 0 #{Math::PI/2}", :translation => "0 0 5"} 
         %shape
           %appearance
             %material{:diffuseColor => "0 0 1"}
