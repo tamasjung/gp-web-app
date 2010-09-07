@@ -936,6 +936,14 @@ body a.edit:hover {
   background: url('/images/protocons/32px/actions/edit.png?1277223885') no-repeat center center;
 }
 /* line 334, ../../../app/stylesheets/partials/_main.sass */
+body a.play {
+  background: url('/images/protocons/24px/actions/play.png?1277223885') no-repeat center center;
+}
+/* line 336, ../../../app/stylesheets/partials/_main.sass */
+body a.play:hover {
+  background: url('/images/protocons/32px/actions/play.png?1277223885') no-repeat center center;
+}
+/* line 340, ../../../app/stylesheets/partials/_main.sass */
 body a.clickable {
   opacity: 0.6;
   border: solid 1px #cccccc;
@@ -948,15 +956,15 @@ body a.clickable {
   height: 20px;
   display: block;
 }
-/* line 344, ../../../app/stylesheets/partials/_main.sass */
+/* line 350, ../../../app/stylesheets/partials/_main.sass */
 body a.help {
   background: url('/images/protocons/32px/status/help.png?1277223885') no-repeat center center;
 }
-/* line 346, ../../../app/stylesheets/partials/_main.sass */
+/* line 352, ../../../app/stylesheets/partials/_main.sass */
 body a.help_off {
   background: url('/images/protocons/24px/status/help.png?1277223885') no-repeat center center;
 }
-/* line 348, ../../../app/stylesheets/partials/_main.sass */
+/* line 354, ../../../app/stylesheets/partials/_main.sass */
 body a.button_like {
   padding-left: 6px;
   padding-right: 3px;
@@ -967,12 +975,12 @@ body a.button_like {
   color: grey;
 }
 
-/* line 358, ../../../app/stylesheets/partials/_main.sass */
+/* line 364, ../../../app/stylesheets/partials/_main.sass */
 .add_image {
   background: url('/images/protocons/48px/actions/add.png?1277223885') no-repeat center center;
 }
 
-/* line 361, ../../../app/stylesheets/partials/_main.sass */
+/* line 367, ../../../app/stylesheets/partials/_main.sass */
 .dyn_help {
   background: url('/images/grey79.png?1277223885');
   display: block;
@@ -985,7 +993,7 @@ body a.button_like {
   paddding-right: 5px;
 }
 
-/* line 371, ../../../app/stylesheets/partials/_main.sass */
+/* line 377, ../../../app/stylesheets/partials/_main.sass */
 .action_link {
   text-decoration: none;
   border-radius: 3px;
@@ -994,20 +1002,20 @@ body a.button_like {
   border: solid 1px lightgrey;
 }
 
-/* line 377, ../../../app/stylesheets/partials/_main.sass */
+/* line 383, ../../../app/stylesheets/partials/_main.sass */
 .rounded_15 {
   border-radius: 15;
   -moz-border-radius: 15;
   -webkit-border-radius: 15;
 }
 
-/* line 380, ../../../app/stylesheets/partials/_main.sass */
+/* line 386, ../../../app/stylesheets/partials/_main.sass */
 .error_box {
   padding-left: 10px;
   padding-right: 10px;
 }
 
-/* line 384, ../../../app/stylesheets/partials/_main.sass */
+/* line 390, ../../../app/stylesheets/partials/_main.sass */
 .no_display {
   display: none;
 }

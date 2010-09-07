@@ -174,7 +174,11 @@ function toOrdinaryDecimal(number){
 }
 
 function getIndex(string){
-  return /_(\d+)$/.exec(string)[1];
+  var match = /_(\d+)$/.exec(string)
+  if(match === null){
+    throw "getIndex(\"" + string + "\") is null"
+  } 
+  return match[1];
 }
 
 function reindexingAttr(attrName, e, index){

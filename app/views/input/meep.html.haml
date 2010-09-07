@@ -64,6 +64,20 @@
     .not_alone{
       display: none;
     }
+    
+    
+    .group_title .clickable{
+      width: 15px;
+      height: 15px;
+      padding-top: 0px;
+      float: right;
+    }
+    
+    pre{
+      font-weight: bold;
+      background: url('/images/grey79.png') repeat scroll 0 0;
+      -moz-border-radius: 5px 
+    }
   
   EMBEDDED_STYLE
 
@@ -83,6 +97,7 @@
   #parameters.group
     .group_title
       Parameters
+      %a.play.clickable
     .long_desc
       Simple name-value pairs can be given as parameters. You can use the names below in place of direct values.
     %a.clickable.add{:onclick => "new_parameter()"}  
@@ -93,6 +108,7 @@
   #computational_cell.group 
     .group_title
       Computational cell
+      %a.play.clickable
     .prop_row
       .label
         latice size
@@ -118,6 +134,7 @@
   #pml.group 
     .group_title
       Boundary conditions
+      %a.play.clickable
     .hidden_prototype
       #pml_prototype.sub2panel
         .prop_row
@@ -143,7 +160,7 @@
           .label
             side
           .field
-            %select{:id=>"pml_direction_prototype"}
+            %select{:id=>"pml_side_prototype"}
               %option{:value=>"ALL", :selected=>"true"}
                 all
               %option{:value=>"Low"}
@@ -171,9 +188,10 @@
     #pml_container 
     %a.clickable.add{:onclick => "newSub2panel('pml')"} 
         
-  #computational_cell.group 
+  #symmetry.group 
     .group_title
       Symmetry
+      %a.play.clickable
     .prop_row
       .label
         add
@@ -187,7 +205,7 @@
         
     %table
       %tbody#symmetry_container
-        %tr#aaa.not_alone
+        %tr.not_alone
           %th
             type
           %th
@@ -196,9 +214,10 @@
             phase
           %th
           
-  .group
+  #materials.group
     .group_title
       Materials
+      %a.play.clickable
     .prop_row
       .label
         add 
@@ -214,9 +233,10 @@
           %th
             epsilon
             
-  .group
+  #geometry.group
     .group_title
       Geometry
+      %a.play.clickable
     .prop_row
       .label
         add
@@ -238,15 +258,15 @@
           .label
             center
           .field.vector3
-            %input{:type => 'text', :id => 'sphere_x0_prototype', :value => '0'}
-            %input{:type => 'text', :id => 'sphere_y0_prototype', :value => '0'}
-            %input{:type => 'text', :id => 'sphere_z0_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'sphere_centerx_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'sphere_centery_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'sphere_centerz_prototype', :value => '0'}
           
         .prop_row
           .label
-            r
+            radius
           .field
-            %input{:type => 'text', :id => 'sphere_r_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'sphere_radius_prototype', :value => '1'}
 
         
         %a.minus.clickable{:onClick => "removeSub2panel(event);"}
@@ -264,14 +284,14 @@
           .label
             center
           .field.vector3
-            %input{:type => 'text', :id => 'cylinder_x0_prototype', :value => '0'}
-            %input{:type => 'text', :id => 'cylinder_y0_prototype', :value => '0'}
-            %input{:type => 'text', :id => 'cylinder_z0_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'cylinder_centerx_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'cylinder_centery_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'cylinder_centerz_prototype', :value => '0'}
         .prop_row
           .label
-            r
+            radius
           .field
-            %input{:type => 'text', :id => 'cylinder_r_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'cylinder_radius_prototype', :value => '1'}
             
         .prop_row
           .label
@@ -283,9 +303,9 @@
           .label
             axis
           .field.vector3
-            %input{:type => 'text', :id => 'cylinder_axis_x_prototype', :value => '0'}
-            %input{:type => 'text', :id => 'cylinder_axis_y_prototype', :value => '0'}
-            %input{:type => 'text', :id => 'cylinder_axis_z_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'cylinder_axisx_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'cylinder_axisy_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'cylinder_axisz_prototype', :value => '0'}
 
         %a.minus.clickable{:onClick => "removeSub2panel(event);"}
               
@@ -301,14 +321,14 @@
           .label
             center
           .field.vector3
-            %input{:type => 'text', :id => 'cone_x0_prototype', :value => '0'}
-            %input{:type => 'text', :id => 'cone_y0_prototype', :value => '0'}
-            %input{:type => 'text', :id => 'cone_z0_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'cone_centerx_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'cone_centery_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'cone_centerz_prototype', :value => '0'}
         .prop_row
           .label
-            r
+            radius
           .field
-            %input{:type => 'text', :id => 'cone_r_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'cone_radius_prototype', :value => '1'}
         .prop_row
           .label
             height
@@ -318,14 +338,14 @@
           .label
             axis
           .field.vector3
-            %input{:type => 'text', :id => 'cone_axis_x_prototype', :value => '0'}
-            %input{:type => 'text', :id => 'cone_axis_y_prototype', :value => '0'}
-            %input{:type => 'text', :id => 'cone_axis_z_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'cone_axisx_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'cone_axisy_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'cone_axisz_prototype', :value => '0'}
         .prop_row
           .label
-            r2
+            radius2
           .field
-            %input{:type => 'text', :id => 'cone_r_2_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'cone_radius2_prototype', :value => '0'}
           
         %a.minus.clickable{:onClick => "removeSub2panel(event);"}        
 
@@ -342,16 +362,16 @@
           .label
             center
           .field.vector3
-            %input{:type => 'text', :id => 'block_x0_prototype', :value => '0'}
-            %input{:type => 'text', :id => 'block_y0_prototype', :value => '0'}
-            %input{:type => 'text', :id => 'block_z0_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'block_centerx_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'block_centery_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'block_centerz_prototype', :value => '0'}
         .prop_row
           .label
             size
           .field.vector3
-            %input{:type => 'text', :id => 'block_size_1_prototype', :value => '1'}
-            %input{:type => 'text', :id => 'block_size_2_prototype', :value => '1'}
-            %input{:type => 'text', :id => 'block_size_3_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'block_sizex_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'block_sizey_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'block_sizez_prototype', :value => '1'}
         .prop_row
           .label
             %span<
@@ -359,9 +379,9 @@
             %sub<>
               1
           .field.vector3
-            %input{:type => 'text', :id => 'block_axis_1_x_prototype', :value => '1'}
-            %input{:type => 'text', :id => 'block_axis_1_y_prototype', :value => '1'}
-            %input{:type => 'text', :id => 'block_axis_1_z_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'block_axis1x_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'block_axis1y_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'block_axis1z_prototype', :value => '1'}
             
         .prop_row
           .label
@@ -370,9 +390,9 @@
             %sub<>
               2
           .field.vector3
-            %input{:type => 'text', :id => 'block_axis_2_x_prototype', :value => '1'}
-            %input{:type => 'text', :id => 'block_axis_2_y_prototype', :value => '1'}
-            %input{:type => 'text', :id => 'block_axis_2_z_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'block_axis2x_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'block_axis2y_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'block_axis2z_prototype', :value => '1'}
 
 
         .prop_row
@@ -382,9 +402,9 @@
             %sub<>
               3
           .field.vector3
-            %input{:type => 'text', :id => 'block_axis_3_x_prototype', :value => '1'}
-            %input{:type => 'text', :id => 'block_axis_3_y_prototype', :value => '1'}
-            %input{:type => 'text', :id => 'block_axis_3_z_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'block_axis3x_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'block_axis3y_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'block_axis3z_prototype', :value => '1'}
             
         %a.minus.clickable{:onClick => "removeSub2panel(event);"}      
               
@@ -400,16 +420,16 @@
           .label
             center
           .field.vector3
-            %input{:type => 'text', :id => 'ellipsoid_x0_prototype', :value => '0'}
-            %input{:type => 'text', :id => 'ellipsoid_y0_prototype', :value => '0'}
-            %input{:type => 'text', :id => 'ellipsoid_z0_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'ellipsoid_centerx_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'ellipsoid_centery_prototype', :value => '0'}
+            %input{:type => 'text', :id => 'ellipsoid_centerz_prototype', :value => '0'}
         .prop_row
           .label
             size
           .field.vector3
-            %input{:type => 'text', :id => 'ellipsoid_size_1_prototype', :value => '1'}
-            %input{:type => 'text', :id => 'ellipsoid_size_2_prototype', :value => '1'}
-            %input{:type => 'text', :id => 'ellipsoid_size_3_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'ellipsoid_sizex_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'ellipsoid_sizey_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'ellipsoid_sizez_prototype', :value => '1'}
         .prop_row
           .label
             %span<
@@ -417,9 +437,9 @@
             %sub<>
               1
           .field.vector3
-            %input{:type => 'text', :id => 'ellipsoid_axis_1_x_prototype', :value => '1'}
-            %input{:type => 'text', :id => 'ellipsoid_axis_1_y_prototype', :value => '1'}
-            %input{:type => 'text', :id => 'ellipsoid_axis_1_z_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'ellipsoid_axis1x_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'ellipsoid_axis1y_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'ellipsoid_axis1z_prototype', :value => '1'}
 
         .prop_row
           .label
@@ -428,9 +448,9 @@
             %sub<>
               2
           .field.vector3
-            %input{:type => 'text', :id => 'ellipsoid_axis_2_x_prototype', :value => '1'}
-            %input{:type => 'text', :id => 'ellipsoid_axis_2_y_prototype', :value => '1'}
-            %input{:type => 'text', :id => 'ellipsoid_axis_2_z_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'ellipsoid_axis2x_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'ellipsoid_axis2y_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'ellipsoid_axis2z_prototype', :value => '1'}
 
 
         .prop_row
@@ -440,29 +460,29 @@
             %sub<>
               3
           .field.vector3
-            %input{:type => 'text', :id => 'ellipsoid_axis_3_x_prototype', :value => '1'}
-            %input{:type => 'text', :id => 'ellipsoid_axis_3_y_prototype', :value => '1'}
-            %input{:type => 'text', :id => 'ellipsoid_axis_3_z_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'ellipsoid_axis3x_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'ellipsoid_axis3y_prototype', :value => '1'}
+            %input{:type => 'text', :id => 'ellipsoid_axis3z_prototype', :value => '1'}
 
         %a.minus.clickable{:onClick => "removeSub2panel(event);"}              
 
           
   
-  .group
+  #source.group
     .group_title
       Source
-            
+      %a.play.clickable      
     .hidden_prototype
       #source_prototype.sub2panel
         .prop_row
           .label
             source type
           .field
-            %input{:type => "radio", :name => "source_subclass_prototype", :value => 'continuous', :id => "source_subclass_continuous_prototype", :checked => "true"}
+            %input{:type => "radio", :name => "source_type_prototype", :value => 'continuous', :id => "source_type_continuous_prototype", :checked => "true"}
               continuous
-            %input{:type => "radio", :name => "source_subclass_prototype", :value => 'gaussian', :id => "source_subclass_gaussian_prototype"}
+            %input{:type => "radio", :name => "source_type_prototype", :value => 'gaussian', :id => "source_type_gaussian_prototype"}
               gaussian
-            %input{:type => "radio", :name => "source_subclass_prototype",:value => 'custom'  ,:id => "source_subclass_custom_prototype"}
+            %input{:type => "radio", :name => "source_type_prototype",:value => 'custom'  ,:id => "source_type_custom_prototype"}
               custom
         .source_fields
           .prop_row.continuous.gaussian
@@ -489,41 +509,42 @@
             .label
               cutoff
             .field
-              %input{:type => "text", :id => "source_start_time_prototype"}
+              %input{:type => "text", :id => "source_cutoff_prototype"}
           .prop_row.custom
             .label
               src-function
             .field
-              %input{:type => "text", :id => "source_src_function_prototype"}      
-        .prop_row
-          .label
-            component
-          .field
-            %input{:type => "text", :id => "source_component_prototype"}
-        .prop_row
-          .label
-            center
-          .field.vector3
-            %input{:type => "text", :id => "source_center_x_prototype"}
-            %input{:type => "text", :id => "source_center_y_prototype"}
-            %input{:type => "text", :id => "source_center_z_prototype"}
-        .prop_row
-          .label
-            size
-          .field.vector3
-            %input{:type => "text", :id => "source_size_x_prototype"}
-            %input{:type => "text", :id => "source_size_y_prototype"}
-            %input{:type => "text", :id => "source_size_z_prototype"}
-        .prop_row
-          .label
-            amplitude
-          .field
-            %input{:type => "text", :id => "source_amplitude_prototype"}
-        .prop_row
-          .label
-            amplitude function
-          .field
-            %input{:type => "text", :id => "source_amp_func_prototype"}
+              %input{:type => "text", :id => "source_src_function_prototype"}
+        .others      
+          .prop_row
+            .label
+              component
+            .field
+              %input{:type => "text", :id => "source_component_prototype"}
+          .prop_row
+            .label
+              center
+            .field.vector3
+              %input{:type => "text", :id => "source_centerx_prototype"}
+              %input{:type => "text", :id => "source_centery_prototype"}
+              %input{:type => "text", :id => "source_centerz_prototype"}
+          .prop_row
+            .label
+              size
+            .field.vector3
+              %input{:type => "text", :id => "source_sizex_prototype"}
+              %input{:type => "text", :id => "source_sizey_prototype"}
+              %input{:type => "text", :id => "source_sizez_prototype"}
+          .prop_row
+            .label
+              amplitude
+            .field
+              %input{:type => "text", :id => "source_amplitude_prototype"}
+          .prop_row
+            .label{:name => 'amp-func'}
+              amplitude function
+            .field
+              %input{:type => "text", :id => "source_amp_func_prototype"}
 
         %a.minus.clickable{:onClick => "removeSub2panel(event);"}      
         
@@ -532,25 +553,26 @@
       %a.clickable.add{:onclick => "newSource('source')"}   
 
 
-  .group
+  #flux.group
     .group_title
       Flux region
+      %a.play.clickable
     .hidden_prototype
       #flux_prototype.sub2panel
         .prop_row
           .label
             center
           .field.vector3
-            %input{:type => "text", :id => "flux_center_x_prototype"}
-            %input{:type => "text", :id => "flux_center_y_prototype"}
-            %input{:type => "text", :id => "flux_center_z_prototype"}
+            %input{:type => "text", :id => "flux_centerx_prototype"}
+            %input{:type => "text", :id => "flux_centery_prototype"}
+            %input{:type => "text", :id => "flux_centerz_prototype"}
         .prop_row
           .label
             size
           .field.vector3
-            %input{:type => "text", :id => "flux_size_x_prototype"}
-            %input{:type => "text", :id => "flux_size_y_prototype"}
-            %input{:type => "text", :id => "flux_size_z_prototype"}
+            %input{:type => "text", :id => "flux_sizex_prototype"}
+            %input{:type => "text", :id => "flux_sizey_prototype"}
+            %input{:type => "text", :id => "flux_sizez_prototype"}
         .prop_row
           .label
             direction
@@ -584,24 +606,29 @@
     %a.clickable.add{:onclick => "newSub2panel('flux')"} 
     
     
-  .group
+  #run.group
     .group_title
       Running parameters
+      %a.play.clickable
     .prop_row
       .label
-        run until
+        run type
       .field
-        %input{:type => "text", :id => "run_until"}
+        %input{:type => "radio", :name => "run_type", :value => 'until', :id => "run_type_until", :checked => "true"}
+          until
+        %input{:type => "radio", :name => "run_type", :value => 'sources', :id => "run_type_sources"}
+          sources
+   
     .prop_row
       .label
-        run sources
+        cond?/time
       .field
-        %input{:type => "text", :id => "run_sources"}
+        %input{:type => "text", :id => "run_cond"}
     .prop_row
       .label
-        additional
+        step functions
       .field
-        %input{:type => "text", :id => "run_additional"}
+        %input{:type => "text", :id => "run_step_function"}
     .prop_row
       .label
         output epsilon
@@ -620,7 +647,249 @@
 
 
       
-:javascript 
+:javascript
+  Object.extend(String.prototype, {
+    nl: function(){
+      if(this != ''){
+        return this + "\n"
+      }
+      else{
+        return this
+      }
+    },
+    prefix: function(prefix){
+      if(this != ''){
+        return prefix + this
+      }
+      else{
+        return this
+      }
+    }
+  })
+ 
+  function lisp(){
+    var args = $A(arguments);
+    var result = "(";
+    result += args.reject(function(s){return s == ''}).join(' ')
+    result += ")"
+    return result;
+  }
+  
+  function L(){
+    var args = $A(arguments)
+    if(args.all(function(arg){
+      return arg !== undefined && arg.strip() != ''
+    })){
+      return lisp.apply(null, args)
+    }
+    else{
+      return ""
+    }
+  }
+  
+  function V(id){
+    var element = $(id)
+    if(element){
+      if(element.value !== undefined){
+        return element.value
+      }
+      else{
+        throw 'no value property:' + id 
+      }
+    }
+    else{
+      throw 'wrong id:' + id
+    }
+  }
+  
+  function T(element){
+    return element.collectTextNodes().strip()
+  }
+  
+  function row2Lisp(row, prefix, index){
+    var labelDiv = row.down('.label')
+    var name = labelDiv.readAttribute('name') || T(labelDiv)
+    var label = name.gsub('-', '_')
+    var fieldElement = row.down('.field')
+    var value;
+    if(fieldElement.hasClassName('vector3')){
+      value = vector3([prefix, label + "XYZ", index].join('_'))
+    }
+    else{
+      value = V([prefix, label, index].join('_'))
+    }
+    return L(name, value)
+  }
+  
+  function vector3(idTemplate){
+    var defined = true;
+    var result = $w('x y z').map(function(c){
+      var id = idTemplate.gsub('XYZ', c)
+      var val = V(id)
+      if(val == ''){
+        defined = false
+      }
+      return val;  
+    }).join(' ')
+    if(defined){
+      return result
+    }
+    else{
+      return ""
+    }
+  }
+
+  var generators = {
+    parameters: function(){
+      var result = ""
+      $$('#parameter_container div').each(function(row){
+        var label = row.down('.label').value
+        var value = row.down('.value').value
+        var def;
+        if(isNumber(value)){
+          def = "define-param"
+        }
+        else{
+          def = "define"
+        }
+        result += L(def, label, value).nl()
+      })
+      return result;
+    },
+    computational_cell: function(){
+      var result = '';
+      result += L('set! geometry-lattice', L('make lattice', L('size', vector3('latice_size_XYZ')))).nl()
+      result += L('set! resolution', V('resolution')).nl()
+      result += L('set-param! k-point', L('vector3', vector3('k_point_XYZ'))).nl()
+      return result;
+    },
+    pml: function(){
+      var result = ''
+      $$('#pml_container .sub2panel').each(function(element, index){
+        result += "\n  " + lisp('make pml', 
+          L('thickness', V('pml_thickness_' + index)), 
+          L('direction', V('pml_direction_' + index)), 
+          L('side', V('pml_side_' + index)), 
+          L('strength', V('strength_' + index)), 
+          L('R-asymptotic', V('r_asymptotic_' + index)),
+          L('pml-profile', V('pml_profile_' + index)))
+      })
+      result = L('set! pml-layers', L('list', result))
+      return result
+    },
+    symmetry: function(){
+      var result = ''
+      $$('#symmetry_container tr[id^=sym_]').each(function(tr, index){
+        
+        result += "\n" +
+          lisp('make', V('sym_type_' + index), 
+            lisp('direction', V('sym_direction_' + index)), 
+            L('phase', V('sym_phase_' + index)));
+      })
+      result = L('set! symmetries', L('list', result))
+      return result;
+    },
+    materials: function(){
+      var result = ''
+      $$('#material_container tr[id^=material_]').each(function(tr, index){
+        
+        result += "\n" +
+          lisp('define', V('medium_name_' + index), 
+            lisp('epsilon', V('medium_epsilon_' + index)));
+      })
+      
+      return result;
+    },
+    geometry: function(){
+      var result = ''
+      $$('#objects .sub2panel').each(function(element, index){
+        var type = T(element.down('.sub2panel_title'))
+        var attrResult = ''
+        element.select('.prop_row').each(function(row){
+          attrResult += row2Lisp  (row, type, index)
+        })
+        result += "\n" + L('make', type, attrResult)
+      })
+      result = L('set! geometry', L('list', result))
+      return result
+    },
+    source: function(){
+      var result = ''
+      $$('#source_container .sub2panel').each(function(panel){
+        var index = getIndex(panel.id)
+        var source_type = radio_value('source_type_' + index)
+        var src_result = ''
+        panel.select('.source_fields .' + source_type).each(function(row){
+          src_result += row2Lisp(row, 'source', index)
+        })
+        panel_result = L('src', L('make', source_type + '-src', src_result)).prefix("\n\t\t")
+        panel.select('.others .prop_row').each(function(row){
+          if(!row.down('input').id.startsWith('source_type')){
+            panel_result += row2Lisp(row, 'source', index).prefix("\n\t\t")
+          }
+        })
+        result += L('make source', panel_result).prefix("\n\t")
+      })
+      result = L('!set sources', L('list', result))
+      return result.strip()
+    },
+    flux: function(){
+      var result = ''
+      var flux_names = []
+      $$('#flux_container .sub2panel').each(function(panel){
+        var index = getIndex(panel.id)
+        var flux_name = 'flux' + index
+        flux_names.push(flux_name)
+        result += L('define', flux_name, L('add-flux', V('flux_fcen_' + index), V('flux_df_' + index), V('flux_nfreq_' + index), 
+          L('make flux-region', L('center', vector3('flux_centerXYZ_' + index)), L('size', vector3('flux_sizeXYZ_' +index))
+        ))).nl()
+      })
+      result += L('display-fluxes', flux_names.join(' '))
+      return result;
+    },
+    run: function(){
+      var result = []
+      var run_type = radio_value('run_type')
+      var condition = V('run_cond')
+      var step_function = V('run_step_function')
+      
+      result.push(condition)
+      
+      if($('run_output_epsilon').checked){
+        result.push('(at-beginning output-epsilon)')
+      }
+      result.push(step_function)
+      if(condition && run_type == 'sources'){
+        run_type += '+'
+      }
+      result = L('run-' + run_type, result.join(' '))
+      return result
+    }
+    
+  }
+
+  $$('.group_title .play').each(function (e){
+    e.observe('mouseover', function(event){
+      showCode(event)
+    })
+    e.observe('mouseout', function(event){
+      hideCode(event)
+    })
+  })
+
+  function showCode(event){
+    var panel = event.element().up('.group')
+    var content = generators[panel.id]();
+    //panel.setStyle("border: solid")
+    var offset = panel.cumulativeOffset()
+    panel.appendChild(NodeBuilder(
+      ['pre', {'class': 'code', style: 'position: absolute; left: ' + 10  + 'px; top: ' +  (offset[1] + 20) + 'px'}, content]
+    ))
+  }
+  
+  function hideCode(event){
+    event.element().up('.group').down('.code').remove()
+  }
 
   var animationDuration = 0.3;
   function openAnimation(element, finishFunction){
@@ -668,10 +937,10 @@
     var index = $('parameter_container').childElements().size()
     openAnimation($('parameter_container').appendChild(
       NodeBuilder(
-        ["div", {class: 'parameter_row', id: 'parameter_' + index},
-          ["input", {type: "text" , class: 'label', id: "parameter_name_" + index}],
-          ["input", {type: "text", class: 'value', id: "parameter_value_" + index}],
-          ["a", {class: 'clickable minus', onclick: "remove_parameter(event)"}]
+        ["div", {'class': 'parameter_row', id: 'parameter_' + index},
+          ["input", {type: "text" , 'class': 'label', id: "parameter_name_" + index}],
+          ["input", {type: "text", 'class': 'value', id: "parameter_value_" + index}],
+          ["a", {'class': 'clickable minus', onclick: "remove_parameter(event)"}]
         ]
       )
     ).setStyle("display:none"))
@@ -701,7 +970,7 @@
             ['input', {type: 'text', id: 'sym_phase_' + index}]
           ],
           ["td", {}, 
-            ['a', { class: 'minus clickable', onClick: "removeRow(event, 'sym');"}]
+            ['a', { 'class': 'minus clickable', onClick: "removeRow(event, 'sym');"}]
           ]
         ]
       )
@@ -720,7 +989,7 @@
             ['input', {type: 'text', id: 'medium_epsilon_' + index}]
           ],
           ["td", {}, 
-            ['a', { class: 'minus clickable', onClick: "removeRow(event, 'medium');"}]
+            ['a', { 'class': 'minus clickable', onClick: "removeRow(event, 'medium');"}]
           ]
         ]
       ).setStyle("display: none")));
@@ -757,13 +1026,13 @@
   
   function checkSourceSubclasses(container_id){
     var index = getIndex(container_id)
-    var subclass = radio_value('source_subclass_' + index) 
-    if(!subclass){
-      subclass = 'continuous'
-      $('source_subclass_continuous_' + index).checked = true
+    var source_type = radio_value('source_type_' + index) 
+    if(!source_type){
+      source_type = 'continuous'
+      $('source_type_continuous_' + index).checked = true
     }
     $(container_id).select(".source_fields .prop_row").each(function(e){
-      if(e.hasClassName(subclass)){
+      if(e.hasClassName(source_type)){
         if(!e.visible()){
           e.show()
         }
@@ -789,7 +1058,6 @@
     return clone.id;
   }  
   
-
   function newSub2panel(prototype_prefix){
     var clone = $(prototype_prefix + "_prototype").cloneNode(true);
     var container = $(prototype_prefix + '_container');
