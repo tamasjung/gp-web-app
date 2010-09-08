@@ -78,6 +78,21 @@
       background: url('/images/grey79.png') repeat scroll 0 0;
       -moz-border-radius: 5px 
     }
+    
+    .prop_row .field a.add_step{
+      margin-left: 0px;
+      width: 15px;
+      height: 15px;
+    }
+    
+    .prop_row .field a.step_function_minus{
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      position: relative;
+      padding: 0 0 0 0;
+      top: 5px;
+    }
   
   EMBEDDED_STYLE
 
@@ -220,10 +235,40 @@
       %a.play.clickable
     .prop_row
       .label
-        add 
+        add medium with 
       .field
-        %a.action_link.button_like{:onclick => "new_material()"}
-          medium
+        %a.action_link.button_like{:onclick => "newSub2panel('epsilon', 'material')"}
+          dielectric constant
+        %a.action_link.button_like{:onclick => "newSub2panel('index', 'material')"}
+          refractive index
+    .hidden_prototype
+      #epsilon_prototype.sub2panel
+        .prop_row
+          .label
+            name
+          .field
+            %input{:type => 'text', :id => 'material_name_prototype'}
+        .prop_row
+          .label
+            epsilon
+          .field
+            %input{:type => 'text', :id => 'material_epsilon_prototype'}
+        %a.minus.clickable{:onClick => "removeSub2panel(event);"}
+      #index_prototype.sub2panel
+        .prop_row
+          .label
+            name
+          .field
+            %input{:type => 'text', :id => 'material_name_prototype'}
+        .prop_row
+          .label
+            index
+          .field
+            %input{:type => 'text', :id => 'material_index_prototype'}
+        %a.minus.clickable{:onClick => "removeSub2panel(event);"}
+    #material_container
+  
+      
         
     %table
       %tbody#material_container
@@ -512,9 +557,9 @@
               %input{:type => "text", :id => "source_cutoff_prototype"}
           .prop_row.custom
             .label
-              src-function
+              src-func
             .field
-              %input{:type => "text", :id => "source_src_function_prototype"}
+              %input{:type => "text", :id => "source_src_func_prototype"}
         .others      
           .prop_row
             .label
@@ -604,8 +649,7 @@
     
     #flux_container
     %a.clickable.add{:onclick => "newSub2panel('flux')"} 
-    
-    
+      
   #run.group
     .group_title
       Running parameters
@@ -624,11 +668,18 @@
         cond?/time
       .field
         %input{:type => "text", :id => "run_cond"}
+    
     .prop_row
       .label
         step functions
       .field
-        %input{:type => "text", :id => "run_step_function"}
+        %a.clickable.add.add_step{:onclick => "new_step_function()"}
+    #step_function_container
+    .prop_row
+      .label
+        &nbsp;
+      .field
+         
     .prop_row
       .label
         output epsilon
@@ -670,7 +721,7 @@
   function lisp(){
     var args = $A(arguments);
     var result = "(";
-    result += args.reject(function(s){return s == ''}).join(' ')
+    result += args.without('').join(' ')
     result += ")"
     return result;
   }
@@ -782,8 +833,8 @@
       $$('#symmetry_container tr[id^=sym_]').each(function(tr, index){
         
         result += "\n" +
-          lisp('make', V('sym_type_' + index), 
-            lisp('direction', V('sym_direction_' + index)), 
+          L('make', V('sym_type_' + index), 
+            L('direction', V('sym_direction_' + index)), 
             L('phase', V('sym_phase_' + index)));
       })
       result = L('set! symmetries', L('list', result))
@@ -791,11 +842,11 @@
     },
     materials: function(){
       var result = ''
-      $$('#material_container tr[id^=material_]').each(function(tr, index){
-        
+      $$('#material_container .sub2panel').each(function(panel, index){
+        var type = panel.id.split('_')[0]
         result += "\n" +
-          lisp('define', V('medium_name_' + index), 
-            lisp('epsilon', V('medium_epsilon_' + index)));
+          L('define', V('material_name_' + index), L('make medium', 
+            L(type, V('material_' + type + '_' + index))));
       })
       
       return result;
@@ -804,11 +855,11 @@
       var result = ''
       $$('#objects .sub2panel').each(function(element, index){
         var type = T(element.down('.sub2panel_title'))
-        var attrResult = ''
+        var attrResults= []
         element.select('.prop_row').each(function(row){
-          attrResult += row2Lisp  (row, type, index)
+          attrResults.push(row2Lisp  (row, type, index))
         })
-        result += "\n" + L('make', type, attrResult)
+        result += "\n" + L('make', type, attrResults.without('').join(' '))
       })
       result = L('set! geometry', L('list', result))
       return result
@@ -851,21 +902,23 @@
       var result = []
       var run_type = radio_value('run_type')
       var condition = V('run_cond')
-      var step_function = V('run_step_function')
+
       
       result.push(condition)
       
       if($('run_output_epsilon').checked){
         result.push('(at-beginning output-epsilon)')
       }
-      result.push(step_function)
+      $$('#step_function_container input').each(function(input){
+        result.push(V(input.id))
+      })
+      
       if(condition && run_type == 'sources'){
         run_type += '+'
       }
       result = L('run-' + run_type, result.join(' '))
       return result
     }
-    
   }
 
   $$('.group_title .play').each(function (e){
@@ -880,6 +933,7 @@
   function showCode(event){
     var panel = event.element().up('.group')
     var content = generators[panel.id]();
+    //alert(content)
     //panel.setStyle("border: solid")
     var offset = panel.cumulativeOffset()
     panel.appendChild(NodeBuilder(
@@ -901,7 +955,7 @@
       element.blindDown({queue: 'end', duration: animationDuration, afterFinish: finishFunctionOrNope})
     }
     return element
-  }
+  } 
   
   function closeAnimation(element, finishFunction){
     var finishFunctionOrNope = finishFunction || Prototype.K
@@ -977,28 +1031,6 @@
     ).setStyle("display:none")).previous().removeClassName('not_alone')
   }
   
-  function new_material(){
-    var index = $('material_container').childElements().size() - 1
-    var material = openAnimation($('material_container').appendChild(
-      NodeBuilder(
-        ["tr", {id: 'material_' + index},
-          ["td", {},
-            ["input", {type: 'text', id: 'medium_name_' + index}]
-          ],
-          ["td", {},
-            ['input', {type: 'text', id: 'medium_epsilon_' + index}]
-          ],
-          ["td", {}, 
-            ['a', { 'class': 'minus clickable', onClick: "removeRow(event, 'medium');"}]
-          ]
-        ]
-      ).setStyle("display: none")));
-      
-   material.previous().removeClassName('not_alone')
-   return material;
-        
-  }
-  
   function removeRow(event, prefix){
     var row = event.element().up('tr')
     closeAnimation(row, function(){
@@ -1058,11 +1090,14 @@
     return clone.id;
   }  
   
-  function newSub2panel(prototype_prefix){
+  function newSub2panel(prototype_prefix, container_prefix){
     var clone = $(prototype_prefix + "_prototype").cloneNode(true);
-    var container = $(prototype_prefix + '_container');
+    if(!container_prefix){
+      container_prefix = prototype_prefix
+    }
+    var container = $(container_prefix + '_container');
     var index = container.select('.sub2panel').size();
-    reindexing(clone, 1000001);
+    reindexing(clone, 'transition');
     clone.setStyle('display: none');
     container.appendChild(clone);
     reindexing(clone, index);
@@ -1078,6 +1113,27 @@
       reindexing_selected_children(container, "sub2panel")
     },
     duration: 0.5})
+  }
+  
+  function new_step_function(){
+    var index = $('step_function_container').childElements().size()
+    openAnimation($('step_function_container').appendChild(
+      NodeBuilder(
+        ["div", {'class': 'prop_row'},
+          ["div", {'class': 'label'}, "\u00a0"],
+          ['div', {'class': 'field'},
+            ["input", {type: "text", id: "step_function_" + index}],
+            ["a", {'class': 'clickable minus step_function_minus', onclick: "remove_step_function(event)"}]
+          ]
+        ]
+      )
+    ).setStyle("display:none"))
+  }
+
+  function remove_step_function(event){
+    var container = event.element().up('#step_function_container')
+    event.element().up('.prop_row').remove();
+    reindexing_selected_children(container, ".prop_row")
   }
 
   function file_upload(result){
@@ -1101,7 +1157,6 @@
       })
     })
     })
-    
   }
 
 
@@ -1113,6 +1168,19 @@
   
   $('partial_form').preInit = function(settings){
     
+    if(settings.isJSON()){
+      var json = settings.evalJSON(true);
+      var editors = $H(json).keys().inject([], function(result, key){
+        var match = /^([^_]+).+?_(\d+)$/.exec(key)
+        if(match && match[1] != 'repeater'){
+          result[match[2]] = match[1];
+        }
+        return result;
+      });
+      editors.each(function(editor_type){
+        addBody(editor_type, false);
+      });   
+    }
   }
 
   $('partial_form').init = function (){
