@@ -16,12 +16,9 @@
       #sidebar
         .place_holder
           %a{:onClick => "debug_window.open()"}
-            debug
-        .broadcast
+            debug 
+        #bc.broadcast
           = h ApplicationController.broadcast
-          -#Process.pid
-            
-      
       #content
         -if flash[:notice]
           .notice 
@@ -34,7 +31,10 @@
           =@git_version
           
 #main_debug.debug{:title => "DEBUG"}
-
+= ENV['RAILS_ENV'] != 'developer' || periodically_call_remote(:url => {:controller => 'application', 
+  :action => 'pool_broadcast'}, 
+  :update => 'bc', 
+  :frequency => 60)
 
   
 :javascript

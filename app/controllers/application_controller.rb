@@ -37,7 +37,9 @@ class ApplicationController < ActionController::Base
   init_app
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
-  
+  def pool_broadcast
+    render :text => ApplicationController.broadcast
+  end
 
   def login_check
     unless cookies[:nick] 
