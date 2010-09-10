@@ -1,6 +1,9 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 
+
+
+
 function confirm_dialog(title, question, onOkFunction, onCancelFunction){
   var window;
   var destroyFunction = function(){

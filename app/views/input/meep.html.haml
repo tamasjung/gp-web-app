@@ -115,7 +115,7 @@
       %a.play.clickable
     .long_desc
       Simple name-value pairs can be given as parameters. You can use the names below in place of direct values.
-    %a.clickable.add{:onclick => "new_parameter()"}  
+    %a.clickable.add{:onclick => "newParameter()"}  
     #parameter_container
     
     
@@ -210,12 +210,12 @@
     .prop_row
       .label
         add
-      .field
-        %a.action_link.button_like{:onClick => "new_symmetry(event, 'mirror-sym');"}
+      #add_symmetry_buttons.field
+        %a.action_link.button_like{:onClick => "newSymmetry('mirror-sym');"}
           mirror
-        %a.action_link.button_like{:onClick => "new_symmetry(event, 'rotate2-sym');"}
+        %a.action_link.button_like{:onClick => "newSymmetry('rotate2-sym');"}
           180&deg; rotational
-        %a.action_link.button_like{:onClick => "new_symmetry(event, 'rotate4-sym');"}
+        %a.action_link.button_like{:onClick => "newSymmetry('rotate4-sym');"}
           90&deg; rotational
         
     %table
@@ -287,7 +287,7 @@
         add
       .field
         -%w"sphere cylinder cone block ellipsoid".each do |item|
-          %a.action_link.button_like{:onClick => "new_object(event, '#{item}');"}
+          %a.action_link.button_like{:onClick => "newObject('#{item}')"}
             =item
     #objects
     .prop_row.hidden_prototype 
@@ -673,7 +673,7 @@
       .label
         step functions
       .field
-        %a.clickable.add.add_step{:onclick => "new_step_function()"}
+        %a.clickable.add.add_step{:onclick => "newStepFunction()"}
     #step_function_container
     .prop_row
       .label
@@ -754,7 +754,7 @@
   }
   
   function T(element){
-    return element.collectTextNodes().strip()
+    return Element.collectTextNodes(element).strip()
   }
   
   function row2Lisp(row, prefix, index){
@@ -920,6 +920,8 @@
       return result
     }
   }
+  
+  //end of generators
 
   $$('.group_title .play').each(function (e){
     e.observe('mouseover', function(event){
@@ -987,35 +989,46 @@
     }
   }
   
-  function new_parameter(){
+  function builderInfo(function_id, container_prefix, index, params){
+    var params_string = (params ? params.join(' ') : '')
+    return ["input", {type: 'hidden', id: ['builder_info', function_id, container_prefix, index].join('_'), value: params_string }]
+  }
+  
+  function addBuilderInfoNode(node, function_id, container_prefix, index, params){
+    node.down('input').insert({after: NodeBuilder(builderInfo(function_id, container_prefix, index, params))})
+    return node
+  }
+  
+  function newParameter(){
     var index = $('parameter_container').childElements().size()
     openAnimation($('parameter_container').appendChild(
       NodeBuilder(
         ["div", {'class': 'parameter_row', id: 'parameter_' + index},
           ["input", {type: "text" , 'class': 'label', id: "parameter_name_" + index}],
+          builderInfo('newParameter', 'parameter', index),
           ["input", {type: "text", 'class': 'value', id: "parameter_value_" + index}],
-          ["a", {'class': 'clickable minus', onclick: "remove_parameter(event)"}]
+          ["a", {'class': 'clickable minus', onclick: "removeParameter(event)"}]
         ]
       )
     ).setStyle("display:none"))
   }
   
-  function remove_parameter(event){
+  function removeParameter(event){
     var container = event.element().up('#parameter_container')
     event.element().up('div').remove();
     reindexing_selected_children(container, "div[id^='parameter_']")
   }
-  
-  
 
-  function new_symmetry(event, sym_type){
+  function newSymmetry(sym_type){
     var index = $('symmetry_container').childElements().size() - 1
+    var label = T($('add_symmetry_buttons').down('a[onclick*=' + sym_type + ']'))
     openAnimation($('symmetry_container').appendChild(
       NodeBuilder(
         ["tr", {id: 'sym_' + index},
           ["td", {},
             ["input", {type: 'hidden', id: 'sym_type_' + index, value: sym_type}],
-            event.element().firstChild.nodeValue
+            builderInfo('newSymmetry', 'symmetry', index, [sym_type]),
+            label
           ],
           ["td", {},
             ['input', {type: 'text', id: 'sym_direction_' + index}]
@@ -1044,10 +1057,11 @@
     
   }
   
-  function new_object(event, object_type){
+  function newObject(object_type){
     var prototype_id = object_type;
     var clone = $(prototype_id + "_prototype").cloneNode(true);
     var index = $('objects').childElements().size();
+    addBuilderInfoNode(clone, 'newObject', 'object', index, [object_type])
     reindexing(clone, 1000001);
     $('objects').appendChild(clone).setStyle("display: none");
     reindexing(clone, index);
@@ -1078,8 +1092,8 @@
   }
   
   function newSource(){
-    var clone = newSub2panel('source');
-    
+    var clone = newSub2panel('source', 'source', 'skipBuilderNode');
+    addBuilderInfoNode(clone, 'newSource', 'source', getIndex(clone.id))
     checkSourceSubclasses(clone.id)
 
     $(clone.id).select('input[type="radio"]').each(function(e){
@@ -1090,13 +1104,17 @@
     return clone.id;
   }  
   
-  function newSub2panel(prototype_prefix, container_prefix){
+  function newSub2panel(prototype_prefix, container_prefix, hint){
     var clone = $(prototype_prefix + "_prototype").cloneNode(true);
     if(!container_prefix){
       container_prefix = prototype_prefix
     }
     var container = $(container_prefix + '_container');
     var index = container.select('.sub2panel').size();
+    if(hint != 'skipBuilderNode'){
+      var params = $A(arguments)
+      addBuilderInfoNode(clone, 'newSub2panel', container_prefix, index, params)
+    }
     reindexing(clone, 'transition');
     clone.setStyle('display: none');
     container.appendChild(clone);
@@ -1115,7 +1133,7 @@
     duration: 0.5})
   }
   
-  function new_step_function(){
+  function newStepFunction(){
     var index = $('step_function_container').childElements().size()
     openAnimation($('step_function_container').appendChild(
       NodeBuilder(
@@ -1123,14 +1141,15 @@
           ["div", {'class': 'label'}, "\u00a0"],
           ['div', {'class': 'field'},
             ["input", {type: "text", id: "step_function_" + index}],
-            ["a", {'class': 'clickable minus step_function_minus', onclick: "remove_step_function(event)"}]
+            builderInfo('newStepFunction', 'step_function', index),
+            ["a", {'class': 'clickable minus step_function_minus', onclick: "removeStepFunction(event)"}]
           ]
         ]
       )
     ).setStyle("display:none"))
   }
 
-  function remove_step_function(event){
+  function removeStepFunction(event){
     var container = event.element().up('#step_function_container')
     event.element().up('.prop_row').remove();
     reindexing_selected_children(container, ".prop_row")
@@ -1161,25 +1180,43 @@
 
 
   function prepareSubmit(){
-  
     $('command_args').value = buildCommandArgs();
     $('display_str').value = $('command_args').value
   }
+  
+  var functions = $w('newParameter newSymmetry newObject newSource newSub2panel newStepFunction').inject($H(), function(set, item){
+    set.set(item, 1)
+    return set
+  })
   
   $('partial_form').preInit = function(settings){
     
     if(settings.isJSON()){
       var json = settings.evalJSON(true);
-      var editors = $H(json).keys().inject([], function(result, key){
-        var match = /^([^_]+).+?_(\d+)$/.exec(key)
-        if(match && match[1] != 'repeater'){
-          result[match[2]] = match[1];
+      var functionCalls = $H()
+      $H(json).each(function(pair){
+        var match = /^builder_info_([^_]+)_.+([^_]+)$/.exec(pair.key)
+        if(match){
+          var function_id = match[1];
+          var values = pair.value
+          if(!Object.isArray(values)){
+            values = [values]
+          }
+          values.each(function(value){
+            (functionCalls.get(function_id) || functionCalls.set(function_id, [])).push({index: +match[2], params: value})
+          })  
         }
-        return result;
       });
-      editors.each(function(editor_type){
-        addBody(editor_type, false);
-      });   
+      functionCalls.each(function (pair){
+        if(!functions.get(pair.key)){
+          //unknown function
+        }
+        else{
+          pair.value.sortBy(function(item){return item.index}).each(function (item){
+            eval(pair.key).apply(null, item.params.split(' ') || [])
+          })
+        }   
+      })
     }
   }
 
@@ -1195,6 +1232,9 @@
     
     $$('.long_desc, .source_editor').invoke('toggle');
     
+    $('source_container').select('.sub2panel').each(function(panel){
+      checkSourceSubclasses(panel.id)
+    })
     
     //addAccordionDynamism();
   }
