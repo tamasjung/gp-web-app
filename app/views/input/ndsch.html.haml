@@ -859,7 +859,7 @@
     var tr = NodeBuilder(
       ['tr', {},
         ['td', {colspan: 100}, 
-          ['div', {class: 'repeater'}, 
+          ['div', {'class': 'repeater'}, 
             ['span', {onclick: "Effect.toggle(event.element().next())"}, 'repeat'],
             ['span', {id: 'repeater_container_' + index}, 
               ['input', {id: 'repeater_n_' + index, type: 'text', value: '1'}],

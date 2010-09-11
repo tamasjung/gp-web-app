@@ -82,20 +82,14 @@ function LL(list){
 function NodeBuilder(list){
   
   if(list === undefined){
-    throw {
-      name: 'NodeBuilderException',
-      message: "list is undefined"
-    }
+    throw "list is undefined"
   }
   if(typeof list === 'string'){
     return document.createTextNode(list);
   }
   var listSize = list.length;
   if(listSize ==   0){
-    throw{
-      name: 'NodeBuilderException',
-      message: 'list is empty'
-    }
+    throw 'list is empty'
   }
   
   var elementName = list[0];
@@ -135,7 +129,7 @@ function toOrdinaryDecimal(number){
   
   //alert(re);
   if(!re){
-    throw {name: "NaN", message: "Not a number:" + number}
+    throw "Not a number:" + number
   }
   
 

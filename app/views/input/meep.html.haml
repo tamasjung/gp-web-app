@@ -101,6 +101,7 @@
 %form#partial_form.panel_in_tab
   %input{:type => "hidden", :id=>"command_args"}
   %input{:type => "hidden", :id=>"display_str"}
+  %input{:type => "hidden", :id=>"file_input_ss"}
   
   .group    
     %a.clickable.edit{:onClick => "toggleEditor('editor_head')", :title => 'click to see or hide the editor'}
@@ -1154,6 +1155,17 @@
     event.element().up('.prop_row').remove();
     reindexing_selected_children(container, ".prop_row")
   }
+  
+  function generateFile(){
+    var result = V('editor_head').nl()
+    $$('#partial_form > div').each(function(div){
+      if(div.id){
+        result += generators[div.id].call().nl()
+      }
+    })
+    result += V('editor_tail')
+    return result 
+  }
 
   function file_upload(result){
     //alert(result);
@@ -1164,7 +1176,7 @@
 
 
   function buildCommandArgs(){
-    return "meep f g";
+    return "meep input.ss";
   }
   
   
@@ -1182,6 +1194,7 @@
   function prepareSubmit(){
     $('command_args').value = buildCommandArgs();
     $('display_str').value = $('command_args').value
+    $('file_input_ss').value = generateFile()
   }
   
   var functions = $w('newParameter newSymmetry newObject newSource newSub2panel newStepFunction').inject($H(), function(set, item){
