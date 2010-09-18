@@ -13,16 +13,6 @@
       font-size: 1em;
     }
     
-    .prop_row .field a.add_body{
-      padding-left: 3px;
-      padding-right: 3px;
-      margin-left: 3px;
-      margin-right: 3px;
-      
-      text-decoration: none;
-      color: grey;
-    }
-    
     table a.remove_body{
       font-size: 1em;
       color: inherit;
@@ -77,6 +67,7 @@
       padding-left: 5px;
       padding-right: 5px;
     }
+
     
   
   EMBEDDED_STYLE
@@ -269,6 +260,7 @@
         %li.tab
           %a{:href => '#reference_panel'}
             file reference
+
     #bodies_panel.tabpanel
       #bodies
       .prop_row
@@ -276,28 +268,41 @@
           default value
         .field
           %input{:type => "text", :id=>"default", :valid_if => "isNumber(x)"}
-        
+
       .prop_row
         .label
           .add_text
             add
         .field
-          %a.action_link.add_body{:onClick => "addBody('sphere');"}
+          %a.action_link{:onClick => "addBody('sphere');"}
             sphere
-          %a.action_link.add_body{:onClick => "addBody('box');"}
+          %a.action_link{:onClick => "addBody('box');"}
             box
-          %a.action_link.add_body{:onClick => "addBody('cylinder');"}
+          %a.action_link{:onClick => "addBody('cylinder');"}
             cylinder
-          %a.action_link.add_body{:onClick => "addBody('halfspace');"}
+          %a.action_link{:onClick => "addBody('halfspace');"}
             halfspace
-          %a.action_link.add_body{:onClick => "addBody('atom');"}
+          %a.action_link{:onClick => "addBody('atom');"}
             atom
     
       .prop_row
         .label
           upload atoms
+        .field.upload_box
+          %iframe.upload_iframe{:src => '/upload', :scrolling => 'no'}
+      .prop_row
+        .label
+          export
         .field
-          %iframe.upload_iframe{:src => '/upload'}
+          %a.action_link{:onClick => "generateX3D(event)"}
+            open model
+      .prop_row
+        .label
+          display on/off
+        .field
+          %input{:type => 'checkbox', :checked => 'checked', :id=>"display_switch", :onClick => "displaySwitch(event)"}
+
+       
             
 
 
@@ -577,41 +582,79 @@
               
   %br 
   
-  %x3d#renderer{:height => "650px", :showstat => "false", :width => "650px", :x => "0px", :y => "0px"}
-    %scene
-      %background{:def => "bgnd", :transparency => "1.0"}
-      %viewpoint{:position => '4.88104 4.59865 7.4181', :orientation => '-0.69017 0.723467 -0.0161809 0.735134'}
+  %X3D#renderer{:height => "650px", :showstat => "false", :width => "650px", :x => "0px", :y => "0px"}
+    %Scene
+      %Background{:def => "bgnd", :transparency => "1.0"}
+      %Viewpoint{:position => '4.88104 4.59865 7.4181', :orientation => '-0.69017 0.723467 -0.0161809 0.735134'}
       
       
-      %transform{:translation => "0 5 0"}
-        %shape
-          %appearance
-            %material{:diffuseColor => "0 1 0"}
-          %sphere{:radius => "0.05"}
-          %cylinder{:height => "10", :radius => "0.01"}
-      %transform{:rotation => "1 0 0 #{Math::PI/2}", :translation => "0 0 5"} 
-        %shape
-          %appearance
-            %material{:diffuseColor => "0 0 1"}
-          %cylinder{:height => "10", :radius => "0.01"}
-      %transform{:rotation => "0 0 1 #{Math::PI/2}", :translation => "5 0 0"}
-        %shape
-          %appearance
-            %material{:diffuseColor => "1 0 0"}
-          %cylinder{:height => "10", :radius => "0.01"}
+      %Transform{:translation => "0 5 0"}
+        %Shape
+          %Appearance
+            %Material{:diffuseColor => "0 1 0"}
+          %Sphere{:radius => "0.05"}
+          %Cylinder{:height => "10", :radius => "0.01"}
+      %Transform{:rotation => "1 0 0 #{Math::PI/2}", :translation => "0 0 5"} 
+        %Shape
+          %Appearance
+            %Material{:diffuseColor => "0 0 1"}
+          %Cylinder{:height => "10", :radius => "0.01"}
+      %Transform{:rotation => "0 0 1 #{Math::PI/2}", :translation => "5 0 0"}
+        %Shape
+          %Appearance
+            %Material{:diffuseColor => "1 0 0"}
+          %Cylinder{:height => "10", :radius => "0.01"}
           
-          
-      -#
-        %transform{:rotation => "0 0 1 1.57", :translation => "0 5 0"}
-          %shape
-            %appearance
-              %material{:diffuseColor => "0 0 1"}
-            %cone{:height => "0.0001", :bottomRadius => "0.0001"}
 
           
-      %group#root
+      %Group#root
       
+
+  #x3dlink
+      
+      
+%form{:id => 'temp_upload'}
+  %input#temp_upload_input{:type => :hidden, :name => 'temp_upload_input' } 
+  %input#ext{:type => :hidden, :name => 'ext', :value => '.x3d' }  
+  
 :javascript 
+
+  
+
+
+  function addDownloadLink(id){
+    var url = '/tmp/' + id
+    // $('x3dlink').appendChild(NodeBuilder(
+    //   ["a", {href: url, target: "_blank" },
+    //     "download file"
+    //   ]
+    // ))
+    window.open(url,"x3dmodel_window");
+  }
+
+  function generateX3D(event){
+    
+    var xml = '<?xml version="1.0" encoding="UTF-8"?>\n' + xml2Str($('renderer'))
+      .gsub(/(<\/?)(\S)/, function(match){return match[1] + match[2].capitalize()})
+      .gsub("X3d", "X3D")
+      .gsub(/xmlns=('|")[^\1]+?\1/, "");
+    
+    //var dataref = "data:model/x3d+xml;base64," + toBase64(xml)
+    //var dataref = "data:model/x3d+xml;charset=utf-8," + xml
+    
+    //window.open(dataref,"mywindow");
+    
+    // $('x3dlink').appendChild(NodeBuilder(
+    //   ["a", {href: dataref},
+    //     "click"
+    //   ]
+    // ))
+    
+    $('temp_upload_input').value = xml
+    var params = Form.serialize($('temp_upload'))
+    new Ajax.Request('/upload/create_temp', {asynchronous:false, evalScripts:true, parameters:params}); return false;
+    
+  }
 
   function file_upload(result){
     //alert(result);
@@ -789,15 +832,43 @@
     };
   }
   
+  
+  
+  var rootParent = $('root').parentNode;
+  var root = $('root')
+  
+  // function displaySwitch(event){
+  //   var on = event.element().checked
+  //   var canvas = $('x3dom-renderer-canvasdiv')
+  //   if(on){
+  //     
+  //     //canvas.show()
+  //     rebuildScene()
+  //   }
+  //   else{
+  //     root = clearScene()
+  //     //canvas.hide()
+  //     
+  //     
+  //   }
+  // }
+  
+  function clearScene(){
+    var old_root = $('root').remove();
+    root = NodeBuilder(
+      ['Group', {id: 'root'}]
+    )
+    rootParent.appendChild(root);
+    return old_root
+  }
+  
   function rebuildScene(){
-    var rootParent = $('root').parentNode;
-    $('root').remove();
-    rootParent.appendChild(NodeBuilder(
-      ['group', {id: 'root'}]
-    ));
+    clearScene()
+    
     $('bodies').select('table').each(function(e){
       e.createX3D();
     })    
+    
   }
 
   var renderer = {
@@ -810,19 +881,19 @@
       if(decorator === undefined){
         decorator = Prototype.K
       }
-      $('root').appendChild(
+      var bodyTypeCap = bodyType.capitalize();
+      root.appendChild(
         decorator(
           NodeBuilder(
-          ['group', {},
-            ['transform', transformAttrs,
-              ['shape', {},
-                ['appearance', {},
-                  ['material', {diffuseColor:this.diffuseColor , specularColor: this.specularColor, shininess: '0.12', transparency: "0.4"}]
+            ['Transform', transformAttrs,
+              ['Shape', {},
+                ['Appearance', {},
+                  ['Material', {diffuseColor:this.diffuseColor , specularColor: this.specularColor, shininess: '0.12', transparency: "0.4"}]
                 ],
-                [bodyType, bodyAttrs]
+                [bodyTypeCap, bodyAttrs]
               ]
             ]
-          ])
+          )
         )
       );
     }

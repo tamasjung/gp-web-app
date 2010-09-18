@@ -2,6 +2,61 @@
 // This file is automatically included by javascript_include_tag :defaults
 
 
+function toBase64(input) {
+  var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+  var output = "";
+  var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+  var i = 0;
+
+  //input = Base64._utf8_encode(input);
+
+  while (i < input.length) {
+
+    chr1 = input.charCodeAt(i++);
+    chr2 = input.charCodeAt(i++);
+    chr3 = input.charCodeAt(i++);
+
+    enc1 = chr1 >> 2;
+    enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+    enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+    enc4 = chr3 & 63;
+
+    if (isNaN(chr2)) {
+      enc3 = enc4 = 64;
+    } else if (isNaN(chr3)) {
+      enc4 = 64;
+    }
+
+    output = output +
+    keyStr.charAt(enc1) + keyStr.charAt(enc2) +
+    keyStr.charAt(enc3) + keyStr.charAt(enc4);
+
+  }
+
+  return output;
+}
+
+
+
+//got from http://www.webdeveloper.com/forum/showthread.php?t=187378
+function xml2Str(xmlNode) {
+   try {
+      // Gecko- and Webkit-based browsers (Firefox, Chrome), Opera.
+      return (new XMLSerializer()).serializeToString(xmlNode);
+  }
+  catch (e) {
+     try {
+        // Internet Explorer.
+        return xmlNode.xml;
+     }
+     catch (e) {  
+        //Other browsers without XML Serializer
+        alert('Xmlserializer not supported');
+     }
+   }
+   return false;
+}
+
 
 
 function confirm_dialog(title, question, onOkFunction, onCancelFunction){

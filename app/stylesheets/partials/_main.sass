@@ -154,6 +154,16 @@ $grid_logo = "grid_logo.png"
     text-decoration: none
     +rounded(3px)
     border: solid 1px lightgrey
+    padding-left: 6px
+    padding-right: 3px
+    margin-left: 3px
+    margin-right: 3px
+    padding-bottom: 1px
+    margin-bottom: 2px
+
+    text-decoration: none
+    color: grey
+    display: inline-block
     //background: grey 
     
 #container ul.subsection_tabs
@@ -274,6 +284,10 @@ $grid_logo = "grid_logo.png"
   
 .upload_iframe
   height: 2em
+  padding: 5px
+  
+#upload_form
+  margin-top: 2px
       
 input.invalid, div.invalid
   color: black
@@ -352,14 +366,7 @@ body
     &.help_off
       background: image_url("protocons/24px/status/help.png") no-repeat center center
     &.button_like
-      padding-left: 6px
-      padding-right: 3px
-      margin-left: 3px
-      margin-right: 3px
-      padding-bottom: 2px
-      
-      text-decoration: none
-      color: grey
+
         
 .add_image
   background: image_url("protocons/48px/actions/add.png") no-repeat center center
@@ -372,13 +379,7 @@ body
   +rounded(5px)
   padding-left: 5px
   paddding-right: 5px
-  //display: none
-  
-.action_link
-  text-decoration: none
-  +rounded(3px)
-  border: solid 1px lightgrey
-  //background: grey
+
   
 .rounded_15
   +rounded(15)
