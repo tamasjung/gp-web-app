@@ -56,16 +56,25 @@
     }
     
     
-    .repeater{
+
+    
+    .editor_option{
       margin-top: 10px;
-      border-top: solid lightgray 1px
+      padding-top: 10px;
+      border-top: solid lightgray 1px;
     }
-    .repeater * {
+    .editor_option > *{
       margin-top: 10px;
-      font-size: 0.8em;
-      height: 0.9em;
+      font-size: 0.8em;  
+    }
+    .editor_option span{
       padding-left: 5px;
       padding-right: 5px;
+    }
+    
+    .editor_option input{
+      height: 0.9em;
+      
     }
 
     
@@ -298,9 +307,9 @@
             open model
       .prop_row
         .label
-          display on/off
+          auto distance on/off
         .field
-          %input{:type => 'checkbox', :checked => 'checked', :id=>"display_switch", :onClick => "displaySwitch(event)"}
+          %input{:type => 'checkbox', :checked => 'checked', :id=>"auto_distance_switch", :onClick => "checkAutoDistance(event)"}
 
        
             
@@ -520,7 +529,7 @@
       
       %table#halfspace_prototype
         %tr
-          %th.tlabel{:rowspan => '3'}
+          %th.tlabel{:rowspan => '400'}
             halfspace
 
           %th.first_cell       
@@ -561,6 +570,19 @@
             %input{:type => 'text', :id => 'halfspace_v_prototype'}
           %td
             %a.clickable.minus{:onClick => "removeBody(event);"}
+        %tr
+          %td{:colspan => 100}
+            .editor_option
+              %span
+                %span
+                  shown as two disks with radius
+                %input{:type => 'text', :id => 'halfspace_diskradius_prototype', :value => '100'}
+                %span
+                  &amp; width
+                %input{:type => 'text', :id => 'halfspace_diskwidth_prototype', :value => '1e-15'}
+            
+            
+      
                  
     #file_panel.tabpanel
       .prop_row
@@ -585,7 +607,7 @@
   %X3D#renderer{:height => "650px", :showstat => "false", :width => "650px", :x => "0px", :y => "0px"}
     %Scene
       %Background{:def => "bgnd", :transparency => "1.0"}
-      %Viewpoint{:position => '4.88104 4.59865 7.4181', :orientation => '-0.69017 0.723467 -0.0161809 0.735134'}
+      %Viewpoint#main_view{:position => '4.88104 4.59865 7.4181', :orientation => '-0.69017 0.723467 -0.0161809 0.735134'}
       
       
       %Transform{:translation => "0 5 0"}
@@ -604,9 +626,7 @@
           %Appearance
             %Material{:diffuseColor => "1 0 0"}
           %Cylinder{:height => "10", :radius => "0.01"}
-          
-
-          
+           
       %Group#root
       
 
@@ -619,8 +639,9 @@
   
 :javascript 
 
-  
-
+  document.observe('mousemove', function(event){
+    debug($('main_view').getAttribute('position') + "/" + $('main_view').getAttribute('orientation')  +  "[" + event.clientX + "," + event.clientY + "]")
+  })
 
   function addDownloadLink(id){
     var url = '/tmp/' + id
@@ -664,21 +685,20 @@
   }
 
   var ATOMS = [
-    {id: ' O', label: "oxigen", gauss: [[0.1,2],[3,4],[5,6]]},
-    {id: ' C', label: "coal", gauss: [[0.7,8],[9,10],[11,12]]}    
+    {id: 'oxigen', gauss: [[0.1,2],[3,4],[5,6]]},
+    {id: 'coal', gauss: [[0.7,8],[9,10],[11,12]]}    
   ];
   
   var atom_dictionary = [];
   
   function generateAtomOptions(){
     ATOMS.sortBy(function(e){
-      return e.label;
+      return e.id;
     }).each(function (e){
       $w('atom_select_prototype').each(function(item){
-        $(item).appendChild(NodeBuilder(['option', {value: e.id}, e.label]));
+        $(item).appendChild(NodeBuilder(['option', {value: e.id}, e.id]));
       });
       atom_dictionary[e.id] = e;
-      atom_dictionary[e.id.strip()] = e;
     })
     
   }
@@ -738,19 +758,21 @@
   }
   
   function createX3D_halfspace(editorId){
-    var width = 1e-12
-    var transformAttrs = {translation: "0 " + width/2 + " 0"}
     
     var index = getIndex(editorId)
+    var width = +$('halfspace_diskwidth_' + index).value
+    var transformAttrs = {translation: "0 " + width/2 + " 0"}
+    
+    var radius = +$('halfspace_diskradius_' + index).value
     
     setRotationBySpherical('halfspace', index, transformAttrs)
     
-    createX3DNode(editorId, 'cylinder', transformAttrs, {radius: 100, height: width}, 'halfspace')
+    createX3DNode(editorId, 'cylinder', transformAttrs, {radius: radius, height: width}, 'halfspace')
     transformAttrs.translation = "0 " + width + " 0"
-    createX3DNode(editorId, 'cylinder', transformAttrs, {radius: 100, height: width}, 'halfspace', function(node){
+    createX3DNode(editorId, 'cylinder', transformAttrs, {radius: radius, height: width}, 'halfspace', function(node){
       $(node).down('material').writeAttribute('diffuseColor', "1 1 0")
       return node;
-    })
+    }, true)
   }
   
   function setRotationBySpherical(prefix, index, transformAttrs){
@@ -795,7 +817,6 @@
     $(editorId).createX3D();
   }
   
-  
   function createX3DNode(editorId, bodyType, transformAttrs, bodyAttrs, editorType, decorator){
     
     transformAttrs.id = "tr_" + editorId;
@@ -832,8 +853,6 @@
     };
   }
   
-  
-  
   var rootParent = $('root').parentNode;
   var root = $('root')
   
@@ -859,16 +878,32 @@
       ['Group', {id: 'root'}]
     )
     rootParent.appendChild(root);
+    renderer.reset()
     return old_root
   }
   
   function rebuildScene(){
     clearScene()
-    
+    renderer.autoDistance = $('auto_distance_switch').checked
     $('bodies').select('table').each(function(e){
       e.createX3D();
-    })    
+    })
+    renderer.finish()
+    if(renderer.autoDistance){
+      var viewPort = $('main_view')
+     
+      var old_position = viewPort.getAttribute('position').split(' ')
+      var absolute = Math.sqrt(old_position.inject(0, function(acc, i){return acc + i*i}))
+      var lambda = renderer.radius*3/absolute
     
+      viewPort.setAttribute('position', old_position.map(function(i){return i*lambda;}).join(' '))
+    }
+  }
+  
+  function checkAutoDistance(event){
+    if(event.element().checked){
+      rebuildScene()
+    }
   }
 
   var renderer = {
@@ -876,10 +911,46 @@
     //diffuseColor: "0.41 0.39 0.03",
     diffuseColor: "0.1 0.1 1",
     specularColor: "0.94 0.72 0",
+    radius: 1,
+    autoDistantce: true,
     
-    addX3DNode: function(bodyType, transformAttrs, bodyAttrs, decorator){
+    reset: function(){
+      this.radius = -1
+    },
+    
+    finish: function(){
+      if(this.radius == -1){
+        this.radius = 1
+      }
+    },
+    
+    
+    calcRadius_sphere: function(bodyAttrs){
+      return +bodyAttrs.radius
+    },
+    calcRadius_box: function(bodyAttrs){
+      return bodyAttrs.size.split(' ').map(function(i){return +i}).max()
+    },
+    calcRadius_cylinder: function(bodyAttrs){
+      return [+bodyAttrs.radius, +bodyAttrs.height].max()
+    },
+    
+    
+    calcDistance: function(bodyType, transformAttrs, bodyAttrs){
+      var bodyRadius = eval('this.calcRadius_' + bodyType)(bodyAttrs)
+      var distance = Math.sqrt(transformAttrs.translation.split(' ').inject(0, function(acc, n){return acc + n*n}))
+      var new_radius = bodyRadius + distance
+      if(new_radius > this.radius){
+        this.radius = new_radius
+      }
+    },
+    
+    addX3DNode: function(bodyType, transformAttrs, bodyAttrs, decorator, skipDistance){
       if(decorator === undefined){
         decorator = Prototype.K
+      }
+      if(this.autoDistantce && !skipDistance){
+        this.calcDistance(bodyType, transformAttrs, bodyAttrs)
       }
       var bodyTypeCap = bodyType.capitalize();
       root.appendChild(
@@ -930,7 +1001,7 @@
     var tr = NodeBuilder(
       ['tr', {},
         ['td', {colspan: 100}, 
-          ['div', {'class': 'repeater'}, 
+          ['div', {'class': 'editor_option'}, 
             ['span', {onclick: "Effect.toggle(event.element().next())"}, 'repeat'],
             ['span', {id: 'repeater_container_' + index}, 
               ['input', {id: 'repeater_n_' + index, type: 'text', value: '1'}],
