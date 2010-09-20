@@ -873,6 +873,7 @@ body.three-col #content {
   display: block;
   clear: left;
   font-size: 0.86em;
+  font-weight: normal;
   border-radius: 3px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
@@ -882,43 +883,43 @@ body.three-col #content {
   margin-bottom: 1em;
 }
 
-/* line 285, ../../../app/stylesheets/partials/_main.sass */
+/* line 286, ../../../app/stylesheets/partials/_main.sass */
 .upload_iframe {
   height: 2em;
   padding: 5px;
 }
 
-/* line 289, ../../../app/stylesheets/partials/_main.sass */
+/* line 290, ../../../app/stylesheets/partials/_main.sass */
 #upload_form {
   margin-top: 2px;
 }
 
-/* line 292, ../../../app/stylesheets/partials/_main.sass */
+/* line 293, ../../../app/stylesheets/partials/_main.sass */
 input.invalid, div.invalid {
   color: black;
   background: #f9aea8;
   border: solid 2px #ff8935;
 }
 
-/* line 297, ../../../app/stylesheets/partials/_main.sass */
+/* line 298, ../../../app/stylesheets/partials/_main.sass */
 div.invalid {
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
 }
 
-/* line 313, ../../../app/stylesheets/partials/_main.sass */
+/* line 314, ../../../app/stylesheets/partials/_main.sass */
 .help_shown {
   display: inline;
 }
 
-/* line 320, ../../../app/stylesheets/partials/_main.sass */
+/* line 321, ../../../app/stylesheets/partials/_main.sass */
 .window {
   min-width: 150px;
   min-height: 100px;
   background: url('/images/grey79.png?1277223885');
 }
-/* line 321, ../../../app/stylesheets/partials/_main.sass */
+/* line 322, ../../../app/stylesheets/partials/_main.sass */
 .window .window_title {
   margin-top: -7px;
   margin-bottom: 7px;
@@ -926,39 +927,39 @@ div.invalid {
   cursor: move;
 }
 
-/* line 333, ../../../app/stylesheets/partials/_main.sass */
+/* line 334, ../../../app/stylesheets/partials/_main.sass */
 body a.add {
   background: url('/images/protocons/24px/actions/add.png?1277223885') no-repeat center center;
 }
-/* line 335, ../../../app/stylesheets/partials/_main.sass */
+/* line 336, ../../../app/stylesheets/partials/_main.sass */
 body a.add:hover {
   background: url('/images/protocons/32px/actions/add.png?1277223885') no-repeat center center;
 }
-/* line 338, ../../../app/stylesheets/partials/_main.sass */
+/* line 339, ../../../app/stylesheets/partials/_main.sass */
 body a.minus {
   background: url('/images/protocons/24px/actions/minus.png?1277223885') no-repeat center center;
 }
-/* line 340, ../../../app/stylesheets/partials/_main.sass */
+/* line 341, ../../../app/stylesheets/partials/_main.sass */
 body a.minus:hover {
   background: url('/images/protocons/32px/actions/minus.png?1277223885') no-repeat center center;
 }
-/* line 343, ../../../app/stylesheets/partials/_main.sass */
+/* line 344, ../../../app/stylesheets/partials/_main.sass */
 body a.edit {
   background: url('/images/protocons/24px/actions/edit.png?1277223885') no-repeat center center;
 }
-/* line 345, ../../../app/stylesheets/partials/_main.sass */
+/* line 346, ../../../app/stylesheets/partials/_main.sass */
 body a.edit:hover {
   background: url('/images/protocons/32px/actions/edit.png?1277223885') no-repeat center center;
 }
-/* line 348, ../../../app/stylesheets/partials/_main.sass */
+/* line 349, ../../../app/stylesheets/partials/_main.sass */
 body a.play {
   background: url('/images/protocons/24px/actions/play.png?1277223885') no-repeat center center;
 }
-/* line 350, ../../../app/stylesheets/partials/_main.sass */
+/* line 351, ../../../app/stylesheets/partials/_main.sass */
 body a.play:hover {
   background: url('/images/protocons/32px/actions/play.png?1277223885') no-repeat center center;
 }
-/* line 354, ../../../app/stylesheets/partials/_main.sass */
+/* line 355, ../../../app/stylesheets/partials/_main.sass */
 body a.clickable {
   opacity: 0.6;
   border: solid 1px #cccccc;
@@ -971,21 +972,21 @@ body a.clickable {
   height: 20px;
   display: block;
 }
-/* line 364, ../../../app/stylesheets/partials/_main.sass */
+/* line 365, ../../../app/stylesheets/partials/_main.sass */
 body a.help {
   background: url('/images/protocons/32px/status/help.png?1277223885') no-repeat center center;
 }
-/* line 366, ../../../app/stylesheets/partials/_main.sass */
+/* line 367, ../../../app/stylesheets/partials/_main.sass */
 body a.help_off {
   background: url('/images/protocons/24px/status/help.png?1277223885') no-repeat center center;
 }
 
-/* line 371, ../../../app/stylesheets/partials/_main.sass */
+/* line 372, ../../../app/stylesheets/partials/_main.sass */
 .add_image {
   background: url('/images/protocons/48px/actions/add.png?1277223885') no-repeat center center;
 }
 
-/* line 374, ../../../app/stylesheets/partials/_main.sass */
+/* line 375, ../../../app/stylesheets/partials/_main.sass */
 .dyn_help {
   background: url('/images/grey79.png?1277223885');
   display: block;
@@ -998,20 +999,20 @@ body a.help_off {
   paddding-right: 5px;
 }
 
-/* line 384, ../../../app/stylesheets/partials/_main.sass */
+/* line 385, ../../../app/stylesheets/partials/_main.sass */
 .rounded_15 {
   border-radius: 15;
   -moz-border-radius: 15;
   -webkit-border-radius: 15;
 }
 
-/* line 387, ../../../app/stylesheets/partials/_main.sass */
+/* line 388, ../../../app/stylesheets/partials/_main.sass */
 .error_box {
   padding-left: 10px;
   padding-right: 10px;
 }
 
-/* line 391, ../../../app/stylesheets/partials/_main.sass */
+/* line 392, ../../../app/stylesheets/partials/_main.sass */
 .no_display {
   display: none;
 }

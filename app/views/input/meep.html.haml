@@ -132,12 +132,17 @@
         %input{:type => "text", :id => "latice_size_x", :value => "1"}
         %input{:type => "text", :id => "latice_size_y", :value => "1"}
         %input{:type => "text", :id => "latice_size_z", :value => "1"}
+      .long_desc
+        The size of the computational cell in x, y, z directions. Defaults to unit lengths.
       
     .prop_row
       .label
         resolution
       .field
         %input{:type => "text", :id=>"resolution", :valid_if => ""}
+      .long_desc
+        Specifies the computational grid resolution, in pixels per distance unit. Defaults to 10.
+        The total computational grid is resolution*lattice size.
         
     .prop_row
       .label
@@ -146,6 +151,9 @@
         %input{:type => "text", :id=>"k_point_x"}
         %input{:type => "text", :id=>"k_point_y"}
         %input{:type => "text", :id=>"k_point_z"}
+      .long_desc
+        If false (the default), then the boundaries are perfect metallic (zero electric field). If a
+        vector, then the boundaries are Bloch-periodic.
 
   #pml.group 
     .group_title
@@ -158,6 +166,9 @@
             thickness
           .field
             %input{:type=>"text", :id=>"pml_thickness_prototype"}
+          .long_desc
+            The spatial thickness of the PML layer (which extends from the boundary towards the
+            inside of the computational cell).
       
         .prop_row
           .label
@@ -172,6 +183,9 @@
                 y
               %option{:value=>"Z"}
                 z
+          .long_desc
+            Specify the direction of the boundaries to put the PML layers next to. e.g. if X. Default
+            is the special value ALL.
         .prop_row
           .label
             side
@@ -183,23 +197,34 @@
                 low
               %option{:value=>"High"}
                 high
+          .long_desc
+            Specify which side, Low or High of the boundary or boundaries to put PML.
         .prop_row
           .label
             strength
           .field
             %input{:type=>"text", :id=>"strength_prototype", :value=>"1"}
+          .long_desc
+            A strength (default is 1.0) to multiply the PML absorption coefficient by. A strength of
+            2.0 will square the theoretical asymptotic reflection coefficient of the PML
       
         .prop_row
           .label
             R-asymptotic
           .field
             %input{:type=>"text", :id=>"r_asymptotic_prototype", :value=>"1e-15"}
+          .long_desc
+            The asymptotic reflection in the limit of infinite resolution or infinite PML thickness,
+            for refections from air.
       
         .prop_row
           .label
             pml-profile
           .field
             %input{:type=>"text", :id=>"pml_profile_prototype"}
+          .long_desc
+            With pml-profile one can specify an arbitrary PML "profile" function f(u) that
+            determines the shape of the PML absorption profile
         %a.minus.clickable{:onClick => "removeSub2panel(event);"}
     #pml_container 
     %a.clickable.add{:onclick => "newSub2panel('pml')"} 
@@ -218,6 +243,23 @@
           180&deg; rotational
         %a.action_link.button_like{:onClick => "newSymmetry('rotate4-sym');"}
           90&deg; rotational
+      .long_desc
+        %dl
+          %dt 
+            mirror
+          %dd
+            A mirror symmetry plane. Here, the direction is the direction normal to the mirror
+            plane.
+          %dt
+            180&deg; rotational
+          %dd
+            A 180° (twofold) rotational symmetry (a.k.a. C2). Here, the direction is the axis of the
+            rotation.
+          %dt
+            90&deg; rotational
+          %dd
+            A 90° (fourfold) rotational symmetry (a.k.a. C4). Here, the direction is the axis of the
+            rotation.
         
     %table
       %tbody#symmetry_container
@@ -226,8 +268,14 @@
             type
           %th
             direction
+            .long_desc
+              The direction of the symmetry (the normal to a mirror plane or the axis for a
+              rotational symmetry).
           %th
             phase
+            .long_desc
+              An additional phase to multiply the fields by when operating the symmetry on them;
+              defaults to 1.0.
           %th
           
   #materials.group
@@ -249,11 +297,15 @@
             name
           .field
             %input{:type => 'text', :id => 'material_name_prototype'}
+          .long_desc
+            Name of the material.
         .prop_row
           .label
             epsilon
           .field
             %input{:type => 'text', :id => 'material_epsilon_prototype'}
+          .long_desc
+            The (frequency-independent) isotropic relative permittivity, or dielectric constant.
         %a.minus.clickable{:onClick => "removeSub2panel(event);"}
       #index_prototype.sub2panel
         .prop_row
@@ -261,23 +313,18 @@
             name
           .field
             %input{:type => 'text', :id => 'material_name_prototype'}
+          .long_desc
+            Name of the material.
         .prop_row
           .label
             index
           .field
             %input{:type => 'text', :id => 'material_index_prototype'}
+          .long_desc
+            The (frequency-independent) isotropic refractive index.
         %a.minus.clickable{:onClick => "removeSub2panel(event);"}
     #material_container
   
-      
-        
-    %table
-      %tbody#material_container
-        %tr.not_alone
-          %th
-            name
-          %th
-            epsilon
             
   #geometry.group
     .group_title
@@ -290,6 +337,8 @@
         -%w"sphere cylinder cone block ellipsoid".each do |item|
           %a.action_link.button_like{:onClick => "newObject('#{item}')"}
             =item
+      .long_desc
+        Put geometrical objects to the computational cell.
     #objects
     .prop_row.hidden_prototype 
       #sphere_prototype.sub2panel
@@ -300,6 +349,8 @@
             material
           .field
             %input{:type => 'text', :id => 'sphere_material_prototype'}
+          .long_desc
+            The name of the material that the object is made of, defined in the materials section.
         .prop_row
           .label
             center
@@ -307,12 +358,16 @@
             %input{:type => 'text', :id => 'sphere_centerx_prototype', :value => '0'}
             %input{:type => 'text', :id => 'sphere_centery_prototype', :value => '0'}
             %input{:type => 'text', :id => 'sphere_centerz_prototype', :value => '0'}
+          .long_desc
+            Center point of the object.
           
         .prop_row
           .label
             radius
           .field
             %input{:type => 'text', :id => 'sphere_radius_prototype', :value => '1'}
+          .long_desc
+            Radius of the sphere.
 
         
         %a.minus.clickable{:onClick => "removeSub2panel(event);"}
@@ -321,11 +376,15 @@
       #cylinder_prototype.sub2panel
         .sub2panel_title
           cylinder
+        .long_desc
+          A cylinder, with circular cross-section and finite height.
         .prop_row
           .label
             material
           .field
             %input{:type => 'text', :id => 'cylinder_material_prototype'}
+          .long_desc
+            The name of the material that the object is made of, defined in the materials section.
         .prop_row
           .label
             center
@@ -333,17 +392,23 @@
             %input{:type => 'text', :id => 'cylinder_centerx_prototype', :value => '0'}
             %input{:type => 'text', :id => 'cylinder_centery_prototype', :value => '0'}
             %input{:type => 'text', :id => 'cylinder_centerz_prototype', :value => '0'}
+          .long_desc
+            Center point of the object.
         .prop_row
           .label
             radius
           .field
             %input{:type => 'text', :id => 'cylinder_radius_prototype', :value => '1'}
+          .long_desc
+            Radius of the cylinder's cross-section.
             
         .prop_row
           .label
             height
           .field
             %input{:type => 'text', :id => 'cylinder_height_prototype', :value => '2'}
+          .long_desc
+            Length of the cylinder along its axis.
         
         .prop_row
           .label
@@ -352,6 +417,9 @@
             %input{:type => 'text', :id => 'cylinder_axisx_prototype', :value => '0'}
             %input{:type => 'text', :id => 'cylinder_axisy_prototype', :value => '0'}
             %input{:type => 'text', :id => 'cylinder_axisz_prototype', :value => '0'}
+          .long_desc
+            Direction of the cylinder's axis; the length of this vector is ignored. Defaults to point
+            parallel to the z axis.
 
         %a.minus.clickable{:onClick => "removeSub2panel(event);"}
               
@@ -363,6 +431,8 @@
             material
           .field
             %input{:type => 'text', :id => 'cone_material_prototype'}
+          .long_desc
+            The name of the material that the object is made of, defined in the materials section.
         .prop_row
           .label
             center
@@ -370,16 +440,22 @@
             %input{:type => 'text', :id => 'cone_centerx_prototype', :value => '0'}
             %input{:type => 'text', :id => 'cone_centery_prototype', :value => '0'}
             %input{:type => 'text', :id => 'cone_centerz_prototype', :value => '0'}
+          .long_desc
+            Center point of the object.
         .prop_row
           .label
             radius
           .field
             %input{:type => 'text', :id => 'cone_radius_prototype', :value => '1'}
+          .long_desc
+            Radius of the base of the cone.
         .prop_row
           .label
             height
           .field
             %input{:type => 'text', :id => 'cone_height_prototype', :value => '2'}
+          .long_desc
+            Length of the cone along its axis.
         .prop_row
           .label
             axis
@@ -387,11 +463,17 @@
             %input{:type => 'text', :id => 'cone_axisx_prototype', :value => '0'}
             %input{:type => 'text', :id => 'cone_axisy_prototype', :value => '0'}
             %input{:type => 'text', :id => 'cone_axisz_prototype', :value => '0'}
+          .long_desc
+            Direction of the cone's axis; the length of this vector is ignored. Defaults to point
+            parallel to the z axis.
         .prop_row
           .label
             radius2
           .field
             %input{:type => 'text', :id => 'cone_radius2_prototype', :value => '0'}
+          .long_desc
+            Radius of the tip of the cone (i.e. the end of the cone pointed to by the axis vector).
+            Defaults to zero (a "sharp" cone).
           
         %a.minus.clickable{:onClick => "removeSub2panel(event);"}        
 
@@ -399,11 +481,15 @@
       #block_prototype.sub2panel
         .sub2panel_title
           block
+        .long_desc
+          A parallelepiped (i.e., a brick, possibly with non-orthogonal axes).
         .prop_row
           .label
             material
           .field
             %input{:type => 'text', :id => 'block_material_prototype'}
+          .long_desc
+            The name of the material that the object is made of, defined in the materials section.
         .prop_row
           .label
             center
@@ -411,6 +497,8 @@
             %input{:type => 'text', :id => 'block_centerx_prototype', :value => '0'}
             %input{:type => 'text', :id => 'block_centery_prototype', :value => '0'}
             %input{:type => 'text', :id => 'block_centerz_prototype', :value => '0'}
+          .long_desc
+            Center point of the object.
         .prop_row
           .label
             size
@@ -418,6 +506,8 @@
             %input{:type => 'text', :id => 'block_sizex_prototype', :value => '1'}
             %input{:type => 'text', :id => 'block_sizey_prototype', :value => '1'}
             %input{:type => 'text', :id => 'block_sizez_prototype', :value => '1'}
+          .long_desc
+            The lengths of the block edges along each of its three axes.
         .prop_row
           .label
             %span<
@@ -451,6 +541,9 @@
             %input{:type => 'text', :id => 'block_axis3x_prototype', :value => '1'}
             %input{:type => 'text', :id => 'block_axis3y_prototype', :value => '1'}
             %input{:type => 'text', :id => 'block_axis3z_prototype', :value => '1'}
+        .long_desc
+          The directions of the axes of the block; the lengths of these vectors are ignored. Must
+          be linearly independent. They default to the three lattice directions.
             
         %a.minus.clickable{:onClick => "removeSub2panel(event);"}      
               
@@ -462,6 +555,8 @@
             material
           .field
             %input{:type => 'text', :id => 'ellipsoid_material_prototype'}
+          .long_desc
+            The name of the material that the object is made of, defined in the materials section.
         .prop_row
           .label
             center
@@ -469,6 +564,8 @@
             %input{:type => 'text', :id => 'ellipsoid_centerx_prototype', :value => '0'}
             %input{:type => 'text', :id => 'ellipsoid_centery_prototype', :value => '0'}
             %input{:type => 'text', :id => 'ellipsoid_centerz_prototype', :value => '0'}
+          .long_desc
+            Center point of the object.
         .prop_row
           .label
             size
@@ -476,6 +573,8 @@
             %input{:type => 'text', :id => 'ellipsoid_sizex_prototype', :value => '1'}
             %input{:type => 'text', :id => 'ellipsoid_sizey_prototype', :value => '1'}
             %input{:type => 'text', :id => 'ellipsoid_sizez_prototype', :value => '1'}
+          .long_desc
+            The lengths of the block edges along each of its three axes.
         .prop_row
           .label
             %span<
@@ -509,6 +608,9 @@
             %input{:type => 'text', :id => 'ellipsoid_axis3x_prototype', :value => '1'}
             %input{:type => 'text', :id => 'ellipsoid_axis3y_prototype', :value => '1'}
             %input{:type => 'text', :id => 'ellipsoid_axis3z_prototype', :value => '1'}
+          .long_desc
+            The directions of the axes of the block; the lengths of these vectors are ignored. Must
+            be linearly independent. They default to the three lattice directions.
 
         %a.minus.clickable{:onClick => "removeSub2panel(event);"}              
 
@@ -517,7 +619,9 @@
   #source.group
     .group_title
       Source
-      %a.play.clickable      
+      %a.play.clickable
+    .long_desc
+      Specify sources in the computational area.
     .hidden_prototype
       #source_prototype.sub2panel
         .prop_row
@@ -530,43 +634,85 @@
               gaussian
             %input{:type => "radio", :name => "source_type_prototype",:value => 'custom'  ,:id => "source_type_custom_prototype"}
               custom
+          .long_desc
+            %dl
+              %dt
+                continuous:
+              %dd 
+                A continuous-wave source proportional to exp( iωt), possibly with a
+                smooth (exponential/tanh) turn-on/turn-off.
+              %dt
+                gaussian: 
+              %dd
+                \ A Gaussian-pulse source roughly proportional to exp( iωt (t - t<sub>0</sub>)<sup>2</sup> / 2w<sup>2</sup>).
+              %dt
+                custom: 
+              %dd
+                A user-specified source function f(t).
         .source_fields
           .prop_row.continuous.gaussian
             .label
               frequency
             .field
               %input{:type => "text", :id => "source_frequency_prototype"}
+            .long_desc.continuous
+              Frequency of the source.
+            .long_desc.gaussian
+              The center frequency f in units of c/distance (or ω in units of 2πc/distance)
           .prop_row.continuous.gaussian.custom
             .label
               start-time
             .field
               %input{:type => "text", :id => "source_start_time_prototype"}
+            .long_desc.continuous.gaussian
+              The starting time for the source; default is 0 (turn on at t = 0).
+            .long_desc.custom
+              The starting time for the source.
+              
           .prop_row.continuous.custom
             .label
               end-time
             .field
               %input{:type => "text", :id => "source_end_time_prototype"}
+            .long_desc.continuous.custom
+              The end time for the source; default is infinity (never turn off).
           .prop_row.continuous.gaussian
             .label
               width
             .field
               %input{:type => "text", :id => "source_width_prototype"}
+            .long_desc.continuous
+              Roughly, the temporal width of the smoothing (technically, the inverse of the
+              exponential rate at which the current turns off and on).
+            .long_desc.gaussian
+              The width w used in the Gaussian.
           .prop_row.continuous.gaussian
             .label
               cutoff
             .field
               %input{:type => "text", :id => "source_cutoff_prototype"}
+            .long_desc.continuous
+              How many widths the current decays for before we cut it off and set it to zero; the
+              default is 3.0.
+            .long_desc.gaussian
+              How many widths the current decays for before we cut it off and set it to zero—this
+              applies for both turn-on and turn-off of the pulse. The default is 5.0.
           .prop_row.custom
             .label
               src-func
             .field
               %input{:type => "text", :id => "source_src_func_prototype"}
+            .long_desc.custom
+              The function f(t) specifying the time-dependence of the source.
         .others      
           .prop_row
             .label
               component
             .field
               %input{:type => "text", :id => "source_component_prototype"}
+            .long_desc
+              Specify the direction and type of the current component: e.g. Ex, Ey.
+            
           .prop_row
             .label
               center
@@ -574,6 +720,8 @@
               %input{:type => "text", :id => "source_centerx_prototype"}
               %input{:type => "text", :id => "source_centery_prototype"}
               %input{:type => "text", :id => "source_centerz_prototype"}
+            .long_desc
+              The location of the center of the current source in the computational cell.
           .prop_row
             .label
               size
@@ -581,16 +729,23 @@
               %input{:type => "text", :id => "source_sizex_prototype"}
               %input{:type => "text", :id => "source_sizey_prototype"}
               %input{:type => "text", :id => "source_sizez_prototype"}
+            .long_desc
+              The size of the current distribution along each direction of the computational cell.
           .prop_row
             .label
               amplitude
             .field
               %input{:type => "text", :id => "source_amplitude_prototype"}
+            .long_desc
+              An overall (complex) amplitude multiplying the the current source. Default is 1.0.
           .prop_row
             .label{:name => 'amp-func'}
               amplitude function
             .field
               %input{:type => "text", :id => "source_amp_func_prototype"}
+            .long_desc
+              Scheme function of a single argument, that takes a vector3 giving a position and
+              returns a (complex) current amplitude for that point.
 
         %a.minus.clickable{:onClick => "removeSub2panel(event);"}      
         
@@ -603,6 +758,9 @@
     .group_title
       Flux region
       %a.play.clickable
+    .long_desc
+      Specify a region to compute the integral of the Poynting vector of the Fourier-
+      transformed fields.
     .hidden_prototype
       #flux_prototype.sub2panel
         .prop_row
@@ -612,6 +770,8 @@
             %input{:type => "text", :id => "flux_centerx_prototype"}
             %input{:type => "text", :id => "flux_centery_prototype"}
             %input{:type => "text", :id => "flux_centerz_prototype"}
+          .long_desc
+            The center of the flux region.
         .prop_row
           .label
             size
@@ -619,33 +779,45 @@
             %input{:type => "text", :id => "flux_sizex_prototype"}
             %input{:type => "text", :id => "flux_sizey_prototype"}
             %input{:type => "text", :id => "flux_sizez_prototype"}
+          .long_desc
+            The size of the flux region along each of the coordinate axes.
         .prop_row
           .label
             direction
           .field
             %input{:type => "text", :id => "flux_direction_prototype"}
+          .long_desc
+            The direction in which to compute the flux.
         .prop_row
           .label
             weight
           .field
             %input{:type => "text", :id => "flux_weight_prototype"}
+          .long_desc
+            A weight factor to multiply the flux by when it is computed; default is 1.0.
         .prop_row
           .label
             frequency center
           .field
             %input{:type => "text", :id => "flux_fcen_prototype"}
+          .long_desc
+            The center of the frequency range, which computed.
         
         .prop_row
           .label
             frequency width
           .field
             %input{:type => "text", :id => "flux_df_prototype"}
+          .long_desc
+            The width of the frequncy range.
             
         .prop_row
           .label
             number of frequencies
           .field
-            %input{:type => "text", :id => "flux_nfreq_prototype"}   
+            %input{:type => "text", :id => "flux_nfreq_prototype"} 
+          .long_desc
+            The discrete number of frequencies within the frequncy range.
         %a.minus.clickable{:onClick => "removeSub2panel(event);"}      
     
     #flux_container
@@ -663,18 +835,35 @@
           until
         %input{:type => "radio", :name => "run_type", :value => 'sources', :id => "run_type_sources"}
           sources
+      .long_desc
+        %dl
+          %dt
+            until: 
+          %dd
+            Run the simulation until a certain time or condition, calling the given step
+            functions (if any) at each timestep.
+          %dt
+            sources: 
+          %dd
+            Run the simulation until all sources have turned off, calling the given step
+            functions (if any) at each timestep.
    
     .prop_row
       .label
         cond?/time
       .field
         %input{:type => "text", :id => "run_cond"}
+      .long_desc
+        Either a number, in which case it is an additional time (in Meep units) to run for, or it
+        is a function (of no arguments) which returns true when the simulation should stop.
     
     .prop_row
       .label
         step functions
       .field
         %a.clickable.add.add_step{:onclick => "newStepFunction()"}
+      .long_desc
+        Define Scheme codes to calculate in the run time.
     #step_function_container
     .prop_row
       .label
@@ -686,6 +875,8 @@
         output epsilon
       .field
         %input{:type => "checkbox", :id => "run_output_epsilon"}
+      .long_desc
+        Output the dielectric field within the computational cell.
 
        
   .group    
@@ -1078,7 +1269,7 @@
       source_type = 'continuous'
       $('source_type_continuous_' + index).checked = true
     }
-    $(container_id).select(".source_fields .prop_row").each(function(e){
+    $(container_id).select(".source_fields .prop_row, .source_fields .long_desc").each(function(e){
       if(e.hasClassName(source_type)){
         if(!e.visible()){
           e.show()
