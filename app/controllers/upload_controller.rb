@@ -22,8 +22,10 @@ class UploadController < ApplicationController
     content = params[:temp_upload_input] 
     file_id = nil
     Tempfile.open(['temp', ext], TEMP_DIR) do |f| 
+      f.chmod(0644)#TODO
       f.write content
-      file_id = File.basename f.path 
+      file_id = File.basename f.path
+       
     end
     render :update do |page| 
       page.call 'addDownloadLink', file_id
