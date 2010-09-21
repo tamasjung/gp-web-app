@@ -13,4 +13,4 @@
 ].each do  |rec|
   Subapp.create :name => rec[0], :tech_name => rec[1]
 end
-
+  

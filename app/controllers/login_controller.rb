@@ -12,6 +12,7 @@ class LoginController < ApplicationController
     session[:nick_name] = @person.nick
     key_ok = ( params[:sec][:secret_key] == '1234567654321')
     
+    
     if key_ok
       flash[:notice] = "Welcome #{@person.nick}"
       redirect_to session[:return_to]

@@ -10,8 +10,12 @@
         =link_to "", {:controller => :dashboard}, {:class => 'logo'}
         #title
           =":Grid:Portál"
+          #login
+            logged in as
+            =current_user.display_name
         #static_header_panel
           %a.clickable.help#help_button
+        
           
       #sidebar
         .place_holder
@@ -20,6 +24,9 @@
         #bc.broadcast
           = h ApplicationController.broadcast
       #content
+        -if flash[:error]
+          .error
+            = flash[:error]
         -if flash[:notice]
           .notice 
             = flash[:notice]

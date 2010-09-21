@@ -7,6 +7,7 @@ $unselected_border_color : #eee
 
 $grid_logo = "grid_logo.png"
 
+
 =rounded($radius : $default_radius)
   border-radius = $radius
   -moz-border-radius = $radius
@@ -30,11 +31,12 @@ $grid_logo = "grid_logo.png"
 =shadowed
   :text-shadow rgb(217, 217, 217) 3px 3px 0px
 
+
 #header
   :margin-top 0.6em
   //:height = 50px
   //+shadowed
-  +embed
+  
   :text-align left
 
   :font-size 2em
@@ -49,14 +51,22 @@ $grid_logo = "grid_logo.png"
     //position: relative
     //top: 15px
   #title
+    +embed
     :margin-left 157px
-    :width 200px
+    :width 770px
     :padding-top 25px
     :color #999
+    #login
+      :float right
+      #position: fixed
+      left: 1000px 
+      top: 20px
+      font-size: 0.4em
   #static_header_panel
     :margin-left 740px
     :float left
     :position static
+  
     
     
   :clear both
@@ -93,10 +103,13 @@ $grid_logo = "grid_logo.png"
   +rounded
   padding: 8px
   background-color: #ddd
-  
-.notice 
-  +rounded
-  background: #ffdeb4
+body.bp
+  .notice 
+    +rounded
+    background: #ffdeb4
+  .error
+    +rounded
+    background: #F4B4B0
 
 .dashboard
   +rounded

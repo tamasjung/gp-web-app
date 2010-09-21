@@ -7,12 +7,17 @@ class ApplicationController < ActionController::Base
   
   before_filter :init
   before_filter :login_check, :except => [:login_index, :login_create]
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:error] = exception.message
+    redirect_to ''
+  end
   
   
   def init
     @git_version = @@git_version
     bm = params[:broadcast]
     self.class.save_broadcast bm if bm 
+    
   end
   
   DIR_NAME = 'tmp/broadcast'
@@ -42,9 +47,23 @@ class ApplicationController < ActionController::Base
   end
 
   def login_check
-    unless cookies[:nick] 
+    nick_name = cookies[:nick]
+    unless cookies[:nick]
       session[:return_to] = request.request_uri
       redirect_to :controller => :login, :action => :login_index
+    else
+      unless session[:user_id]
+        person = Person.find_by_nick nick_name
+        unless person
+          person = Person.new :nick => nick_name
+          person.save!
+        end
+        session[:user_id] = person.id
+      end
     end
+  end
+  helper_method :current_user
+  def current_user
+    Person.find session[:user_id]
   end
 end
