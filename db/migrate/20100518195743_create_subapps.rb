@@ -13,5 +13,6 @@ class CreateSubapps < ActiveRecord::Migration
 
   def self.down
     drop_table :subapps
+    create_table :subapps
   end
 end
