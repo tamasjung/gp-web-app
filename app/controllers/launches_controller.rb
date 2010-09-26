@@ -1,4 +1,5 @@
 class LaunchesController < ApplicationController
+  
   # GET /launches
   # GET /launches.xml
   def index
@@ -7,6 +8,15 @@ class LaunchesController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @launches }
+    end
+  end
+  
+  def select
+    @launches = Launch.all
+    
+    respond_to do |format|
+      format.html {render :layout => false}
+      #format.xml  { render :xml => @launches }
     end
   end
 
@@ -56,7 +66,8 @@ class LaunchesController < ApplicationController
   # POST /launches.xml
   def create
     @launch = Launch.new(params[:launch])
-    save_ok = @launch.save
+    @launch.state = Launch::CREATED
+    save_ok = @launch.save_and_launch
     unless @launch.name.size > 0
       @launch.name = @launch.subapp.name + "-" + @launch.id.to_s#generate a name
       save_ok = @launch.save
@@ -65,7 +76,7 @@ class LaunchesController < ApplicationController
     read_input_partial
     respond_to do |format|
       if save_ok 
-        flash[:notice] = 'Launch was successfully created.'
+        flash[:notice] = "#{@launch.name} was successfully created."
         format.html { redirect_to(@launch) }
         format.xml  { render :xml => @launch, :status => :created, :location => @launch }
       else
@@ -75,6 +86,7 @@ class LaunchesController < ApplicationController
     end
   end
 
+  #TODO remove this method
   # PUT /launches/1
   # PUT /launches/1.xml
   def update
@@ -111,7 +123,7 @@ class LaunchesController < ApplicationController
       dir  = "app/views/input"
       file_name = "#{dir}/#{@launch.subapp.tech_name}.html.haml"
       raise "file not found #{file_name}" unless File.exist? file_name
-      raise "illegal file path" unless (File.dirname(File.expand_path file_name) == File.expand_path(dir))
+      raise "illegal file path #{file_name}" unless (File.dirname(File.expand_path file_name) == File.expand_path(dir))
       input_page = IO.read(file_name)
     rescue  
       input_page = "No template found"

@@ -12,9 +12,7 @@
   EMBEDDED_STYLE
 
 %form#partial_form.panel_in_tab
-  %input{:type => "hidden", :id=>"command_args"}
-  %input{:type => "hidden", :id=>"display_str"}
-  %input{:type => "hidden", :id=>"sequences"}
+
   #model_params.group
     .group_title
       Model parameters
@@ -476,9 +474,13 @@
   function prepareSubmit(){
     var valid= validatePage();
     var command_struct = buildCommandArgs();
-    $('command_args').value = command_struct.command_args;
-    $('sequences').value = $A(command_struct.sequences).toJSON();
-    $('display_str').value = $('file_prefix').value;
+
+    var result = {
+      command_args: command_struct.command_args,
+      sequences: command_struct.sequences,
+      display_str: $('file_prefix').value      
+    }
+    return result;
   }
   
   $('partial_form').init = function (){

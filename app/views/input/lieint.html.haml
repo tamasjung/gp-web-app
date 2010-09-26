@@ -29,8 +29,6 @@
   EMBEDDED_STYLE
 
 %form#partial_form.panel_in_tab
-  %input{:type => "hidden", :id=>"command_args"}
-  %input{:type => "hidden", :id=>"display_str"}
 
         
   .group
@@ -357,16 +355,23 @@
     return index;
   }
   
-  function numberOfSequences(json){
-    var index = 0;
-    while(json['sequence_start_' + index] !== undefined){
-      index++;
-    }
-    return index;
-  }
-  
   function prepareSubmit(){
-    
+    var sequences = []
+    $('sequences').select("tr[id^='sequence_']").each(function (tr){
+      var index = getIndex(tr.id)
+      sequences.push({
+        name: tr.down(".sequence_name").innerHTML,
+        start: $F('sequence_start_' + index),
+        end: $F('sequence_end_' + index),
+        diff: $F('sequence_step_' + index)
+      })
+    })
+    var launch_params = {
+      sequences: sequences,
+      command_args: buildCommandArgs(),
+      display_str: 'Lie integrator $id'
+    }
+    return launch_params;
   }
   
   $('partial_form').preInit = function(settings){
@@ -374,17 +379,15 @@
     $('prototype4sequences').hide();
     showSequencesStatus(false);
     new_orbital();
-    if(settings.isJSON()){
-      var json = settings.evalJSON();
-      var orbitalsCount = numberOfOrbitals(json);
-      while(orbitalsCount-- > 1){
-        new_orbital();
-      }
-      var sequencesCount = numberOfSequences(json);
-      for(var i = 0; i < sequencesCount; i++){
-        generateSequence("$" + json["sequence_name_" + i]);
-      }
-    } 
+    
+    var orbitalsCount = numberOfOrbitals(settings.form_data);
+    while(orbitalsCount-- > 1){
+      new_orbital();
+    }
+    settings.launch_params.sequences.each(function(i, idx){
+      generateSequence("$" + i.name);
+    })
+    
     reindexing_orbitals();
   }
    

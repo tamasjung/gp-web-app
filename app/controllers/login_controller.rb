@@ -14,8 +14,8 @@ class LoginController < ApplicationController
     
     
     if key_ok
-      flash[:notice] = "Welcome #{@person.nick}"
-      redirect_to session[:return_to]
+      flash[:notice] = "Welcome #{@person.nick}!"
+      redirect_to (session[:return_to] || '')
       session[:return_to] = nil
       cookies[:nick] = { :value	=> @person.nick, :expires => 90.days.from_now}
     else

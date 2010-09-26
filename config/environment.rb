@@ -6,6 +6,8 @@ RAILS_GEM_VERSION = '2.3.8' unless defined? RAILS_GEM_VERSION
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
+require 'prerequisities'#delayed_job serialized badly without this /-t-
+
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
@@ -23,6 +25,9 @@ Rails::Initializer.run do |config|
   config.gem "compass"
   #config.gem "authlogic", :version => '2.1.6'#maybe I we do not need it
   config.gem "cancan", :version => '1.3.4'
+  config.gem 'will_paginate', :version => '~> 2.3.15', :source => 'http://gemcutter.org'
+  config.gem 'delayed_job', :version => '2.0.3'
+  
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named

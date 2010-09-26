@@ -55,20 +55,24 @@ Object.extend(Form, {
             }
         );
     },
+    //modified /jt
+    deserializeJSON: function(form, jsonStr) {
+        Form.fillForm(form, jsonStr.evalJSON())
+    },
     
-    deserializeJSON: function(form, data) {
-        form = $(form);
-        form.reset();
-        Form.deselectAll(form);
-        
-        var json = data.evalJSON();
-        for (var i in json) {
-            var id = i;
-            var value = json[i];
-            if (id != form.id && value)
-                Form.Element.deserialize(form, id, value);
-        }
-    }    
+    fillForm: function(form, json){
+      form = $(form);
+      form.reset();
+      Form.deselectAll(form);
+      
+      for (var i in json) {
+          var id = i;
+          var value = json[i];
+          if (id != form.id && value)
+              Form.Element.deserialize(form, id, value);
+      }      
+    }
+    //eomodification    
 });
 
 Object.extend(Form.Element, {

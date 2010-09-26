@@ -32,24 +32,40 @@
   
   function collect_and_submit(){
     
-    prepareSubmit()
+    var launch_params = prepareSubmit()
     nameFromId($('partial_form'))
-    var object = $('partial_form').serialize(true)
-    var serString = Object.toJSON(object)
+    var formData = $('partial_form').serialize(true)
+    var settings  = {
+      form_data: formData,
+      launch_params: launch_params,
+    }
+    var serString = Object.toJSON(settings)
     $('launch_settings').value = serString
     return true
     
   }     
   
-  var settings = $('launch_settings').value;
+  var settings_str = $('launch_settings').value;
+  
+  
+  var settings = {form_data: {}, launch_params: {}}
+  try{
+    if(settings_str !== undefined){
+      settings = settings_str.evalJSON(true)
+    }
+  }
+  catch(e){
+    //TODO log
+  }
   var partial_form = $('partial_form');
   if(partial_form.preInit){
     partial_form.preInit(settings);
   }
   nameFromId($('partial_form'))
-  if(settings.isJSON()){
-    Form.deserializeJSON('partial_form', settings);
-  }
+
+  Form.fillForm('partial_form', settings.form_data);
   $('partial_form').init(); 
-  nameFromId($('partial_form')) ;
+  nameFromId($('partial_form'));  
+  
+  
    

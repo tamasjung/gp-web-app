@@ -6,8 +6,15 @@
         = "," if i > 0
         =link_to subapp.name, new_subapp_launch_path(subapp) 
        
-      
-  .remote_module 
-    =link_to "new subapp", new_subapp_path
+  #launch_select.remote_module
+  =link_to_remote 'hajjj', :update => 'launch_select', :url => {:controller => :launches, :action => :select} 
+  :javascript
+    new Ajax.Updater('launch_select', '#{url_for(:controller => :launches, :action => :select)}');
+  
+    
+  -if current_user.has_role? :admin    
+    .remote_module 
+  
+      =link_to "new subapp", new_subapp_path
 
 

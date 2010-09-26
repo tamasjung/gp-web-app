@@ -10,9 +10,11 @@
         =link_to "", {:controller => :dashboard}, {:class => 'logo'}
         #title
           =":Grid:Portál"
-          #login
+          #login{:onmouseover => "$('logout').show()", :onmouseout => "$('logout').hide()"}
             logged in as
             =current_user.display_name
+            #logout{:style => 'display: none'}
+              =link_to "you can NOT logout here yet", :controller => 'login', :action => 'login_index'
         #static_header_panel
           %a.clickable.help#help_button
         

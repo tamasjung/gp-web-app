@@ -9,6 +9,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :people
 
   map.resources :jobs
+  
+  map.connect 'launches/select', :controller => 'launches', :action => 'select'#TODO
 
   map.resources :launches
 

@@ -84,11 +84,7 @@
 
 
 %form#partial_form.panel_in_tab
-  %input{:type => "hidden", :id=>"command_args"}
-  %input{:type => "hidden", :id=>"display_str"}
-  %input{:type => "hidden", :id=>"file_f.mesh"}
-  %input{:type => "hidden", :id=>"file_f.model"}
-  
+ 
       
   #mesh_params.group
     .group_title
@@ -1059,7 +1055,7 @@
     })
     var fileContent = content.join('\n')
     
-    $('file_f.mesh').value = fileContent
+    return fileContent
   }
   
   function buildModelFile(){
@@ -1070,38 +1066,44 @@
       content.push(item.toUpperCase() + "\t=" + value)
     })    
     var fileContent = content.join('\n')
-    $('file_f.model').value = fileContent
+    return fileContent
   }
   
+  var fileName = 'f'
+  
   function buildCommandArgs(){
-    return "3dsch f";
+    return "3dsch " + fileName;
   }
   
 
 
   function prepareSubmit(){
   
-    $('command_args').value = buildCommandArgs();
-    buildMeshFile()
-    buildModelFile()
-    $('display_str').value = $('command_args').value
+    var meshContent = buildMeshFile()
+    var modelContent = buildModelFile()
+    var result = {
+      command_args: buildCommandArgs(),
+      files: [
+        {name: fileName + '.meshx', content: meshContent},
+        {name: fileName + '.model', content: modelContent}
+      ]
+    }
+    return result;
   }
   
   $('partial_form').preInit = function(settings){
     generateAtomOptions();
-    if(settings.isJSON()){
-      var json = settings.evalJSON(true);
-      var editors = $H(json).keys().inject([], function(result, key){
-        var match = /^([^_]+).+?_(\d+)$/.exec(key)
-        if(match && match[1] != 'repeater'){
-          result[match[2]] = match[1];
-        }
-        return result;
-      });
-      editors.each(function(editor_type){
-        addBody(editor_type, false);
-      });   
-    }
+    var json = settings.form_data
+    var editors = $H(json).keys().inject([], function(result, key){
+      var match = /^([^_]+).+?_(\d+)$/.exec(key)
+      if(match && match[1] != 'repeater'){
+        result[match[2]] = match[1];
+      }
+      return result;
+    });
+    editors.each(function(editor_type){
+      addBody(editor_type, false);
+    });   
   }
 
   $('partial_form').init = function (){

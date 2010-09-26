@@ -1,5 +1,8 @@
 %meta{ :content => "text/html;charset=UTF-8", "http-equiv" => "content-type" }
 %title
+  Gridportal - 
+  = controller.class.name.gsub 'Controller', ''
+  \-
   = controller.action_name 
   
 = stylesheet_link_tag 'compiled/screen.css', :media => 'screen, projection' 
