@@ -655,55 +655,63 @@
               frequency
             .field
               %input{:type => "text", :id => "source_frequency_prototype"}
-            .long_desc.continuous
-              Frequency of the source.
-            .long_desc.gaussian
-              The center frequency f in units of c/distance (or ω in units of 2πc/distance)
+            .long_desc
+              .continuous
+                Frequency of the source.
+            .long_desc
+              .gaussian
+                The center frequency f in units of c/distance (or ω in units of 2πc/distance)
           .prop_row.continuous.gaussian.custom
             .label
               start-time
             .field
               %input{:type => "text", :id => "source_start_time_prototype"}
-            .long_desc.continuous.gaussian
-              The starting time for the source; default is 0 (turn on at t = 0).
-            .long_desc.custom
-              The starting time for the source.
+            .long_desc
+              .continuous.gaussian
+                The starting time for the source; default is 0 (turn on at t = 0).
+              .custom
+                The starting time for the source.
               
           .prop_row.continuous.custom
             .label
               end-time
             .field
               %input{:type => "text", :id => "source_end_time_prototype"}
-            .long_desc.continuous.custom
-              The end time for the source; default is infinity (never turn off).
+            .long_desc
+              .continuous.custom
+                The end time for the source; default is infinity (never turn off).
           .prop_row.continuous.gaussian
             .label
               width
             .field
               %input{:type => "text", :id => "source_width_prototype"}
-            .long_desc.continuous
-              Roughly, the temporal width of the smoothing (technically, the inverse of the
-              exponential rate at which the current turns off and on).
-            .long_desc.gaussian
-              The width w used in the Gaussian.
+            .long_desc
+              .continuous
+                Roughly, the temporal width of the smoothing (technically, the inverse of the
+                exponential rate at which the current turns off and on).
+              .gaussian
+                The width w used in the Gaussian.
           .prop_row.continuous.gaussian
             .label
               cutoff
             .field
               %input{:type => "text", :id => "source_cutoff_prototype"}
-            .long_desc.continuous
-              How many widths the current decays for before we cut it off and set it to zero; the
-              default is 3.0.
-            .long_desc.gaussian
-              How many widths the current decays for before we cut it off and set it to zero—this
-              applies for both turn-on and turn-off of the pulse. The default is 5.0.
+            .long_desc
+              .continuous
+                How many widths the current decays for before we cut it off and set it to zero; the
+                default is 3.0.
+            .long_desc
+              .gaussian
+                How many widths the current decays for before we cut it off and set it to zero—this
+                applies for both turn-on and turn-off of the pulse. The default is 5.0.
           .prop_row.custom
             .label
               src-func
             .field
               %input{:type => "text", :id => "source_src_func_prototype"}
-            .long_desc.custom
-              The function f(t) specifying the time-dependence of the source.
+            .long_desc
+              .custom
+                The function f(t) specifying the time-dependence of the source.
         .others      
           .prop_row
             .label
@@ -1269,7 +1277,7 @@
       source_type = 'continuous'
       $('source_type_continuous_' + index).checked = true
     }
-    $(container_id).select(".source_fields .prop_row, .source_fields .long_desc").each(function(e){
+    $(container_id).select(".source_fields .prop_row, .long_desc div").each(function(e){
       if(e.hasClassName(source_type)){
         if(!e.visible()){
           e.show()
@@ -1427,7 +1435,6 @@
 
   $('partial_form').init = function (){
     $$('.hidden_prototype').invoke('hide');
-    //$$('.long_desc').invoke('hide');
     $$('input').each(function (e){
       var ph = e.readAttribute('valid_if');
       if(ph){
@@ -1435,7 +1442,7 @@
       }
     });
     
-    $$('.long_desc, .source_editor').invoke('toggle');
+    $$('.long_desc, .source_editor').invoke('hide');
     
     $('source_container').select('.sub2panel').each(function(panel){
       checkSourceSubclasses(panel.id)
