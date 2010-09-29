@@ -1,27 +1,21 @@
 require 'ostruct'
 
+
 class Launch < ActiveRecord::Base
   
-  belongs_to :subapp
+  dependencies :sync_or_async
   
+  belongs_to :subapp
   
   class SettingsAdapter
     
     def initialize(str)
-      settings_hash = ActiveSupport::JSON.decode(settings)
+      @settings_hash = OpenStruct.new(ActiveSupport::JSON.decode(str))
     end
     
     def sequences
-      result = settings_hash.each do |key, value| 
-        if key =~ /^sequence_name_(\d+)$/ 
-          index = $1
-          OpenStruct.new(
-            :name => value, 
-            :begin => settings_hash['sequence_begin_' + index],
-            :end => settings_hash['sequence_end_' + index],
-            :step => settings_hash['sequence_step_' + index]
-          )
-        end
+      result = @settings_hash.launch_params['sequences'].map do |seq_hash| 
+        OpenStruct.new(seq_hash)
       end
       result
     end
@@ -30,26 +24,23 @@ class Launch < ActiveRecord::Base
       
     end
     
-    def command_line
-      
+    def command_args
+      @settings_hash.launch_params['command_args']
     end
+    
   end
     
-  
   enum_field 'state', %w{CREATED SENDING SENT FINISHED STOPPING STOPPED}
-
-  
   
   def save_and_launch
     #TODO one tx
     result = save
-    LaunchExecutor.new(id).send_later :perform
+    LaunchExecutor.new(id).send sync_or_async, :perform
     result
   end
   
   def settings_adapter
-    new SettingsAdapter(settings)
+    SettingsAdapter.new(settings)
   end
   
-
 end

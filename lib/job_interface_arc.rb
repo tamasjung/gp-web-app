@@ -1,0 +1,3 @@
+class JobInterfaceArc
+  
+end
