@@ -10,18 +10,23 @@ class Launch < ActiveRecord::Base
   class SettingsAdapter
     
     def initialize(str)
-      @settings_hash = OpenStruct.new(ActiveSupport::JSON.decode(str))
+      @settings_hash = HashAccessor.new(ActiveSupport::JSON.decode(str))
     end
     
     def sequences
-      result = @settings_hash.launch_params['sequences'].map do |seq_hash| 
-        OpenStruct.new(seq_hash)
+      sequences = @settings_hash.launch_params['sequences']
+      return [] unless sequences
+      sequences.map do |seq_hash|
+        HashAccessor.new(seq_hash)
       end
-      result
     end
     
     def files
-      
+      files = @settings_hash.launch_params['files']
+      return [] unless files
+      files.map do |file_hash|
+        HashAccessor.new(file_hash)
+      end
     end
     
     def command_args
@@ -39,8 +44,16 @@ class Launch < ActiveRecord::Base
     result
   end
   
+  def settings=(settings)
+    write_attribute :settings, settings
+    if(defined?(@settings_adapter))
+      @settings_adapter = nil
+    end
+  end
+    
   def settings_adapter
-    SettingsAdapter.new(settings)
+    @settings_apapter ||= SettingsAdapter.new(settings)
+    @settings_apapter
   end
   
 end

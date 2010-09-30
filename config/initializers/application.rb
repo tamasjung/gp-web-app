@@ -1,7 +1,5 @@
 #This is the main environment independent configuration module for this gridportal appication.
 
-
-
 #TODO search a better place for this
 class ActiveRecord::Base
   def self.enum_field(name, arr)
@@ -26,7 +24,6 @@ module AppLogger
   end
 end
   
-
 class HashAccessor
   
   def initialize(hash)
@@ -47,7 +44,7 @@ end
 #TODO into different file
 $dependency_context = DependencyContext.new({
   :launch_base_dir => File.join(Rails.root, 'public', 'launches'),
-  :launch_base_dir_permission => 0700,
+  :launch_dir_mod => 0700,
   :local_sequence_limit => 100,
   :sync_or_async => :send_later
 })

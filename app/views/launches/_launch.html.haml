@@ -35,9 +35,16 @@
     var launch_params = prepareSubmit()
     nameFromId($('partial_form'))
     var formData = $('partial_form').serialize(true)
+    var cleanFormData = {}
+    $H(formData).each(function(pair){
+      if(!pair.key.endsWith('_prototype')){
+        cleanFormData[pair.key] = pair.value
+      }
+    })
+    formData = cleanFormData;
     var settings  = {
       form_data: formData,
-      launch_params: launch_params,
+      launch_params: launch_params
     }
     var serString = Object.toJSON(settings)
     $('launch_settings').value = serString

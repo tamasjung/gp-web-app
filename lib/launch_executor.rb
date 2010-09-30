@@ -29,7 +29,10 @@ class LaunchExecutor
   def start(launch)
     logger.debug "LaunchExecutor start begins"
 
-    JobDirs.new.create_base_dirs_for(launch)
+    launch_dirs = LaunchDirs.new(launch)
+    launch_dirs.ensure_dirs
+    
+    generate_sent_files launch, launch_dirs
     
     settings = launch.settings_adapter
     seqs = settings.sequences || []
@@ -44,6 +47,21 @@ class LaunchExecutor
       job_executor.sequence_defs = seqdefs
       job_executor.send sync_or_async, :perform
     end 
-
   end
+  
+  def generate_sent_files(launch, launch_dirs)
+    files = launch.settings_adapter.files
+    if(files)
+      sent_dir = launch_dirs.dirs.sent_dir_path
+      files.each do |file|
+        file_path = File.join sent_dir, file.name
+        File.open(file_path, "w") do |f|
+          f.write file.content
+        end
+      end
+    end
+    #TODO create subapp files
+    
+  end
+  
 end

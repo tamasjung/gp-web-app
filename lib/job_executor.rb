@@ -9,7 +9,7 @@ class JobExecutor
   
   def perform
     job = Job.find job_id
-    if(job.state == Job::CREATED)
+    if([Job::CREATED, Job::SENDING].member? job.state)
       job.state = Job::SENDING
       job.save!
       start job
@@ -21,7 +21,7 @@ class JobExecutor
   def start(job)
     command_args = job.launch.settings_adapter.command_args
     executable = Rails.root.join("lib", "script", "dummy_exec.rb ") +  job.launch.subapp.executable.to_s + " " + command_args.to_s
-    JobDirs.new.create_job_dirs job
+    JobDirs.new(job).ensure_job_root
     job_interface = JobInterface.new job_id
     pid = job_interface.submit(executable)
     job.address = pid
