@@ -16,7 +16,7 @@ class LaunchExecutor
   def perform
     logger.info "Launch perform begins #{@launch_id}"
     launch = Launch.find @launch_id
-    if(launch.state == Launch::CREATED)
+    if([Launch::CREATED, Launch::SENDING].member? launch.state)
       launch.state = Launch::SENDING
       launch.save!
       logger.debug "Launch state saved to #{Launch::SENDING}"

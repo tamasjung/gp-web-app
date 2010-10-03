@@ -99,7 +99,7 @@
           %th
             start
           %th
-            end
+            max
           %th
             step
         %tr#prototype4sequences
@@ -109,7 +109,7 @@
             %input{:type => "hidden", :id => "sequence_name_prototype"}
             %input{:type => "text", :id => "sequence_start_prototype"}
           %td
-            %input{:type => "text", :id => "sequence_end_prototype"}
+            %input{:type => "text", :id => "sequence_max_prototype"}
           %td
             %input{:type => "text", :id => "sequence_step_prototype"}
           
@@ -362,7 +362,7 @@
       sequences.push({
         name: tr.down(".sequence_name").innerHTML,
         start: $F('sequence_start_' + index),
-        end: $F('sequence_end_' + index),
+        max: $F('sequence_max_' + index),
         diff: $F('sequence_step_' + index)
       })
     })

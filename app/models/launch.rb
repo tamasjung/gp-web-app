@@ -17,7 +17,7 @@ class Launch < ActiveRecord::Base
       sequences = @settings_hash.launch_params['sequences']
       return [] unless sequences
       sequences.map do |seq_hash|
-        HashAccessor.new(seq_hash)
+        Sequence.new(seq_hash)
       end
     end
     

@@ -121,7 +121,7 @@
         %th
           start
         %th
-          end
+          max
         %th
           N
         %th
@@ -134,7 +134,7 @@
         %td
           %input{:type => "text", :id=>"e1_start", :value=>"0", :valid_if => "0 <= x && x < 1"}
         %td
-          %input{:type => "text", :id=>"e1_end", :valid_if => "0 <= x && x < 1"}
+          %input{:type => "text", :id=>"e1_max", :valid_if => "0 <= x && x < 1"}
         %td
           %input{:type => "text", :id=>"e1_n"}
         %td
@@ -148,7 +148,7 @@
         %td
           %input{:type => "text", :id=>"w1_start", :value=>"0", :valid_if =>  "0 <= x && x < 360"}
         %td
-          %input{:type => "text", :id=>"w1_end", :valid_if =>  "0 <= x && x < 360"}
+          %input{:type => "text", :id=>"w1_max", :valid_if =>  "0 <= x && x < 360"}
         %td
           %input{:type => "text", :id=>"w1_n"}
         %td
@@ -162,7 +162,7 @@
         %td
           %input{:type => "text", :id=>"M1_start", :value=>"0", :valid_if =>  "0 <= x && x < 360"}
         %td
-          %input{:type => "text", :id=>"M1_end", :valid_if =>  "0 <= x && x < 360"}
+          %input{:type => "text", :id=>"M1_max", :valid_if =>  "0 <= x && x < 360"}
         %td
           %input{:type => "text", :id=>"M1_n"}
         %td
@@ -175,7 +175,7 @@
         %td
           %input{:type => "text", :id=>"a_start", :valid_if => "isDefined(x) && x > 0"}
         %td
-          %input{:type => "text", :id=>"a_end", :valid_if => "x > 0"}
+          %input{:type => "text", :id=>"a_max", :valid_if => "x > 0"}
         %td
           %input{:type => "text", :id=>"a_n"}
         %td
@@ -189,7 +189,7 @@
         %td
           %input{:type => "text", :id=>"e_start", :value=>"0", :valid_if => "0 <= x && x < 1"}
         %td
-          %input{:type => "text", :id=>"e_end", :valid_if => "0 <= x && x < 1"}
+          %input{:type => "text", :id=>"e_max", :valid_if => "0 <= x && x < 1"}
         %td
           %input{:type => "text", :id=>"e_n"}
         %td
@@ -203,7 +203,7 @@
         %td
           %input{:type => "text", :id=>"i_start", :value=>"0", :valid_if =>  "0 <= x && x < 180"}
         %td
-          %input{:type => "text", :id=>"i_end", :valid_if =>  "0 <= x && x < 180"}
+          %input{:type => "text", :id=>"i_max", :valid_if =>  "0 <= x && x < 180"}
         %td
           %input{:type => "text", :id=>"i_n"}
         %td
@@ -217,7 +217,7 @@
         %td
           %input{:type => "text", :id=>"w_start", :value=>"0", :valid_if =>  "0 <= x && x < 360"}
         %td
-          %input{:type => "text", :id=>"w_end", :valid_if =>  "0 <= x && x < 360"}
+          %input{:type => "text", :id=>"w_max", :valid_if =>  "0 <= x && x < 360"}
         %td
           %input{:type => "text", :id=>"w_n"}
         %td
@@ -231,7 +231,7 @@
         %td
           %input{:type => "text", :id=>"O_start", :value=>"0", :valid_if =>  "0 <= x && x < 360"}
         %td
-          %input{:type => "text", :id=>"O_end", :valid_if =>  "0 <= x && x < 360"}
+          %input{:type => "text", :id=>"O_max", :valid_if =>  "0 <= x && x < 360"}
         %td
           %input{:type => "text", :id=>"O_n"}
         %td
@@ -245,7 +245,7 @@
         %td
           %input{:type => "text", :id=>"M_start", :value=>"0", :valid_if =>  "0 <= x && x < 360"}
         %td
-          %input{:type => "text", :id=>"M_end", :valid_if =>  "0 <= x && x < 360"}
+          %input{:type => "text", :id=>"M_max", :valid_if =>  "0 <= x && x < 360"}
         %td
           %input{:type => "text", :id=>"M_n"}
         %td
@@ -328,19 +328,19 @@
 
   
     var start = $(prefix + "_start").value;
-    var end = $(prefix + "_end").value;
+    var max = $(prefix + "_max").value;
     var n = $(prefix + "_n").value;
     var d = $(prefix + "_d").value;
-    if(isNumber(start) && isNumber(end)){   
+    if(isNumber(start) && isNumber(max)){   
       if(field == 'n'){
-        $(prefix + "_d").value = toOrdinaryDecimal((end - start)/n);
+        $(prefix + "_d").value = toOrdinaryDecimal((max - start)/n);
       }
       else if(isNumber(d)){
-        $(prefix + "_n").value = toOrdinaryDecimal((end - start)/d);
+        $(prefix + "_n").value = toOrdinaryDecimal((max - start)/d);
       }
     }
     else{
-      if(field == 'start' || field == 'end'){
+      if(field == 'start' || field == 'max'){
         $(prefix + "_n").value = "";
         $(prefix + "_d").value = "";
       }
@@ -365,21 +365,21 @@
   function buildInitalCondComp(cid){
     var result = {};
     var start = $(cid + "_start").value;
-    var end = $(cid + "_end").value;
+    var max = $(cid + "_max").value;
     var n = $(cid + "_n").value;
     var d = $(cid + "_d").value;
     
     result.map = $(cid + "_map").checked;
         
-    if(end){
+    if(max){
       if(d){
         result.d = d;
         if(!result.map){
-          result.seq = {name: cid, start: start, end: end, diff: d, type: 'start_end_diff'};
+          result.seq = {name: cid, start: start, max: max, diff: d, type: 'start_max_diff'};
           result.cl = "$(" + result.seq.name + ")";
         }
       } 
-      result.end = end;
+      result.max = max;
     }
     
     if(!result.cl){
@@ -455,7 +455,7 @@
     file_name += ".out";
     if(iterators.length > 0){
       res += " -grid " + iterators.map(function(e){
-        return e.idx + "[" + [e.end, e.d].join(',') + "]"
+        return e.idx + "[" + [e.max, e.d].join(',') + "]"
       }).join(',');
       
       if($('indicator').checked){
