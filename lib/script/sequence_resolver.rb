@@ -109,6 +109,8 @@ def fixed_format(int_width, dec, val)
 end
 
 def substitute_seq_values(str, values)
+  #TODO add escaping
+  #TODO do not iterate over values but matches
   values.each do |value|
     name = value[:name]
     val = value[:value]
