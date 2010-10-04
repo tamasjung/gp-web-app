@@ -4,22 +4,23 @@
     =render :partial => 'layouts/common_head' 
 
     
-  %body.bp.three-col
+  %body.bp.three-col.gridportal
     #container
       #header
         =link_to "", {:controller => :dashboard}, {:class => 'logo'}
         #title
           =":Grid:Portál"
           #login{:onmouseover => "$('logout').show()", :onmouseout => "$('logout').hide()"}
+            
             logged in as
-            =current_user.display_name
+            =current_user.display_name rescue ""
             #logout{:style => 'display: none'}
               =link_to "you can NOT logout here yet", :controller => 'login', :action => 'login_index'
         #static_header_panel
           %a.clickable.help#help_button
         
           
-      #sidebar
+      #sidebar.last
         .place_holder
           %a{:onClick => "debug_window.open()"}
             debug 
@@ -32,7 +33,8 @@
         -if flash[:notice]
           .notice 
             = flash[:notice]
-        = yield 
+        = yield
+ 
       #footer
         ="-----"
         #version

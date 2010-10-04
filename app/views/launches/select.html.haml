@@ -1,16 +1,14 @@
-%h1 Launch history
+%h3 Launch history
 %table
   %tr
     %th Name
-    %th created at
+    %th Created at
     %th State
   - @launches.each_with_index do |launch, idx|
-    %tr
-      %td{:style => "border-bottom: solid 1px grey;"}= h launch.name
+    %tr{:class => (idx % 2 == 0) ? "even" : "odd"}
+      %td= h launch.name
       %td= h launch.created_at
       %td= h launch.state
       %td
         .action_link= link_to 'show', edit_launch_path(launch)
         .action_link= link_to 'destroy', launch, :confirm => 'Are you sure?', :method => :delete
-%br/
-= link_to 'New launch', new_launch_path 

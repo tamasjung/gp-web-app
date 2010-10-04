@@ -1,15 +1,14 @@
 .dashboard
+       
+  #launch_select.remote_module
+  :javascript
+    new Ajax.Updater('launch_select', '#{url_for(:controller => :launches, :action => :select)}');
   %span 
     %h5 
       create new launch:
       - @subapps.sort do |i,j| i.name <=> j.name end.each_with_index do |subapp, i|
         = "," if i > 0
         =link_to subapp.name, new_subapp_launch_path(subapp) 
-       
-  #launch_select.remote_module
-  =link_to_remote 'hajjj', :update => 'launch_select', :url => {:controller => :launches, :action => :select} 
-  :javascript
-    new Ajax.Updater('launch_select', '#{url_for(:controller => :launches, :action => :select)}');
   
     
   -if current_user.has_role? :admin    
