@@ -4,7 +4,7 @@ class LaunchesController < ApplicationController
   # GET /launches.xml
   def index
     @launches = Launch.all
-
+    
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @launches }
@@ -12,12 +12,23 @@ class LaunchesController < ApplicationController
   end
   
   def select
-    @launches = Launch.all
-    
+    #@launches = Launch.all
+    @launches = Launch.paginate :page => params[:page], :order => params[:orders]
     respond_to do |format|
-      format.html {render :layout => false}
+      #format.html {render :layout => false}
       #format.xml  { render :xml => @launches }
+      format.js do
+        render :update do |page|
+          page.replace_html 'launch_select', :partial => "select"
+        end
+      end
     end
+  end
+  
+  def search_autocomplete
+    value = params[:value]
+    @results = FilterAutoComplete.new(Launch, [:name, :state]).get_results(value)
+    render :partial => 'search_autocomplete'
   end
 
   # GET /launches/1

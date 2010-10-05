@@ -7,6 +7,9 @@ class Launch < ActiveRecord::Base
   
   belongs_to :subapp
   
+  cattr_reader :per_page
+  @@per_page = 10
+  
   class SettingsAdapter
     
     def initialize(str)

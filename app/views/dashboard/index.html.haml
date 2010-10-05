@@ -2,13 +2,13 @@
        
   #launch_select.remote_module
   :javascript
-    new Ajax.Updater('launch_select', '#{url_for(:controller => :launches, :action => :select)}');
+    new Ajax.Request('#{url_for(:controller => :launches, :action => :select, :params => {:orders => 'created_at DESC'})}');
   %span 
     %h5 
       create new launch:
       - @subapps.sort do |i,j| i.name <=> j.name end.each_with_index do |subapp, i|
         = "," if i > 0
-        =link_to subapp.name, new_subapp_launch_path(subapp) 
+        =link_to subapp.name, new_subapp_launch_path(subapp)
   
     
   -if current_user.has_role? :admin    
