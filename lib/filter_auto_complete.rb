@@ -18,7 +18,7 @@ class FilterAutoComplete
     value = chunks[-1]
       
     #prefix = $1 || ''
-    parts = value.split(/\b/, 5)
+    parts = value.split(/(\s)/, 5)
     parts.pop if parts.size > 1 && parts[-1] == ''  
     result = []
     case 
@@ -34,11 +34,12 @@ class FilterAutoComplete
         op.match parts[2]
       end
     when parts.size > 3
+      parts = parts[0..3] << parts[4..-1].join
       field = parts[0]
-      value_prefix = parts[4..-1] || ''
+      value_prefix = parts[4..-1].join
       if (@fields.include? field) && (OPERATORS.include? parts[2] )
         result = @klazz.find(:all, :select => "distinct #{field}", \
-          :conditions => ["#{field} LIKE ?", '%' + value_prefix.join() + '%'], \
+          :conditions => ["#{field} LIKE ?", '%' + value_prefix + '%'], \
           :order => "#{field} ASC", :limit => 10 )
         result.map! do |obj|
           " " + obj.send(field).to_s
