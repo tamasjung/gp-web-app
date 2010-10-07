@@ -7,6 +7,8 @@ class Launch < ActiveRecord::Base
   
   belongs_to :subapp
   
+  belongs_to :person
+  
   cattr_reader :per_page
   @@per_page = 10
   

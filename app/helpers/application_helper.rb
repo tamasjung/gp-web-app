@@ -41,7 +41,7 @@ module ApplicationHelper
     num = ''
     num = idx + 1 unless idx.nil?
     
-    icon = raw "<span class='order_icon' >#{icon}<sub class='order_index'>#{num}</sub></span>"
+    icon = raw "<span class='order_icon order_level_#{[num.to_i, 3].min }'  >#{icon}</span>"
 
     link + icon
   end

@@ -2,7 +2,7 @@
        
   #launch_select.remote_module
   :javascript
-    new Ajax.Request('#{url_for(:controller => :launches, :action => :select, :params => {:orders => 'created_at DESC'})}');
+    new Ajax.Request('#{url_for(:controller => :launches, :action => :select, :params => {:orders => 'launches.created_at DESC'})}');
   %span 
     %h5 
       create new launch:

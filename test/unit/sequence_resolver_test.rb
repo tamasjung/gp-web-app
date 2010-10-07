@@ -1,7 +1,7 @@
 require 'test/unit' 
 require 'lib/script/sequence_resolver' 
 
-class TestPlaylist < Test::Unit::TestCase
+class TestSequenceResolver < Test::Unit::TestCase
   
   def test_processor 
     assert_nothing_raised do

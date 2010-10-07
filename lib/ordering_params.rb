@@ -68,7 +68,7 @@ class OrderingParams
     str.split(',').each do |i|
       order_def = i.strip.split(/\s+/)
       raise "invalid order def #{str}" unless order_def.size == 2 && ['ASC', 'DESC'].include?(order_def[1])
-      raise "invalid order name #{order_def[0]}" unless order_def[0] =~ /^\w+$/
+      raise "invalid order name #{order_def[0]}" unless order_def[0] =~ /^[\w.]+$/
       result << order_def
     end
     result

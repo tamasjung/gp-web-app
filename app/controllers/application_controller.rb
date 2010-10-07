@@ -12,6 +12,9 @@ class ApplicationController < ActionController::Base
     redirect_to ''
   end
   
+  def debug_info 
+    render :text => Rails::Info, :content_type => 'text/plain'
+  end
   
   def init
     @git_version = @@git_version

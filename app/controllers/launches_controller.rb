@@ -12,11 +12,18 @@ class LaunchesController < ApplicationController
   end
   
   def select
-    #@launches = Launch.all
-    @launches = Launch.paginate :page => params[:page], :order => params[:orders]
+    search_string = params[:launch_search]
+    options = {:page => params[:page], :order => params[:orders]}
+    if search_string
+      begin
+        options.merge!(FilterParser.new([:name, :state], {:creator => 'people.nick'}).parse(search_string)) 
+        params[:page] = 1
+      rescue Exception => e
+        flash.now[:notice] = "cannot parse #{e}"
+      end
+    end
+    @launches = Launch.paginate options
     respond_to do |format|
-      #format.html {render :layout => false}
-      #format.xml  { render :xml => @launches }
       format.js do
         render :update do |page|
           page.replace_html 'launch_select', :partial => "select"

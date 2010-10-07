@@ -1,6 +1,7 @@
 class Person < ActiveRecord::Base
   has_and_belongs_to_many :subapps
   has_and_belongs_to_many :launches
+  has_one :preference
   
   def display_name
     self.nick

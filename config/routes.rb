@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :preferences
+
   
   map.resources :subapps  do |subapp|
     subapp.resources :launches

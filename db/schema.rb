@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100924164944) do
+ActiveRecord::Schema.define(:version => 20101006234513) do
 
   create_table "application_files", :force => true do |t|
     t.string   "name"
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20100924164944) do
     t.datetime "start_time"
     t.datetime "finish_time"
     t.integer  "subapp_id"
+    t.integer  "person_id"
   end
 
   create_table "people", :force => true do |t|
@@ -67,10 +68,11 @@ ActiveRecord::Schema.define(:version => 20100924164944) do
     t.string   "roles"
   end
 
-  create_table "people_launches", :force => true do |t|
-  end
-
-  create_table "people_subapps", :force => true do |t|
+  create_table "preferences", :force => true do |t|
+    t.integer  "person_id"
+    t.string   "prefs"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "subapps", :force => true do |t|

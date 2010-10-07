@@ -1,6 +1,12 @@
-%h3 Launch history
-%form
-  %input#launch_search{:type => 'text', :name => 'launch_search'}
+= render :partial => '/layouts/flash', :object => flash
+=#%h3.launch_select_title Launch history select by
+%span.paginate_info
+  =page_entries_info(@launches, {})
+  , filtered by
+-form_remote_tag :html => { :id => 'launch_search_form', :action => url_for(:controller => :launches , :action => :select )} do
+  -params.each do |key, value|
+    %input{:type => 'hidden', :name => key, :value => value}
+  %input#launch_search{:type => 'text', :name => 'launch_search', :value => params[:launch_search]}
   #launch_choices.autocomplete
 :javascript
   new Ajax.Autocompleter("launch_search", "launch_choices", "#{url_for(:controller => :launches, :action => :search_autocomplete)}", {
@@ -9,14 +15,20 @@
       return $H({value: input.value}).toQueryString()
     }
   });
-=page_entries_info(@launches, {})
+  
+  $('launch_search').observe("keydown", function(event){
+    if(whichKey(event) == 13){
+      even.element().up('form').submit()
+    }
+  });
+
 
 %table
   %tr
     %th
       = ordering_link "Name", :name, params
     %th 
-      = ordering_link "Created at", :created_at, params, 'DESC'
+      = ordering_link "Created at", :"launches.created_at", params, 'DESC'
     %th 
       = ordering_link "State", :state, params
   - @launches.each_with_index do |launch, idx|
@@ -29,3 +41,4 @@
         .action_link= link_to 'destroy', launch, :confirm => 'Are you sure?', :method => :delete
         
 =will_paginate(@launches, :renderer => RemoteLinkRenderer, :params => params)
+

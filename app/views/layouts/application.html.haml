@@ -27,12 +27,8 @@
         #bc.broadcast
           = h ApplicationController.broadcast
       #content
-        -if flash[:error]
-          .error
-            = flash[:error]
-        -if flash[:notice]
-          .notice 
-            = flash[:notice]
+        = render :partial => '/layouts/flash', :object => flash
+
         = yield
  
       #footer

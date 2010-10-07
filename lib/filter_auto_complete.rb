@@ -1,7 +1,9 @@
+require 'filter_parser'
+
 class FilterAutoComplete
   
   
-  OPERATORS = %w{= <> < >  bbb like}
+  OPERATORS = FilterParser::OPERATORS
   
   def initialize(model_class, the_fields = [])
     @klazz = model_class
@@ -9,7 +11,7 @@ class FilterAutoComplete
   end
   
   def get_results(orig_value)
-    chunks = orig_value.split /(\s*(?:and|or)\s*)/
+    chunks = orig_value.split /(\s+(?:and|or)\s+)/
     if chunks.size > 1
       prefix = chunks[0..-2].join
     else
