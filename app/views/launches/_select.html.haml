@@ -1,13 +1,15 @@
 = render :partial => '/layouts/flash', :object => flash
 =#%h3.launch_select_title Launch history select by
-%span.paginate_info
-  =page_entries_info(@launches, {})
-  , filtered by
--form_remote_tag :html => { :id => 'launch_search_form', :action => url_for(:controller => :launches , :action => :select )} do
-  -params.each do |key, value|
-    %input{:type => 'hidden', :name => key, :value => value}
-  %input#launch_search{:type => 'text', :name => 'launch_search', :value => params[:launch_search]}
-  #launch_choices.autocomplete
+%div
+  %span.paginate_info
+    =page_entries_info(@launches, {})
+    , filtered by
+  -form_remote_tag :html => { :id => 'launch_search_form', :action => url_for(:controller => :launches , :action => :select )} do
+    -params.each do |key, value|
+      %input{:type => 'hidden', :name => key, :value => value}
+    %input#launch_search{:type => 'text', :name => 'launch_search', :value => params[:launch_search]}
+    %input{:type => 'hidden', :name=>'page', :value => '1'}
+    #launch_choices.autocomplete
 :javascript
   new Ajax.Autocompleter("launch_search", "launch_choices", "#{url_for(:controller => :launches, :action => :search_autocomplete)}", {
     paramName: "value",
@@ -21,7 +23,40 @@
       even.element().up('form').submit()
     }
   });
-
+.long_desc
+  Examples for filtering:
+  .row
+    .code
+      name like Lie
+    .explanation
+      the name contains 'Lie' 
+  .row
+    .code
+      creator = my_login_name
+    .explanation
+      the creator's login name is 'my_login_name'
+  .row
+    .code
+      name like Lie and creator = my_login_name
+    .explanation
+      the two filters above combined
+  .row
+    .code
+      name like Lie or creator = my_login_name
+    .explanation
+      the same with 'or' instead of 'and'
+  .row
+    .code
+      state <> FINISHED
+    .explanation
+      selects launches with any but 'FINISHED' state
+  .row
+    .code
+      created_at > 2010.10.01
+    .explanation
+      created after 1st November, 2010
+      
+      
 
 %table
   %tr
@@ -31,14 +66,19 @@
       = ordering_link "Created at", :"launches.created_at", params, 'DESC'
     %th 
       = ordering_link "State", :state, params
+    %th
+      Creator
+    %th
+      Actions
   - @launches.each_with_index do |launch, idx|
     %tr{:class => (idx % 2 == 0) ? "even" : "odd"}
       %td= h launch.name
-      %td= h launch.created_at
+      %td= h launch.created_at.to_s(:db)
       %td= h launch.state
+      %td= h launch.person.nick
       %td
         .action_link= link_to 'show', edit_launch_path(launch)
-        .action_link= link_to 'destroy', launch, :confirm => 'Are you sure?', :method => :delete
+        .action_link= link_to_remote 'destroy', :url => launch_url(launch, :orders => params[:orders], :launch_search => params[:launch_search]), :confirm => 'Are you sure?', :method => :delete
         
 =will_paginate(@launches, :renderer => RemoteLinkRenderer, :params => params)
 

@@ -16,10 +16,11 @@ class LaunchesController < ApplicationController
     options = {:page => params[:page], :order => params[:orders]}
     if search_string
       begin
-        options.merge!(FilterParser.new([:name, :state], {:creator => 'people.nick'}).parse(search_string)) 
-        params[:page] = 1
-      rescue Exception => e
-        flash.now[:notice] = "cannot parse #{e}"
+        parser = FilterParser.new(:launch, [:name, :state], {:creator => 'people.nick', :created_at => 'launches.created_at'})
+        options.merge!(parser.parse(search_string)) 
+      # rescue Exception => e
+      #         flash.now[:notice] = "cannot parse #{search_string}"
+      #         logger.error e
       end
     end
     @launches = Launch.paginate options
@@ -128,10 +129,11 @@ class LaunchesController < ApplicationController
   def destroy
     @launch = Launch.find(params[:id])
     @launch.destroy
-
+    p url_for(:controller => :launches, :action => :select, :orders => params[:orders], :launch_search => params[:launch_search])
     respond_to do |format|
       format.html { redirect_to(launches_url) }
       format.xml  { head :ok }
+      format.js {redirect_to(:action => :select, :orders => params[:orders], :launch_search => params[:launch_search])}
     end
   end
   

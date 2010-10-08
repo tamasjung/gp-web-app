@@ -1096,21 +1096,33 @@ body a.help_off {
 }
 
 /* line 457, ../../../app/stylesheets/partials/_main.sass */
-#launch_search_form {
-  float: right;
+#launch_select .long_desc {
+  padding: 5px;
+  margin-top: 10px;
+  border-radius: 15px;
+  -moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
 }
-/* line 459, ../../../app/stylesheets/partials/_main.sass */
-#launch_search_form #launch_search {
-  width: 410px;
+/* line 461, ../../../app/stylesheets/partials/_main.sass */
+#launch_select .long_desc .row {
+  clear: left;
 }
-
-/* line 462, ../../../app/stylesheets/partials/_main.sass */
-.paginate_info {
-  font-size: 0.7em;
+/* line 463, ../../../app/stylesheets/partials/_main.sass */
+#launch_select .long_desc .row .code {
+  width: 250px;
+  float: left;
 }
-
-/* line 464, ../../../app/stylesheets/partials/_main.sass */
-.launch_select_title {
+/* line 466, ../../../app/stylesheets/partials/_main.sass */
+#launch_select .long_desc .row .explanation {
+  margin-left: 260px;
+  font-style: italic;
+}
+/* line 473, ../../../app/stylesheets/partials/_main.sass */
+#launch_select #launch_search_form #launch_search {
+  width: 70%;
+}
+/* line 478, ../../../app/stylesheets/partials/_main.sass */
+#launch_select .launch_select_title {
   display: inline;
 }
 

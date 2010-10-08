@@ -1,12 +1,17 @@
+require 'active_support'
 class FilterParser
+  
   
   OPERATORS = %w{= <> < >  like} #<< 'not like'
   
-  def initialize(fields, substitutions = {})
+  def initialize(self_assoc, fields, substitutions = {})
     @fields = fields + substitutions.keys
     @fields.map! {|f| f.to_s}
     @subs = substitutions
+    @self_assoc = self_assoc.to_s
   end
+  
+  
   
   def assoc(field_name)
     result = nil
@@ -31,7 +36,7 @@ class FilterParser
           field = parts[0]
           field = @subs[field.to_sym] || field
           assoc_name = assoc field
-          includes << assoc_name if assoc_name
+          includes << assoc_name if assoc_name && assoc_name != @self_assoc
           result_str << field << parts[1..3].join
           param_name = "p#{param_index}".to_sym
           param_index += 1

@@ -453,16 +453,30 @@ body
 
 .no_display
   display: none
-  
-#launch_search_form 
-  float: right
-  #launch_search
-    width: 410px
+#launch_select
+  .long_desc
+    padding: 5px
+    margin-top: 10px
+    +rounded
+    .row
+      clear: left
+      .code
+        width: 250px
+        float: left
+      .explanation
+        margin-left: 260px
+        font-style: italic
+        
+      
+  #launch_search_form 
+    //float: right
+    #launch_search
+      width: 70%
     
-.paginate_info
-  font-size: 0.7em
-.launch_select_title
-  display: inline 
+  .paginate_info
+    //font-size: 0.7em
+  .launch_select_title
+    display: inline 
 
   
 

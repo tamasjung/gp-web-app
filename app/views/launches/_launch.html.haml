@@ -6,6 +6,9 @@
   %li.tab
     %a{ :href => "#options" }
       options
+  %li.tab
+    %a{ :href => "#jobs"}
+      jobs
 #settings.tabpanel
   =@input_html
   
@@ -26,6 +29,10 @@
         = f.text_area :settings, :rows => 20
     = f.submit controller.action_name, :onclick => 'collect_and_submit()'
     %input{:type => 'button', :onclick=> 'collect_and_submit();', :value => 'serialize'}
+
+#jobs.tabpanel
+  .asdf
+    sdf
 :javascript
 
   new Control.Tabs('launch_tabs');

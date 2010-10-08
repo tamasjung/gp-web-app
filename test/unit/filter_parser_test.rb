@@ -6,7 +6,7 @@ class TestFilterParser < Test::Unit::TestCase
   #TODO loads of tests because of the security danger
   
   def target
-    @parser = FilterParser.new [:name, :state]
+    @parser = FilterParser.new :foo_table, [:name, :state]
   end
   
   def test_blab_bla
@@ -21,12 +21,32 @@ class TestFilterParser < Test::Unit::TestCase
   def test_subs
     
     str = "user like me"
-    parser = FilterParser.new [:name], :user => 'people.nick'
+    parser = FilterParser.new :foo_table, [:name], :user => 'people.nick'
     result = parser.parse str
   
     assert_equal "people.nick like :p0", result[:conditions][0]
-    p result
-    assert_equal "people", result[:include][0]
+    assert_equal "person", result[:include][0]
     
   end
+  
+  def test_subs2
+    
+    str = "user like me"
+    parser = FilterParser.new :person, [:name], :user => 'people.nick'
+    result = parser.parse str
+  
+    assert_equal "people.nick like :p0", result[:conditions][0]
+    assert_equal 0, result[:include].size
+    
+  end
+  
+  def test_bug
+    str = "created_at = 2010-10-05 13:45:52 and creator like fire"
+    parser = FilterParser.new(:launch, [:name, :state], {:creator => 'people.nick', :created_at => 'launches.created_at'})
+    result = parser.parse str
+  
+    assert_equal "launches.created_at = :p0 and people.nick like :p1", result[:conditions][0]
+    assert_equal 1, result[:include].size
+  end
+  
 end
