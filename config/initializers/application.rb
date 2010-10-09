@@ -43,7 +43,7 @@ end
 
 #TODO into different file
 $dependency_context = DependencyContext.new({
-  :launch_base_dir => File.join(Rails.root, 'public', 'launches'),
+  :launch_base_dir => File.join(Rails.root, 'public', 'system', 'launches'),
   :launch_dir_mod => 0700,
   :local_sequence_limit => 100,
   :sync_or_async => :send_later
