@@ -7,8 +7,8 @@
     %a{ :href => "#options" }
       options
   %li.tab
-    %a{ :href => "#jobs"}
-      jobs
+    %a{ :id => "jobs_tab", :href => "#jobs"}
+      = (Job.count :conditions  => "launch_id = #{@launch.id}") > 1 ? 'jobs' : 'job'
 #settings.tabpanel
   =@input_html
   
@@ -31,11 +31,15 @@
     %input{:type => 'button', :onclick=> 'collect_and_submit();', :value => 'serialize'}
 
 #jobs.tabpanel
-  .asdf
-    sdf
+  
+    
 :javascript
 
   new Control.Tabs('launch_tabs');
+  
+  $('jobs_tab').observe('click', function(event){
+    new Ajax.Request('#{url_for(:controller => :jobs, :action => :select, :launch_id => @launch.id)}');
+  });
   
   function collect_and_submit(){
     

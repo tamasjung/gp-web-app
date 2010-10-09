@@ -25,4 +25,14 @@ class JobInterfaceFork
       #TODO setting job.state to Job::FINISHED
     end
   end
+  
+  def stop
+    job = Job.find @job_id
+    job.state = Job::STOPPING
+    job.save!
+    Process.kill(:KILL, job.address)
+    job.state = Job::STOPPED
+    job.save!
+  end
+   
 end

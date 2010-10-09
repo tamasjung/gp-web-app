@@ -1,0 +1,18 @@
+
+%table
+  %tr
+    %th
+      Address
+    %th
+      State
+    %th
+      Actions
+      
+  -@jobs.each_with_index do |job, idx|
+    %tr{:class => (idx % 2 == 0) ? "even" : "odd"}
+      %td=job.address
+      %td=job.state
+      %td
+        .action_link= link_to_remote 'stop', :action => :stop
+  
+  

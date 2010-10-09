@@ -9,6 +9,25 @@ class JobsController < ApplicationController
       format.xml  { render :xml => @jobs }
     end
   end
+  
+  def select
+    @jobs = Job.find_all_by_launch_id params[:launch_id]
+    
+    respond_to do |format|
+      format.js do 
+        render :update do |page|
+          page.replace_html 'jobs', :partial => "select"
+        end
+      end
+    end
+  end
+  
+  def stop
+    job_id = params[:id]
+    if job_id
+      
+    end
+  end
 
   # GET /jobs/1
   # GET /jobs/1.xml

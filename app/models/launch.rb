@@ -9,6 +9,8 @@ class Launch < ActiveRecord::Base
   
   belongs_to :person
   
+  has_many :jobs
+  
   cattr_reader :per_page
   @@per_page = 10
   

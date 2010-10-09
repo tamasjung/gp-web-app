@@ -37,7 +37,7 @@ set :branch, 'master'
 set :scm_verbose, true
 set :use_sudo, false
 # task which causes Passenger to initiate a restart
-namespace :deploy do 
+namespace :deploy do
   task :restart do
     run "touch #{current_path}/tmp/restart.txt"
   end 
