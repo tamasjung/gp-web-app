@@ -23,7 +23,7 @@
       even.element().up('form').submit()
     }
   });
-.long_desc
+.long_desc{:style => 'display: none'}
   Examples for filtering:
   .row
     .code
@@ -55,6 +55,10 @@
       created_at > 2010.10.01
     .explanation
       created after 1st November, 2010
+  %br    
+  .explanation
+    The very simple parser splits the expression by whitespaces and takes the first two word as attribute name and operator. 
+    The remaining part is the value. Because of this the whitespaces are very important and there is no need to quote.
       
       
 
@@ -81,4 +85,5 @@
         .action_link= link_to_remote 'destroy', :url => launch_url(launch, :orders => params[:orders], :launch_search => params[:launch_search]), :confirm => 'Are you sure?', :method => :delete
         
 =will_paginate(@launches, :renderer => RemoteLinkRenderer, :params => params)
-
+:javascript
+  document.fire("gp:new_panel")

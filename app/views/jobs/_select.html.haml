@@ -13,6 +13,7 @@
       %td=job.address
       %td=job.state
       %td
-        .action_link= link_to_remote 'stop', :action => :stop
+        -job.available_actions.each do |action|
+          .action_link= link_to_remote action.to_s, :action => action
   
   

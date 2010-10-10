@@ -86,6 +86,7 @@ class LaunchesController < ApplicationController
   def create
     @launch = Launch.new(params[:launch])
     @launch.state = Launch::CREATED
+    @launch.person = current_user
     save_ok = @launch.save_and_launch
     unless @launch.name.size > 0
       @launch.name = @launch.subapp.name + "-" + @launch.id.to_s#generate a name

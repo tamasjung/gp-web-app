@@ -384,9 +384,11 @@
     while(orbitalsCount-- > 1){
       new_orbital();
     }
-    settings.launch_params.sequences.each(function(i, idx){
-      generateSequence("$" + i.name);
-    })
+    if(settings.launch_params.sequences){
+      settings.launch_params.sequences.each(function(i, idx){
+        generateSequence("$" + i.name);
+      })
+    }
     
     reindexing_orbitals();
   }

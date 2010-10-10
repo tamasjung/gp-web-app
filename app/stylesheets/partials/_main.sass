@@ -62,7 +62,10 @@ $grid_logo = "grid_logo.png"
       left: 1000px 
       top: 20px
       font-size: 0.4em
-    #logout
+      #logout
+        //position: relative
+        position: absolute
+    
       
   #static_header_panel
     :margin-left 740px
@@ -458,6 +461,8 @@ body
     padding: 5px
     margin-top: 10px
     +rounded
+    .explanation
+      font-style: italic
     .row
       clear: left
       .code
@@ -465,7 +470,7 @@ body
         float: left
       .explanation
         margin-left: 260px
-        font-style: italic
+        
         
       
   #launch_search_form 

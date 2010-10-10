@@ -15,15 +15,13 @@
             logged in as
             =current_user.display_name rescue ""
             #logout{:style => 'display: none'}
-              =link_to "you can NOT logout here yet", :controller => 'login', :action => 'login_index'
+              =link_to "you can NOT logout here - yet", :controller => 'login', :action => 'login_index'
         #static_header_panel
           %a.clickable.help#help_button
         
           
       #sidebar.last
         .place_holder
-          %a{:onClick => "debug_window.open()"}
-            debug 
         #bc.broadcast
           = h ApplicationController.broadcast
       #content
@@ -32,7 +30,6 @@
         = yield
  
       #footer
-        ="-----"
         #version
           commit version:
           =@git_version
@@ -61,11 +58,15 @@
       $('help_button').removeClassName('help').addClassName('help_off')
     }
   }
+  
+  document.observe('gp:new_panel', function(event){
+    checkHelp();
+  });
 
   if(sessStorage.helpIsOn === undefined){
     sessStorage.helpIsOn = 0
   }
-  checkHelp();
+  document.fire("gp:new_panel")
   $('help_button').observe('click', function(){
     
     sessStorage.helpIsOn = Math.abs(+sessStorage.helpIsOn - 1)

@@ -1,6 +1,20 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
-
+function jsonResource(url, onSuccessFunction){
+  options = {
+    method: 'get',  
+    asynchronous: (onSuccessFunction !== undefined), 
+    evalJSON: true,//does not work, because rails does not set content-type 
+    requestHeaders: {Accept:'application/json'} 
+    }
+  if(onSuccessFunction){
+    options['onSuccess'] = onSuccessFunction;
+  }
+  res = new Ajax.Request( url, options);
+  result = res.transport.responseText.evalJSON();
+  self = Object.keys(result)[0]
+  return result[self];
+}
 
 function toBase64(input) {
   var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";

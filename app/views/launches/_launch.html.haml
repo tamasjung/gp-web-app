@@ -7,11 +7,13 @@
     %a{ :href => "#options" }
       options
   %li.tab
-    %a{ :id => "jobs_tab", :href => "#jobs"}
-      = (Job.count :conditions  => "launch_id = #{@launch.id}") > 1 ? 'jobs' : 'job'
+    %a{ :id => "control_tab", :href => "#control"}
+      control
+  %li.tab
+    %a{ :id => "info_tab", :href => "#info"}
+      info
 #settings.tabpanel
   =@input_html
-  
 
 #options.tabpanel
   -form_for @launch do |f|
@@ -24,22 +26,136 @@
         = f.text_field :name, :size => 40
     .prop_row
       .label
+        dry run
+      .field
+        = check_box_tag :dry_run
+    .prop_row
+      .label
+        parent launch
+      .field
+        = (@launch.parent ? @launch.parent.name : '-')
+    .prop_row
+      .label
+        launch type
+      .field
+        = @launch.subapp.name
+        #subapp_id{:style => 'display:none'}<
+          =@launch.subapp.id
+    .prop_row
+      .label
         = f.label :settings 
       .field
-        = f.text_area :settings, :rows => 20
-    = f.submit controller.action_name, :onclick => 'collect_and_submit()'
-    %input{:type => 'button', :onclick=> 'collect_and_submit();', :value => 'serialize'}
+        = f.text_area :settings, :rows => 2
+    = f.submit 'send', :onclick => 'collect_and_submit()'
+    %input{:type => 'button', :onclick=> 'collect_and_submit();', :value => 'refresh settings'}
+    
 
-#jobs.tabpanel
+#control.tabpanel
+  #jobs
   
+#info.tabpanel
+  .prop_row
+    .label
+      command
+    #info_command.field
+      
+  .prop_row
+    .label
+      command arguments
+    #info_command_args.field
+    
+  #launch_files    
+
+          
+  #launch_sequences
+      
     
 :javascript
 
   new Control.Tabs('launch_tabs');
   
-  $('jobs_tab').observe('click', function(event){
+  $('control_tab').observe('click', function(event){
     new Ajax.Request('#{url_for(:controller => :jobs, :action => :select, :launch_id => @launch.id)}');
   });
+  
+  $('info_tab').observe('click', function(event){
+  
+    var launch_params = prepareSubmit()
+    var subapp_id = $('subapp_id').innerHTML
+    
+    var url = '#{url_for(:controller => :subapps, :action => 'show', :id => nil)}' + '/' + subapp_id;
+    
+    $('info_command').innerHTML =jsonResource(url).executable
+    
+    if(launch_params.files){
+      $$('#launch_files *').invoke('remove')
+      $('launch_files').appendChild(
+        NodeBuilder(
+          ['div', {'class': 'group'},
+            ['div', {'class': 'group_title'},
+              "Launch files"
+            ],
+            ['table', {},
+              ['tbody', {},
+                ['tr', {},
+                  ['th', {}, 'name'],
+                  ['th', {}, 'start'],
+                  ['th', {}, 'max'  ],
+                  ['th', {}, 'diff']
+                ]
+              ].concat(
+                launch_params.files.map(function(f){
+                  ["tr", {'class': 'info_launch_file'},
+                    ["td", {},
+                      f.name
+                    ],
+                    ["td", {},
+                      f.content
+                    ]
+                  ]
+                }
+                )
+              )
+            ]
+          ]
+        )  
+      )
+    }
+    if(launch_params.sequences){
+      $$('#launch_sequences *').invoke('remove')
+      $('launch_sequences').appendChild(
+        NodeBuilder(
+          ['div', {'class': 'group'},
+            ['div', {'class': 'group_title'},
+              "Launch sequences"
+            ],
+            ['table', {},
+              ['tbody', {},
+                ['tr', {},
+                  ['th', {}, 'name'],
+                  ['th', {}, 'start'],
+                  ['th', {}, 'max'  ],
+                  ['th', {}, 'diff']
+                ]
+              ].concat(
+                launch_params.sequences.map(function(seq){
+                  return ['tr', {},
+                           ['td', {}, seq.name],
+                           ['td', {}, seq.start],
+                           ['td', {}, seq.max],
+                           ['td', {}, seq.diff]
+                        ]
+                })
+              )
+            ]
+          ]
+        )
+      )
+    }
+     
+     
+    $('info_command_args').innerHTML = launch_params.command_args
+  })
   
   function collect_and_submit(){
     
@@ -83,7 +199,19 @@
 
   Form.fillForm('partial_form', settings.form_data);
   $('partial_form').init(); 
-  nameFromId($('partial_form'));  
+  nameFromId($('partial_form')); 
+  
+  function readonlyMode(){
+    $('partial_form').disable();
+    $('partial_form').observe('click', function(event){
+      alert('Be aware this is in read only mode!');
+      Event.stop(event);
+    })
+  } 
+  
+  if(#{!@launch.editable?}){
+    readonlyMode();
+  }
   
   
    
