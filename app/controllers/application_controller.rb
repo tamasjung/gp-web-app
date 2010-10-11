@@ -5,8 +5,7 @@ class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
   
-  before_filter :init
-  #before_filter :login_check, :except => [:login_index, :login_create]
+  before_filter :init#TODO clean
   rescue_from CanCan::AccessDenied do |exception|
     flash.now[:error] = exception.message 
     redirect_to ''
@@ -78,7 +77,7 @@ class ApplicationController < ActionController::Base
   end
   
   def self.broadcast
-    File.read BC_FILE rescue ""
+    File.read BC_FILE rescue ""#TODO remove broadcast
   end
   
   
@@ -94,24 +93,5 @@ class ApplicationController < ActionController::Base
     render :text => ApplicationController.broadcast
   end
 
-  def login_check
-    nick_name = cookies[:nick]
-    unless cookies[:nick]
-      session[:return_to] = request.request_uri
-      redirect_to :controller => :login, :action => :login_index
-    else
-      unless session[:user_id]
-        person = Person.find_by_nick nick_name
-        unless person
-          person = Person.new :nick => nick_name
-          person.save!
-        end
-        session[:user_id] = person.id
-      end
-    end
-  end
 
-  def current_user_old
-    Person.find session[:user_id]
-  end
 end
