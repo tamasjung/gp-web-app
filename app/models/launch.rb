@@ -42,7 +42,7 @@ class Launch < ActiveRecord::Base
   
   has_many :jobs
   
-  has_has_and_belongs_to_many :input_files
+  has_and_belongs_to_many :input_files
   
   cattr_reader :per_page
   @@per_page = 10

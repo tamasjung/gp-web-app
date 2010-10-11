@@ -1108,27 +1108,32 @@ body a.help_off {
   -webkit-border-radius: 15px;
 }
 /* line 464, ../../../app/stylesheets/partials/_main.sass */
+#launch_select .long_desc .title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+/* line 467, ../../../app/stylesheets/partials/_main.sass */
 #launch_select .long_desc .explanation {
   font-style: italic;
 }
-/* line 466, ../../../app/stylesheets/partials/_main.sass */
+/* line 469, ../../../app/stylesheets/partials/_main.sass */
 #launch_select .long_desc .row {
   clear: left;
 }
-/* line 468, ../../../app/stylesheets/partials/_main.sass */
+/* line 471, ../../../app/stylesheets/partials/_main.sass */
 #launch_select .long_desc .row .code {
   width: 250px;
   float: left;
 }
-/* line 471, ../../../app/stylesheets/partials/_main.sass */
+/* line 474, ../../../app/stylesheets/partials/_main.sass */
 #launch_select .long_desc .row .explanation {
   margin-left: 260px;
 }
-/* line 478, ../../../app/stylesheets/partials/_main.sass */
+/* line 481, ../../../app/stylesheets/partials/_main.sass */
 #launch_select #launch_search_form #launch_search {
   width: 70%;
 }
-/* line 483, ../../../app/stylesheets/partials/_main.sass */
+/* line 486, ../../../app/stylesheets/partials/_main.sass */
 #launch_select .launch_select_title {
   display: inline;
 }

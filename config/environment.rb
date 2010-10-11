@@ -23,7 +23,7 @@ Rails::Initializer.run do |config|
   # config.gem "aws-s3", :lib => "aws/s3"
   config.gem "haml"
   config.gem "compass"
-  #config.gem "authlogic", :version => '2.1.6'#maybe I we do not need it
+  config.gem "authlogic", :version => '2.1.6'#maybe I we do not need it
   config.gem "cancan", :version => '1.3.4'
   config.gem 'will_paginate', :version => '~> 2.3.15', :source => 'http://gemcutter.org'
   config.gem 'delayed_job', :version => '2.0.3'

@@ -13,9 +13,9 @@
           #login{:onmouseover => "$('logout').show()", :onmouseout => "$('logout').hide()"}
             
             logged in as
-            =current_user.display_name rescue ""
+            =current_user.login rescue ""
             #logout{:style => 'display: none'}
-              =link_to "you can NOT logout here - yet", :controller => 'login', :action => 'login_index'
+              =link_to "logout", logout_url
         #static_header_panel
           %a.clickable.help#help_button
         

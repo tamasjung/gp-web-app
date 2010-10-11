@@ -11,7 +11,7 @@
         =link_to subapp.name, new_subapp_launch_path(subapp)
   
     
-  -if current_user.has_role? :admin    
+  -if true #TODO current_user.has_role? :admin    
     .remote_module 
   
       =link_to "new subapp", new_subapp_path
