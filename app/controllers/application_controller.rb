@@ -8,8 +8,6 @@ class ApplicationController < ActionController::Base
   before_filter :init
   #before_filter :login_check, :except => [:login_index, :login_create]
   rescue_from CanCan::AccessDenied do |exception|
-    logger.error "------------------"
-    logger.error  exception.message
     flash.now[:error] = exception.message 
     redirect_to ''
   end
