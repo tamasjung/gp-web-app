@@ -11,11 +11,10 @@ class Job < ActiveRecord::Base
   
   enum_field 'state', STATE_ACTIONS.keys.map {|k| k.to_s}
   
-
-    
-
-  
   belongs_to :launch
+  
+  cattr_reader :per_page
+  @@per_page = 10
   
   def address_path
     address ? address.to_s.gsub(/[^\w\.\-]/, '_') : nil
@@ -23,5 +22,9 @@ class Job < ActiveRecord::Base
   
   def available_actions
     STATE_ACTIONS[state.to_sym]
+  end
+  
+  def stable?
+    [:STOPPED, :FINISHED].include? state
   end
 end

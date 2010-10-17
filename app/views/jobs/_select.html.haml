@@ -1,19 +1,58 @@
+-if @jobs.count > 0
+  -if @launch.single
+    -job = @launch.the_only_job
+    .group_title
+      Job
+    .prop_row
+      .label
+        Address
+      .field=job.address
+    .prop_row
+      .label
+        State
+      .field=job.state.humanize
+  -else
+    .group_title
+      Jobs
+    %div
+      %span.paginate_info
+        =page_entries_info(@jobs, {})
+        , filtered by
+      -form_remote_tag :html => { :id => 'job_search_form', :action => url_for(:controller => :jobs , :action => :select )} do
+        -params.each do |key, value|
+          %input{:type => 'hidden', :name => key, :value => value}
+        %input#job_search{:type => 'text', :name => 'job_search', :value => params[:job_search]}
+        %input{:type => 'hidden', :name=>'page', :value => '1'}
+        #job_choices.autocomplete
+    :javascript
+      new Ajax.Autocompleter("job_search", "job_choices", "#{url_for(:controller => :jobs, :action => :search_autocomplete)}", {
+        paramName: "value",
+        callback: function (input, query){
+          return $H({value: input.value}).toQueryString()
+        }
+      });
 
-%table
-  %tr
-    %th
-      Address
-    %th
-      State
-    %th
-      Actions
+      $('job_search').observe("keydown", function(event){
+        if(whichKey(event) == 13){
+          even.element().up('form').submit()
+        }
+      });
+    %table
+      %tr
+        %th
+          = ordering_link "Address", :address, params
+        %th
+          = ordering_link "State", :state, params
+        %th
+          Actions
       
-  -@jobs.each_with_index do |job, idx|
-    %tr{:class => (idx % 2 == 0) ? "even" : "odd"}
-      %td=job.address
-      %td=job.state
-      %td
-        -job.available_actions.each do |action|
-          .action_link= link_to_remote action.to_s, :action => action
-  
-  
+      -@jobs.each_with_index do |job, idx|
+        %tr{:class => (idx % 2 == 0) ? "even" : "odd"}
+          %td=job.address
+          %td=job.state
+          %td
+            -job.available_actions.each do |action|
+              .action_link= link_to_remote action.to_s, :action => action
+    =will_paginate(@jobs, :renderer => RemoteLinkRenderer, :params => params)
+:javascript
+  document.fire("gp:new_panel")  

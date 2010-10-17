@@ -46,6 +46,8 @@ module ApplicationHelper
     link + icon
   end
   
+
+  
 end
 
 #from http://www.botvector.net/2008/08/willpaginate-on-ajax.html

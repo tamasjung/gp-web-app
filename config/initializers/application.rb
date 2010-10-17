@@ -14,6 +14,8 @@ class ActiveRecord::Base
   end
 end
 
+
+
 module AppLogger
   def logger
     if defined?(RAILS_DEFAULT_LOGGER)
@@ -35,6 +37,10 @@ class HashAccessor
     end
   end
   
+end
+
+def unhumanize(str)
+  str.to_s.downcase.gsub(/ +/,'_')
 end
 
 def inspect_part(obj, *props)

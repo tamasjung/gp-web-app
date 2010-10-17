@@ -14,68 +14,71 @@
       info
 #settings.tabpanel
   =@input_html
-
-#options.tabpanel
-  -form_for @launch do |f|
-    = f.error_messages
-    =f.hidden_field :subapp_id
-    .prop_row
-      .label
-        = f.label :name 
-      .field
-        = f.text_field :name, :size => 40
-    .prop_row
-      .label
-        dry run
-      .field
-        = check_box_tag :dry_run
-    .prop_row
-      .label
-        parent launch
-      .field
-        = (@launch.parent ? @launch.parent.name : '-')
-    .prop_row
-      .label
-        launch type
-      .field
-        = @launch.subapp.name
-        #subapp_id{:style => 'display:none'}<
-          =@launch.subapp.id
-    .prop_row
-      .label
-        = f.label :settings 
-      .field
-        = f.text_area :settings, :rows => 2
-    = f.submit 'send', :onclick => 'collect_and_submit()'
-    %input{:type => 'button', :onclick=> 'collect_and_submit();', :value => 'refresh settings'}
+-form_for @launch do |f|
+  #options.tabpanel
+    .panel_in_tab
+      = f.error_messages
+      =f.hidden_field :subapp_id
+      %input{:type => 'hidden', :name => 'default_tab', :value => 'control'}
+      .prop_row
+        .label
+          = f.label :name 
+        .field
+          = f.text_field :name, :size => 40
+      .prop_row
+        .label
+          parent launch
+        .field
+          = (@launch.parent ? @launch.parent.name : '-')
+      .prop_row
+        .label
+          launch type
+        .field
+          = @launch.subapp.name
+          #subapp_id{:style => 'display:none'}<
+            =@launch.subapp.id
+    
+      =f.submit "Clone", :onclick=> 'collect_and_submit();' if @launch.id
     
 
-#control.tabpanel
-  #jobs
+  #control.tabpanel
+    .panel_in_tab
+      .prop_row
+        .label
+          current state
+        .field
+          =@launch.state.to_s.humanize
+      .prop_row
+        .label
+          actions
+        .field
+          -@launch.available_actions.each do |action|
+            =f.submit action.to_s.humanize, :onclick => 'collect_and_submit()'
+      
+      #jobs.group
   
 #info.tabpanel
-  .prop_row
-    .label
-      command
-    #info_command.field
+  .panel_in_tab
+    .prop_row
+      .label
+        command
+      #info_command.field
       
-  .prop_row
-    .label
-      command arguments
-    #info_command_args.field
+    .prop_row
+      .label
+        command arguments
+      #info_command_args.field
     
-  #launch_files    
-
-          
-  #launch_sequences
+    #launch_files
+    #launch_sequences
       
     
 :javascript
 
-  new Control.Tabs('launch_tabs');
+  new Control.Tabs('launch_tabs', {defaultTab: '#{params[:default_tab]}' || 'first'});
   
   $('control_tab').observe('click', function(event){
-    new Ajax.Request('#{url_for(:controller => :jobs, :action => :select, :launch_id => @launch.id)}');
+    new Ajax.Request('#{url_for(:controller => :jobs, :action => :select, :params => {:orders => 'state ASC', :launch_id => @launch.id})}');
   });
   
   $('info_tab').observe('click', function(event){
@@ -87,7 +90,7 @@
     
     $('info_command').innerHTML =jsonResource(url).executable
     
-    if(launch_params.files){
+    if(launch_params.files && launch_params.files.size() > 0){
       $$('#launch_files *').invoke('remove')
       $('launch_files').appendChild(
         NodeBuilder(
@@ -121,7 +124,7 @@
         )  
       )
     }
-    if(launch_params.sequences){
+    if(launch_params.sequences && launch_params.sequences.size() > 0){
       $$('#launch_sequences *').invoke('remove')
       $('launch_sequences').appendChild(
         NodeBuilder(
@@ -152,7 +155,6 @@
         )
       )
     }
-     
      
     $('info_command_args').innerHTML = launch_params.command_args
   })

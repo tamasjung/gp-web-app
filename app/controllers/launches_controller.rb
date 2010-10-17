@@ -1,16 +1,5 @@
 class LaunchesController < ApplicationController
   
-  # GET /launches
-  # GET /launches.xml
-  def index
-    @launches = Launch.all
-    
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @launches }
-    end
-  end
-  
   def select
     search_string = params[:launch_search]
     options = {:page => params[:page], :order => params[:orders]}
@@ -18,9 +7,6 @@ class LaunchesController < ApplicationController
       begin
         parser = FilterParser.new(:launch, [:name, :state], {:creator => 'people.nick', :created_at => 'launches.created_at'})
         options.merge!(parser.parse(search_string)) 
-      # rescue Exception => e
-      #         flash.now[:notice] = "cannot parse #{search_string}"
-      #         logger.error e
       end
     end
     @launches = Launch.paginate options
@@ -36,17 +22,7 @@ class LaunchesController < ApplicationController
   def search_autocomplete
     value = params[:value]
     @results = FilterAutoComplete.new(Launch, [:name, :state]).get_results(value)
-    render :partial => 'search_autocomplete'
-  end
-
-  # GET /launches/1
-  # GET /launches/1.xml
-  def show
-    @launch = Launch.find(params[:id])
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @launch }
-    end
+    render :partial => '/layouts/search_autocomplete'
   end
 
   # GET /launches/new
@@ -56,20 +32,18 @@ class LaunchesController < ApplicationController
     @launch = Launch.new
     
     subapp_id = params[:subapp_id]
-    subapp_id ||= cookies[:last_subapp]
     unless subapp_id
       raise "missing subapp_id"
     else
       cookies[:last_subapp] = subapp_id
     end
     
-    
     @subapp = Subapp.find subapp_id
     @launch.subapp = @subapp
     read_input_partial
     
     respond_to do |format|
-      format.html # new.html.erb
+      format.html { render :action => :edit}
       format.xml  { render :xml => @launch }
     end
   end
@@ -77,7 +51,6 @@ class LaunchesController < ApplicationController
   # GET /launches/1/edit
   def edit
     @launch = Launch.find(params[:id])
-    cookies[:last_subapp] = @launch.subapp.id
     read_input_partial
   end
 
@@ -85,43 +58,78 @@ class LaunchesController < ApplicationController
   # POST /launches.xml
   def create
     @launch = Launch.new(params[:launch])
-    @launch.state = Launch::CREATED
+    commit = unhumanize params[:commit]
     @launch.person = current_user
-    save_ok = @launch.save_and_launch
+    return render :action => 'edit' unless @launch.valid? 
+    save_ok = false
+    case commit
+    when "save"
+      @launch.state = Launch::CREATED
+      save_ok = @launch.save
+    when "start"
+      @launch.state = Launch::QUEUED
+      save_ok = @launch.start
+    else
+      raise "unknown commit: #{commit}"
+    end
     unless @launch.name.size > 0
-      @launch.name = @launch.subapp.name + "-" + @launch.id.to_s#generate a name
+      @launch.name = @launch.generated_name
       save_ok = @launch.save
     end
-    cookies[:last_subapp] = @launch.subapp.id
+    #cookies[:last_subapp] = @launch.subapp.id
     read_input_partial
     respond_to do |format|
       if save_ok 
-        flash[:notice] = "#{@launch.name} was successfully created."
-        format.html { redirect_to(@launch) }
-        format.xml  { render :xml => @launch, :status => :created, :location => @launch }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @launch.errors, :status => :unprocessable_entity }
+        flash[:notice] = "#{@launch.name} was successfully #{commit == 'save' ? 'created' : 'queued' }."
       end
+      format.html { render :action => :edit }
     end
   end
 
-  #TODO remove this method
-  # PUT /launches/1
-  # PUT /launches/1.xml
   def update
+    commit = unhumanize params[:commit]
+    return clone_action if commit == 'clone' 
     @launch = Launch.find(params[:id])
-    cookies[:last_subapp] = @launch.subapp.id
+    return edit unless @launch.valid?
+    
     read_input_partial
+    if ["save", "start"].include? commit
+      update_ok = @launch.update_attributes(params[:launch])
+    end
+    @launch.action_call commit
+    
     respond_to do |format|
-      if @launch.update_attributes(params[:launch])
+      if update_ok
         flash[:notice] = 'Launch was successfully updated.'
-        format.html { redirect_to(@launch) }
-        format.xml  { head :ok }
+        format.html { render :action => :edit }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @launch.errors, :status => :unprocessable_entity }
       end
+    end
+  end
+  
+  def clone_action
+    orig_launch = Launch.find(params[:id])
+    clone = orig_launch.clone
+    clone.state = Launch::NEW
+    clone.person = current_user
+    clone.parent = orig_launch
+    [:name, :created_at, :updated_at, :start_time, :finish_time].each do |method|
+      clone.send((method.to_s + "="), nil)
+    end
+    
+    save_ok = clone.save
+    if save_ok
+      clone.name = clone.generated_name
+      clone.state = Launch::CREATED
+      save_ok = clone.save
+      flash[:notice] = 'Launch was successfully cloned' if save_ok
+    end
+    
+    @launch = clone
+    read_input_partial
+    respond_to do |format|
+      format.html {render :action => "edit"}
     end
   end
 

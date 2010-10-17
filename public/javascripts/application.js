@@ -151,14 +151,14 @@ function LL(list){
 function NodeBuilder(list){
   
   if(list === undefined){
-    throw "list is undefined"
+    throw "NodeBuilder: list is undefined"
   }
   if(typeof list === 'string'){
     return document.createTextNode(list);
   }
   var listSize = list.length;
   if(listSize ==   0){
-    throw 'list is empty'
+    throw 'NodeBuidler: list is empty'
   }
   
   var elementName = list[0];

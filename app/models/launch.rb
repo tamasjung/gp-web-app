@@ -32,6 +32,8 @@ class Launch < ActiveRecord::Base
   
   dependencies :sync_or_async
   
+  validates_uniqueness_of :name, :allow_nil => true
+  
   belongs_to :subapp
   
   belongs_to :person
@@ -48,38 +50,118 @@ class Launch < ActiveRecord::Base
   @@per_page = 10
   
   STATE_ACTIONS = {
-    :CREATED=>[:refresh_state, :start, :stop],#not used yet
-    :QUEUED => [:refresh_state, :stop],
-    :SENDING=>[:refresh_state],
-    :SENT=>[:refresh_state, :stop],
-    :STOPPING=>[:refresh_state],
-    :STOPPED=>[:view_result, :restart],
-    :FINISHED=>[:view_result, :restart]
+    :NEW=>[:save, :start, :cancel],
+    :CREATED=>[:save, :start, :destroy],#not used yet
+    :QUEUED => [:check_state, :refresh_state, :stop],
+    :SENDING=>[:check_state, :refresh_state],
+    :SENT=>[:check_state, :refresh_state, :stop],
+    :STOPPING=>[:check_state, :refresh_state],
+    :STOPPED=>[:restart, :destroy],
+    :FINISHED=>[:restart, :destroy],
+    :DESTROYING=>[],
+    :INVALID => [:destroy]
   }
     
   enum_field 'state', STATE_ACTIONS.keys.map {|k| k.to_s}
   
-  def editable?
-    state == nil || state == 'CREATED'
+  def initialize(*args)
+    super(*args)
+    self.state = NEW
+    self.single = true
   end
   
-  def save_and_launch
-    #TODO one tx
-    result = save
-    LaunchExecutor.new(id).send sync_or_async, :perform
+  def the_only_job
+    raise "this is not single a single launch: #{id}" unless single
+    raise "too many jobs" if jobs.count > 1
+    jobs.first
+  end
+  
+  def editable?
+    self.state == NEW || self.state == CREATED 
+  end
+  
+  def available_actions
+    STATE_ACTIONS[state.to_sym]
+  end
+  
+  #model actions
+  def action_call(action)
+    if available_actions.include? action.to_sym
+      logger.debug "Launch.action_call #{action}"
+      self.send action
+    else
+      raise "invalid action: #{action}"
+    end
+  end
+  
+  def start
+    Launch.transaction do
+      self.state = QUEUED
+      save!
+      LaunchExecutor.new(id).send sync_or_async, :start
+    end
+  end
+  
+  def restart
+    LaunchExecutor.new(id).send sync_or_async, :restart
+  end
+  
+  def check_state
+    result = jobs.count :group => :state
+    case result.keys.size
+    when 0
+      case state
+      when SENT, STOPPING, STOPPED, FINISHED
+        self.state = INVALID
+      end
+    when 1
+      jobs_state = result.first[0]
+      case state
+      when SENT
+        self.state = jobs_state if jobs_state == Job::FINISHED
+      when STOPPING
+        self.state = jobs_state if jobs_state == Job::STOPPED
+      end
+    end
+    save!
     result
   end
   
+  def refresh_state
+    LaunchExecutor.new(id).send sync_or_async, :refresh_state
+  end
+  
+  def stop
+    self.state = STOPPING
+    save!
+    LaunchExecutor.new(id).send sync_or_async, :stop
+  end
+  
+  def destroy
+    self.state = DESTROYING
+    save!
+    LaunchExecutor.new(id).send sync_or_async, :destroy
+  end
+  
+  
+  #eo model actions
+  
   def settings=(settings)
     write_attribute :settings, settings
-    if(defined?(@settings_adapter))
-      @settings_adapter = nil
-    end
+    @settings_adapter = nil
+    self.single = (settings_adapter.sequences.size == 0)
+    # if(defined?(@settings_adapter))
+    #   @settings_adapter = nil
+    # end
   end
     
   def settings_adapter
     @settings_apapter ||= SettingsAdapter.new(settings)
     @settings_apapter
+  end
+  
+  def generated_name
+    subapp.name + "-" + id.to_s
   end
   
 end

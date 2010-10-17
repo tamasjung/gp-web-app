@@ -1,6 +1,7 @@
--if flash[:error]
-  .error
-    = flash[:error]
--if flash[:notice]
-  .notice 
-    = flash[:notice]
+.flash{:onclick => 'event.element().fade()'}
+  -if flash[:error]
+    .error
+      = flash[:error]
+  -if flash[:notice]
+    .notice 
+      = flash[:notice]

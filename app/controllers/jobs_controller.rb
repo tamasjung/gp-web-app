@@ -11,16 +11,33 @@ class JobsController < ApplicationController
   end
   
   def select
-    @jobs = Job.find_all_by_launch_id params[:launch_id]
-    
+    search_string = params[:job_search]
+    options = {:page => params[:page], :order => params[:orders]}
+    options[:page] ||= 1
+    if search_string
+      begin
+        parser = FilterParser.new(:job, [:address, :state])
+        options.merge!(parser.parse(search_string)) 
+      end
+    end
+    launch_id = params[:launch_id]
+    (options[:conditions] ||= {})[:launch_id] = launch_id
+    @jobs = Job.paginate options
+    @launch = Launch.find launch_id
     respond_to do |format|
-      format.js do 
+      format.js do
         render :update do |page|
           page.replace_html 'jobs', :partial => "select"
         end
       end
     end
   end
+  
+  def search_autocomplete
+    value = params[:value]
+    @results = FilterAutoComplete.new(Job, [:address, :state]).get_results(value)
+    render :partial => '/layouts/search_autocomplete'
+  end  
   
   def stop
     job_id = params[:id]

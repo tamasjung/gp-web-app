@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101010210815) do
+ActiveRecord::Schema.define(:version => 20101013174027) do
 
   create_table "application_files", :force => true do |t|
     t.string   "name"
@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(:version => 20101010210815) do
     t.integer  "subapp_id"
     t.integer  "person_id"
     t.integer  "parent_id"
+    t.boolean  "single"
   end
 
   create_table "people", :force => true do |t|

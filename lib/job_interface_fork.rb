@@ -26,6 +26,10 @@ class JobInterfaceFork
     end
   end
   
+  def running?
+    `ps -o pid= -p #{(Job.find @job_id).address}`.length > 0
+  end
+  
   def stop
     job = Job.find @job_id
     job.state = Job::STOPPING

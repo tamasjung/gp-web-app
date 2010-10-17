@@ -13,20 +13,26 @@ class LaunchExecutor
     logger.info "Launch created #{launch_id}" 
   end
   
-  def perform
-    logger.info "Launch perform begins #{@launch_id}"
+  def jobs
+    Launch.find(@launch_id).jobs
+  end
+  
+  def start
+    logger.info "Launch start begins #{@launch_id}"
     launch = Launch.find @launch_id
-    if([Launch::CREATED, Launch::SENDING].member? launch.state)
+    if([Launch::CREATED, Launch::SENDING].include? launch.state)
       launch.state = Launch::SENDING
       launch.save!
       logger.debug "Launch state saved to #{Launch::SENDING}"
-      start launch
+      start_launch launch
+      launch.state = Launch::SENT
+      launch.save!
     else
-      logger.debug "Launch does not perform, its state is #{launch.state}"
+      logger.debug "Launch does not start, its state is #{launch.state}"
     end
   end
   
-  def start(launch)
+  def start_launch(launch)
     logger.debug "LaunchExecutor start begins"
 
     launch_dirs = LaunchDirs.new(launch)
@@ -37,6 +43,8 @@ class LaunchExecutor
     settings = launch.settings_adapter
     seqs = settings.sequences || []
     seq_man = SequenceManager.new(local_sequence_limit)
+    number_of_jobs = 0
+    send_method = launch.single ? :send : sync_or_async
     seq_man.iterate_locally(seqs) do |seqdefs|
       job = Job.new
       job.launch = launch
@@ -45,8 +53,41 @@ class LaunchExecutor
       job_executor = JobExecutor.new()
       job_executor.job_id = job.id
       job_executor.sequence_defs = seqdefs
-      job_executor.send sync_or_async, :perform
-    end 
+      job_executor.send send_method, :start
+      number_of_jobs += 1
+    end
+    logger.debug "Number of jobs created: #{number_of_jobs}"
+  end
+  
+  def restart
+    clean_dir
+    start
+  end
+  
+  def refresh_state
+    jobs.each do |job|
+      unless job.stable?
+        JobExecutor.new(job.id).refresh_state
+      end
+    end
+  end
+  
+  def stop
+    jobs.each do |job|
+      JobExecutor.new(job.id).stop
+    end
+  end
+    
+  def destroy
+    clean_dir
+    Launch.delete @launch_id
+  end
+  
+  def clean_dir
+    launch_dirs = LaunchDirs.new(Launch.find @launch_id)
+    Dir::glob(launch_dirs.jobs_dir_path + "/*") do |path|
+      Dir::remove(path)
+    end
   end
   
   def generate_sent_files(launch, launch_dirs)

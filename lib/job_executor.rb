@@ -7,7 +7,7 @@ class JobExecutor
   def initializer()
   end
   
-  def perform
+  def start
     job = Job.find job_id
     if([Job::CREATED, Job::SENDING].member? job.state)
       job.state = Job::SENDING
@@ -18,7 +18,7 @@ class JobExecutor
     end
   end
   
-  def start(job)
+  def start_job(job)
     sequence_args = sequence_defs.map{|seq| seq.to_arg}.join(' ')
     command_args = job.launch.settings_adapter.command_args + " " + sequence_args
     command_line = Rails.root.join("lib", "script", "dummy_exec.rb ") +  job.launch.subapp.executable.to_s + " " + command_args.to_s
@@ -28,6 +28,26 @@ class JobExecutor
     job.address = pid
     job.state = Job::SENT
     job.save!
+  end
+  
+  def refresh_state
+    job = Job.find @job_id
+    unless job.stable?
+      job_interface = JobInterface.new job.id
+      running = job_interface.running?
+      case job.state
+      when Job::SENT
+        job.state = Job::FINISHED unless running
+      when Job::STOPPING
+        job.state = Job::STOPPED unless running
+      end
+      job.save!
+    end
+  end
+  
+  def stop
+    job = Job.find @job_id
+    (JobInterface.new job.id).stop
   end
   
 end

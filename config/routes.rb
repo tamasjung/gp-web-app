@@ -9,6 +9,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :subapps
 
   map.resources :people
+  
+  map.connect 'jobs/select', :controller => 'jobs', :action => 'select'#TODO
 
   map.resources :jobs
   
