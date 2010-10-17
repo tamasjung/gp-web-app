@@ -97,8 +97,7 @@ class Launch < ActiveRecord::Base
   def start
     Launch.transaction do
       self.state = QUEUED
-      save!
-      LaunchExecutor.new(id).send sync_or_async, :start
+      LaunchExecutor.new(id).send sync_or_async, :start if save
     end
   end
   

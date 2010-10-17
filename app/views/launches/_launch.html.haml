@@ -19,6 +19,7 @@
     .panel_in_tab
       = f.error_messages
       =f.hidden_field :subapp_id
+      =f.hidden_field :settings
       %input{:type => 'hidden', :name => 'default_tab', :value => 'control'}
       .prop_row
         .label
@@ -81,84 +82,6 @@
     new Ajax.Request('#{url_for(:controller => :jobs, :action => :select, :params => {:orders => 'state ASC', :launch_id => @launch.id})}');
   });
   
-  $('info_tab').observe('click', function(event){
-  
-    var launch_params = prepareSubmit()
-    var subapp_id = $('subapp_id').innerHTML
-    
-    var url = '#{url_for(:controller => :subapps, :action => 'show', :id => nil)}' + '/' + subapp_id;
-    
-    $('info_command').innerHTML =jsonResource(url).executable
-    
-    if(launch_params.files && launch_params.files.size() > 0){
-      $$('#launch_files *').invoke('remove')
-      $('launch_files').appendChild(
-        NodeBuilder(
-          ['div', {'class': 'group'},
-            ['div', {'class': 'group_title'},
-              "Launch files"
-            ],
-            ['table', {},
-              ['tbody', {},
-                ['tr', {},
-                  ['th', {}, 'name'],
-                  ['th', {}, 'start'],
-                  ['th', {}, 'max'  ],
-                  ['th', {}, 'diff']
-                ]
-              ].concat(
-                launch_params.files.map(function(f){
-                  ["tr", {'class': 'info_launch_file'},
-                    ["td", {},
-                      f.name
-                    ],
-                    ["td", {},
-                      f.content
-                    ]
-                  ]
-                }
-                )
-              )
-            ]
-          ]
-        )  
-      )
-    }
-    if(launch_params.sequences && launch_params.sequences.size() > 0){
-      $$('#launch_sequences *').invoke('remove')
-      $('launch_sequences').appendChild(
-        NodeBuilder(
-          ['div', {'class': 'group'},
-            ['div', {'class': 'group_title'},
-              "Launch sequences"
-            ],
-            ['table', {},
-              ['tbody', {},
-                ['tr', {},
-                  ['th', {}, 'name'],
-                  ['th', {}, 'start'],
-                  ['th', {}, 'max'  ],
-                  ['th', {}, 'diff']
-                ]
-              ].concat(
-                launch_params.sequences.map(function(seq){
-                  return ['tr', {},
-                           ['td', {}, seq.name],
-                           ['td', {}, seq.start],
-                           ['td', {}, seq.max],
-                           ['td', {}, seq.diff]
-                        ]
-                })
-              )
-            ]
-          ]
-        )
-      )
-    }
-     
-    $('info_command_args').innerHTML = launch_params.command_args
-  })
-  
   function collect_and_submit(){
     
     var launch_params = prepareSubmit()
@@ -183,7 +106,6 @@
   
   var settings_str = $('launch_settings').value;
   
-  
   var settings = {form_data: {}, launch_params: {}}
   try{
     if(settings_str !== undefined){
@@ -205,15 +127,15 @@
   
   function readonlyMode(){
     $('partial_form').disable();
-    $('partial_form').observe('click', function(event){
-      alert('Be aware this is in read only mode!');
-      Event.stop(event);
+    $('partial_form').select("a").each(function(element){
+      element.onclick = "return false;"
     })
   } 
   
   if(#{!@launch.editable?}){
     readonlyMode();
   }
-  
+
+= render :partial => 'info_tab'  
   
    

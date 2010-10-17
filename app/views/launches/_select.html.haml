@@ -76,10 +76,10 @@
       %td= h launch.name
       %td= h launch.created_at.to_s(:db)
       %td= h launch.state
-      %td= h launch.person.nick
+      %td= h launch.person.login
       %td
         .action_link= link_to 'show', edit_launch_path(launch)
-        .action_link= link_to_remote 'destroy', :url => launch_url(launch, :orders => params[:orders], :launch_search => params[:launch_search]), :confirm => 'Are you sure?', :method => :delete
+        =#.action_link= link_to_remote 'destroy', :url => launch_url(launch, :orders => params[:orders], :launch_search => params[:launch_search]), :confirm => 'Are you sure?', :method => :delete
         
 =will_paginate(@launches, :renderer => RemoteLinkRenderer, :params => params)
 :javascript

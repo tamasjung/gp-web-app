@@ -20,7 +20,7 @@ class LaunchExecutor
   def start
     logger.info "Launch start begins #{@launch_id}"
     launch = Launch.find @launch_id
-    if([Launch::CREATED, Launch::SENDING].include? launch.state)
+    if([Launch::QUEUED].include? launch.state)
       launch.state = Launch::SENDING
       launch.save!
       logger.debug "Launch state saved to #{Launch::SENDING}"
@@ -61,6 +61,9 @@ class LaunchExecutor
   
   def restart
     clean_dir
+    launch = Launch.find @launch_id
+    launch.state = Launch::QUEUED
+    launch.save!
     start
   end
   
@@ -85,9 +88,7 @@ class LaunchExecutor
   
   def clean_dir
     launch_dirs = LaunchDirs.new(Launch.find @launch_id)
-    Dir::glob(launch_dirs.jobs_dir_path + "/*") do |path|
-      Dir::remove(path)
-    end
+    FileUtils.rm_rf launch_dirs.dirs.launch_root
   end
   
   def generate_sent_files(launch, launch_dirs)

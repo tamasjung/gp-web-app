@@ -4,7 +4,8 @@ class JobExecutor
   
   attr_accessor :job_id, :sequence_defs
   
-  def initializer()
+  def initialize(job_id)
+    @job_id = job_id
   end
   
   def start
@@ -12,7 +13,7 @@ class JobExecutor
     if([Job::CREATED, Job::SENDING].member? job.state)
       job.state = Job::SENDING
       job.save!
-      start job
+      start_job job
     else
       logger.debug("Job was skipped #{inspect_part job, :id, :state}")
     end
