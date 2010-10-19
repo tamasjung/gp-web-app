@@ -12,13 +12,14 @@ class PersonAuth < ActiveRecord::Migration
   end
 
   def self.down
-    t.remove    :login               
-    t.remove    :email
-    t.remove    :crypted_password
-    t.remove    :password_salt
-    t.remove    :persistence_token
-    t.remove    :single_access_token
-    t.remove    :perishable_token
-    
+    change_table(:people) do |t|
+      t.remove    :login               
+      t.remove    :email
+      t.remove    :crypted_password
+      t.remove    :password_salt
+      t.remove    :persistence_token
+      t.remove    :single_access_token
+      t.remove    :perishable_token
+    end
   end
 end

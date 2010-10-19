@@ -12,8 +12,7 @@ class PersonAssocs < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :people_subapps
-    drop_table :people_launches
-    
+    drop_table :people_subapps if table_exists? :people_subapps
+    drop_table :people_launches if table_exists? :people_launches
   end
 end

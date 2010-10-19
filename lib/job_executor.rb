@@ -23,9 +23,11 @@ class JobExecutor
     sequence_args = sequence_defs.map{|seq| seq.to_arg}.join(' ')
     command_args = job.launch.settings_adapter.command_args + " " + sequence_args
     command_line = Rails.root.join("lib", "script", "dummy_exec.rb ") +  job.launch.subapp.executable.to_s + " " + command_args.to_s
+    job.command_line = command_line.to_s
+    job.save!
     JobDirs.new(job).ensure_job_root
     job_interface = JobInterface.new job_id
-    pid = job_interface.submit(command_line)
+    pid = job_interface.submit
     job.address = pid
     job.state = Job::SENT
     job.save!
@@ -39,10 +41,11 @@ class JobExecutor
       case job.state
       when Job::SENT
         job.state = Job::FINISHED unless running
+        job.save!
       when Job::STOPPING
         job.state = Job::STOPPED unless running
+        job.save!
       end
-      job.save!
     end
   end
   

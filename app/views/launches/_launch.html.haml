@@ -39,7 +39,7 @@
           #subapp_id{:style => 'display:none'}<
             =@launch.subapp.id
     
-      =f.submit "Clone", :onclick=> 'collect_and_submit();' if @launch.id
+      =f.submit "Clone", :onclick=> 'collect_and_submit();' if (@launch.id && @launch.state != Launch::DESTROYING) 
     
 
   #control.tabpanel
@@ -55,6 +55,15 @@
         .field
           -@launch.available_actions.each do |action|
             =f.submit action.to_s.humanize, :onclick => 'collect_and_submit()'
+      -unless @launch.new_record?
+        .prop_row
+          .label
+            local working directory
+          .field
+            -url = LaunchDirs.new(@launch).launch_root_url
+            %a{:href => "#{url}", :target => "_blank"}
+              ="launches/" + @launch.id.to_s
+        
       
       #jobs.group
   

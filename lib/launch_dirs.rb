@@ -20,7 +20,7 @@ class LaunchDirs
   
   include DirMaker
   
-  dependencies :launch_base_dir, :launch_dir_mod
+  dependencies :launch_base_dir, :launch_dir_mod, :launch_base_url
   
   def initialize(launch)
     @launch_id = launch.id
@@ -33,6 +33,10 @@ class LaunchDirs
       :sent_dir_path => (File.join launch_dir, 'sent'),
       :jobs_dir_path => (File.join launch_dir, 'jobs')
     })
+  end
+  
+  def launch_root_url
+    launch_base_url + @launch_id.to_s #keep it in sync with the above
   end
   
   def ensure_dirs

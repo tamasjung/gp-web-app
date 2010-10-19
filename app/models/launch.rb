@@ -42,7 +42,7 @@ class Launch < ActiveRecord::Base
   
   has_many :children, :class_name => "Launch", :foreign_key => "parent_id"
   
-  has_many :jobs
+  has_many :jobs, :dependent => :delete_all
   
   has_and_belongs_to_many :input_files
   
@@ -52,12 +52,13 @@ class Launch < ActiveRecord::Base
   STATE_ACTIONS = {
     :NEW=>[:save, :start, :cancel],
     :CREATED=>[:save, :start, :destroy],#not used yet
-    :QUEUED => [:check_state, :refresh_state, :stop],
-    :SENDING=>[:check_state, :refresh_state],
-    :SENT=>[:check_state, :refresh_state, :stop],
-    :STOPPING=>[:check_state, :refresh_state],
+    :QUEUED => [:refresh_state, :stop],
+    :SENDING=>[:refresh_state],
+    :SENT=>[:refresh_state, :stop],
+    :STOPPING=>[:refresh_state],
     :STOPPED=>[:restart, :destroy],
     :FINISHED=>[:restart, :destroy],
+    :RESTARTING => [:refresh_state],
     :DESTROYING=>[],
     :INVALID => [:destroy]
   }
@@ -72,7 +73,7 @@ class Launch < ActiveRecord::Base
   
   def the_only_job
     raise "this is not single a single launch: #{id}" unless single
-    raise "too many jobs" if jobs.count > 1
+    raise "too many jobs, launch.id = #{id}, jobs: #{jobs.count}" if jobs.count > 1
     jobs.first
   end
   
@@ -90,7 +91,7 @@ class Launch < ActiveRecord::Base
       logger.debug "Launch.action_call #{action}"
       self.send action
     else
-      raise "invalid action: #{action}"
+      logger.debug "action_call: invalid action called: #{action}"
     end
   end
   
@@ -102,7 +103,10 @@ class Launch < ActiveRecord::Base
   end
   
   def restart
-    LaunchExecutor.new(id).send sync_or_async, :restart
+    Launch.transaction do
+      self.state = RESTARTING
+      LaunchExecutor.new(id).send sync_or_async, :restart
+    end
   end
   
   def check_state
@@ -127,7 +131,7 @@ class Launch < ActiveRecord::Base
   end
   
   def refresh_state
-    LaunchExecutor.new(id).send sync_or_async, :refresh_state
+    LaunchExecutor.new(id).send sync_or_async, :refresh_state unless refreshing
   end
   
   def stop
@@ -145,13 +149,11 @@ class Launch < ActiveRecord::Base
   
   #eo model actions
   
+  
   def settings=(settings)
     write_attribute :settings, settings
     @settings_adapter = nil
     self.single = (settings_adapter.sequences.size == 0)
-    # if(defined?(@settings_adapter))
-    #   @settings_adapter = nil
-    # end
   end
     
   def settings_adapter

@@ -50,8 +50,7 @@ class LaunchExecutor
       job.launch = launch
       job.state = Job::CREATED
       job.save!
-      job_executor = JobExecutor.new()
-      job_executor.job_id = job.id
+      job_executor = JobExecutor.new(job.id)
       job_executor.sequence_defs = seqdefs
       job_executor.send send_method, :start
       number_of_jobs += 1
@@ -68,10 +67,20 @@ class LaunchExecutor
   end
   
   def refresh_state
-    jobs.each do |job|
-      unless job.stable?
-        JobExecutor.new(job.id).refresh_state
+    launch = Launch.find @launch_id
+    begin
+      launch.refreshing = true
+      launch.save!
+      launch.jobs.each do |job|
+        unless job.stable?
+          #TBD running in paralel using the the work_queue gem?
+          JobExecutor.new(job.id).refresh_state
+        end
       end
+      launch.check_state
+    ensure
+      launch.refreshing = false
+      launch.save!
     end
   end
   
@@ -83,7 +92,7 @@ class LaunchExecutor
     
   def destroy
     clean_dir
-    Launch.delete @launch_id
+    Launch.destroy @launch_id
   end
   
   def clean_dir
