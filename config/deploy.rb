@@ -41,6 +41,16 @@ namespace :deploy do
   task :restart do
     run "touch #{current_path}/tmp/restart.txt"
   end 
+  
+  desc "Stop Passenger"
+  task :stop, :roles => :app do
+    #run "touch #{current_path}/tmp/stop.txt"
+  end
+
+  desc "Start (or un-stop) Passenger"
+  task :start, :roles => :app do
+    #run "rm -f #{current_path}/tmp/stop.txt"
+  end  
 end
 # optional task to reconfigure databases
 after "deploy:update_code", :configure_database 
