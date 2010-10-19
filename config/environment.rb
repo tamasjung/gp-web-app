@@ -27,6 +27,7 @@ Rails::Initializer.run do |config|
   config.gem "cancan", :version => '1.3.4'
   config.gem 'will_paginate', :version => '~> 2.3.15', :source => 'http://gemcutter.org'
   config.gem 'delayed_job', :version => '2.0.3'
+  config.gem 'whenever', :version => '0.5.3'
   
 
   # Only load the plugins named here, in the order given (default is alphabetical).

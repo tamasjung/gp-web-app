@@ -59,3 +59,13 @@ task :configure_database, :roles => :app do
   db_config = "#{deploy_to}/localconfig/database.yml"
   run "cp #{db_config} #{release_path}/config/database.yml"
 end
+
+
+after "deploy:symlink", "deploy:update_crontab"
+
+namespace :deploy do
+  desc "Update the crontab file"
+  task :update_crontab, :roles => :db do
+    run "cd #{release_path} && whenever --update-crontab #{application}"
+  end
+end
