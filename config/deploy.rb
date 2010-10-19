@@ -75,7 +75,7 @@ after "deploy", "deploy:restart_delayed_job"
 
 namespace :deploy do
   desc "Restart delayed_job workers"
-  task :restart_delayed_job
+  task :restart_delayed_job do
     run "cd #{release_path} && ./script/delayed_job restart"
   end
 end

@@ -36,7 +36,7 @@ class LaunchDirs
   end
   
   def launch_root_url
-    launch_base_url + @launch_id.to_s #keep it in sync with the above
+    launch_base_url + "/" + @launch_id.to_s #keep it in sync with the above
   end
   
   def ensure_dirs
