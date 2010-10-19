@@ -19,5 +19,5 @@
 
 # Learn more: http://github.com/javan/whenever
 every :reboot do
-  rake "jobs:work"
+  command "script/delayed_job start"
 end
