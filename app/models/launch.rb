@@ -89,25 +89,50 @@ class Launch < ActiveRecord::Base
   def action_call(action)
     if available_actions.include? action.to_sym
       logger.debug "Launch.action_call #{action}"
-      self.send action
+      self.send("do_" + action.to_s)
     else
       logger.debug "action_call: invalid action called: #{action}"
     end
   end
   
-  def start
+  def do_start
+    result = false
     Launch.transaction do
       self.state = QUEUED
-      LaunchExecutor.new(id).send sync_or_async, :start if save
+      result = save
+      send_event :start if result
+    end
+    result
+  end
+  
+  def do_restart
+    Launch.transaction do
+      self.state = RESTARTING
+      save!
+      send_event :restart
     end
   end
   
-  def restart
-    Launch.transaction do
-      self.state = RESTARTING
-      LaunchExecutor.new(id).send sync_or_async, :restart
-    end
+  def do_refresh_state
+    send_event :refresh_state unless refreshing
   end
+  
+  def do_stop
+    self.state = STOPPING
+    save!
+    send_event :stop
+  end
+  
+  def do_destroy
+    self.state = DESTROYING
+    save!
+    send_event :destroy
+  end
+  
+  def send_event(method)
+    LaunchExecutor.new(id).send sync_or_async, method
+  end
+  #eo model actions
   
   def check_state
     result = jobs.count :group => :state
@@ -115,6 +140,7 @@ class Launch < ActiveRecord::Base
     when 0
       case state
       when SENT, STOPPING, STOPPED, FINISHED
+        logger.debug {"do_check_state: invalid launch state, id = #{id}, state=#{state}"}
         self.state = INVALID
       end
     when 1
@@ -128,27 +154,7 @@ class Launch < ActiveRecord::Base
     end
     save!
     result
-  end
-  
-  def refresh_state
-    LaunchExecutor.new(id).send sync_or_async, :refresh_state unless refreshing
-  end
-  
-  def stop
-    self.state = STOPPING
-    save!
-    LaunchExecutor.new(id).send sync_or_async, :stop
-  end
-  
-  def destroy
-    self.state = DESTROYING
-    save!
-    LaunchExecutor.new(id).send sync_or_async, :destroy
-  end
-  
-  
-  #eo model actions
-  
+  end  
   
   def settings=(settings)
     write_attribute :settings, settings

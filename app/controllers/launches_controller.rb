@@ -68,7 +68,7 @@ class LaunchesController < ApplicationController
       save_ok = @launch.save
     when "start"
       @launch.state = Launch::QUEUED
-      save_ok = @launch.start
+      save_ok = @launch.do_start
     else
       raise "unknown commit: #{commit}"
     end

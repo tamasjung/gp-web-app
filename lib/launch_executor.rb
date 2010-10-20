@@ -12,10 +12,7 @@ class LaunchExecutor
     @launch_id = launch_id
     logger.info "Launch created #{launch_id}" 
   end
-  
-  def jobs
-    Launch.find(@launch_id).jobs
-  end
+
   
   def start
     logger.info "Launch start begins #{@launch_id}"
@@ -85,7 +82,8 @@ class LaunchExecutor
   end
   
   def stop
-    jobs.each do |job|
+    launch = Launch.find @launch_id
+    launch.jobs.each do |job|
       JobExecutor.new(job.id).stop
     end
   end
