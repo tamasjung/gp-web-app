@@ -129,6 +129,10 @@ class Launch < ActiveRecord::Base
     send_event :destroy
   end
   
+  def do_save
+    save
+  end
+  
   def send_event(method)
     LaunchExecutor.new(id).send sync_or_async, method
   end
