@@ -19,5 +19,5 @@
 
 # Learn more: http://github.com/javan/whenever
 every :reboot do
-  command File.expand_path(File.dirname(__FILE__) + "script/delayed_job start")
+  command File.expand_path(File.dirname(__FILE__) + "/script/delayed_job start")
 end
