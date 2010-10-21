@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101019070011) do
+ActiveRecord::Schema.define(:version => 20101020184155) do
 
   create_table "application_files", :force => true do |t|
     t.string   "name"
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20101019070011) do
     t.datetime "updated_at"
     t.integer  "launch_id"
     t.string   "command_line"
+    t.string   "sequence_args"
   end
 
   create_table "launches", :force => true do |t|

@@ -1,12 +1,14 @@
 class Job < ActiveRecord::Base
   
+  dependencies :sync_or_async
+  
   STATE_ACTIONS = {
-    :CREATED=>[:refresh_state, :stop],
-    :SENDING=>[:refresh_state],
-    :SENT=>[:refresh_state, :stop],
-    :STOPPING=>[:refresh_state],
-    :STOPPED=>[:view_result, :restart],
-    :FINISHED=>[:view_result, :restart]
+    :CREATED=>[],
+    :SENDING=>[],
+    :SENT=>[:stop],
+    :STOPPING=>[],
+    :STOPPED=>[:restart],
+    :FINISHED=>[:restart]
   }
   
   enum_field 'state', STATE_ACTIONS.keys.map {|k| k.to_s}
@@ -22,6 +24,23 @@ class Job < ActiveRecord::Base
   
   def available_actions
     STATE_ACTIONS[state.to_sym]
+  end
+  
+  def do_stop
+    Job.transaction do
+      self.state = STOPPING
+      send_event :stop
+    end
+  end
+
+  def do_restart
+    launch.state = Launch::RESTARTING
+    launch.save!
+    send_event :restart
+  end
+  
+  def send_event(method)
+    JobExecutor.new(id).send sync_or_async, method
   end
   
   def stable?

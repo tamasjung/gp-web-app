@@ -46,9 +46,9 @@ class LaunchExecutor
       job = Job.new
       job.launch = launch
       job.state = Job::CREATED
+      job.sequence_args = seqdefs.map{|seq| seq.to_arg}.join(' ')
       job.save!
       job_executor = JobExecutor.new(job.id)
-      job_executor.sequence_defs = seqdefs
       job_executor.send send_method, :start
       number_of_jobs += 1
     end
@@ -58,6 +58,7 @@ class LaunchExecutor
   def restart
     clean_dir
     launch = Launch.find @launch_id
+    launch.jobs.delete_all
     launch.state = Launch::QUEUED
     launch.save!
     start

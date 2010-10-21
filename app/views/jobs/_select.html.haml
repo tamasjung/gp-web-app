@@ -11,6 +11,13 @@
       .label
         State
       .field=job.state.humanize
+    .prop_row
+      .label
+        working directory
+      .field
+        -url = JobDirs.new(job).job_root_url
+        %a{:href => "#{url}", :target => "_blank"}
+          open
   -else
     .group_title
       Jobs
@@ -52,7 +59,12 @@
           %td=job.state
           %td
             -job.available_actions.each do |action|
-              .action_link= link_to_remote action.to_s, :action => action
+              .action_link= link_to_remote action.to_s, params.merge({:url => {:action => action, :id => job.id,}})
+              
+            -url = JobDirs.new(job).job_root_url
+            %a{:href => "#{url}", :target => "_blank"}
+              working directory
+            
     =will_paginate(@jobs, :renderer => RemoteLinkRenderer, :params => params)
 :javascript
   document.fire("gp:new_panel")  

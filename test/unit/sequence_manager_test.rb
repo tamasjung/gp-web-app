@@ -1,6 +1,13 @@
-require 'test_helper'
+#require 'test_helper'
 
-class SequenceManagerTest < ActiveSupport::TestCase
+require 'test/unit'
+require 'config/environment'
+require 'active_support/test_case'
+
+
+class SequenceManagerTest < ::Test::Unit::TestCase
+  
+  extend ActiveSupport::Testing::Declarative
   
   def collect(seq_hashes, limit)
     result = []
@@ -82,6 +89,7 @@ class SequenceManagerTest < ActiveSupport::TestCase
       {:name => 'a', :start => 0.5, :max => 2, :diff => 1},
       {:name => 'b', :start => 3.5, :max => 5, :diff => 1}
     ], 100)
+    p seqdefs.to_yaml
     expected_line = "---seqval a 0.5 ---seqval b 3.5|---seqval a 0.5 ---seqval b 4.5|---seqval a 1.5 ---seqval b 3.5|---seqval a 1.5 ---seqval b 4.5"
     actual_line = seqdefs.map{|seqs| seqs.map{|seq| seq.to_arg}.join(' ')}.join('|')
     assert_equal 4, seqdefs.size

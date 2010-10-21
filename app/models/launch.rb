@@ -3,10 +3,11 @@ require 'ostruct'
 class SettingsAdapter
   
   def initialize(str)
-    @settings_hash = HashAccessor.new(ActiveSupport::JSON.decode(str))
+    @settings_hash = HashAccessor.new(ActiveSupport::JSON.decode(str || "{}"))
   end
   
   def sequences
+    return [] unless @settings_hash.respond_to? :launch_params
     sequences = @settings_hash.launch_params['sequences']
     return [] unless sequences
     sequences.map do |seq_hash|
@@ -15,6 +16,7 @@ class SettingsAdapter
   end
   
   def files
+    return [] unless @settings_hash.respond_to? :launch_params
     files = @settings_hash.launch_params['files']
     return [] unless files
     files.map do |file_hash|
@@ -23,6 +25,7 @@ class SettingsAdapter
   end
   
   def command_args
+    return "" unless @settings_hash.respond_to? :launch_params
     @settings_hash.launch_params['command_args']
   end
   
@@ -56,8 +59,8 @@ class Launch < ActiveRecord::Base
     :SENDING=>[:refresh_state],
     :SENT=>[:refresh_state, :stop],
     :STOPPING=>[:refresh_state],
-    :STOPPED=>[:restart, :destroy],
-    :FINISHED=>[:restart, :destroy],
+    :STOPPED=>[:restart, :destroy, :refresh_state],
+    :FINISHED=>[:restart, :destroy, :refresh_state],
     :RESTARTING => [:refresh_state],
     :DESTROYING=>[],
     :INVALID => [:destroy]
@@ -68,7 +71,7 @@ class Launch < ActiveRecord::Base
   def initialize(*args)
     super(*args)
     self.state = NEW
-    self.single = true
+    calculate
   end
   
   def the_only_job
@@ -150,7 +153,7 @@ class Launch < ActiveRecord::Base
     when 1
       jobs_state = result.first[0]
       case state
-      when SENT
+      when SENT, RESTARTING
         self.state = jobs_state if jobs_state == Job::FINISHED
       when STOPPING
         self.state = jobs_state if jobs_state == Job::STOPPED
@@ -158,12 +161,16 @@ class Launch < ActiveRecord::Base
     end
     save!
     result
-  end  
+  end 
   
-  def settings=(settings)
-    write_attribute :settings, settings
-    @settings_adapter = nil
-    self.single = (settings_adapter.sequences.size == 0)
+  def update_attributes(attrs)
+    super
+    calculate
+  end
+  
+  def calculate
+     @settings_adapter = nil
+     self.single = (settings_adapter.sequences.size == 0)
   end
     
   def settings_adapter

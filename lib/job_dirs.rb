@@ -12,6 +12,7 @@ class JobDirs
    @job_id = job.id
    @launch_id = job.launch.id
    @launch_dirs = LaunchDirs.new(job.launch)
+   @job_address = job.address
   end
   
   def job_root
@@ -27,6 +28,10 @@ class JobDirs
   def working_dir(pid)
     result = File.join job_root, pid.to_s
     result
+  end
+
+  def job_root_url
+    @launch_dirs.launch_root_url + "/" + @job_id.to_s + (@job_address.nil? ? "" : ("/" + @job_address.to_s))
   end
   
   def ensure_working_dir(pid)

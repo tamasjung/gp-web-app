@@ -21,13 +21,19 @@ class JobsController < ApplicationController
       end
     end
     launch_id = params[:launch_id]
-    (options[:conditions] ||= {})[:launch_id] = launch_id
-    @jobs = Job.paginate options
-    @launch = Launch.find launch_id
+    if launch_id
+      (options[:conditions] ||= {})[:launch_id] = launch_id
+      @jobs = Job.paginate options
+      @launch = Launch.find launch_id
+    end
     respond_to do |format|
       format.js do
-        render :update do |page|
-          page.replace_html 'jobs', :partial => "select"
+        if launch_id
+          render :update do |page|
+            page.replace_html 'jobs', :partial => "select"
+          end
+        else
+          render :nothing => true
         end
       end
     end
@@ -41,8 +47,25 @@ class JobsController < ApplicationController
   
   def stop
     job_id = params[:id]
-    if job_id
-      
+    (Job.find job_id).do_stop
+    respond_js_message "The stop message was sent succesfully."
+  end
+  
+  def restart
+    job_id = params[:id]
+    (Job.find job_id).do_restart
+    respond_js_message "The restart message was sent successfully."
+  end
+  
+  def respond_js_message(message)
+    
+    class << (js_helper = Object.new)
+      include ActionView::Helpers::JavaScriptHelper
+    end
+    respond_to do |format|
+      format.js do 
+        render :js => "alert('#{js_helper.escape_javascript(message)}')"
+      end
     end
   end
 

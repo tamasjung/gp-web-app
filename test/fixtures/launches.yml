@@ -1,11 +1,9 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
+  id: 1
   name: MyString
-  settings: MyText
-  state: MyString
+  settings: '{"form_data": {"gravitational_constant": "1", "central_mass": "2", "orbital_a_0": "$a", "orbital_l_0": "23", "orbital_e_0": "", "orbital_w_0": "", "orbital_i_0": "", "orbital_o_0": "", "orbital_mass_0": "", "sequence_name_0": "a", "sequence_start_0": "20", "sequence_max_0": "200", "sequence_step_0": "1", "format": "", "precision": "", "order": "", "delta": "", "time": "", "lci": "on", "lli": "on", "difference": ""}, "launch_params": {"sequences": [{"name": "a", "start": "20", "max": "200", "diff": "1"}], "command_args": " --lci --lli --gravitational_constant 1", "display_str": "Lie integrator $id"}}'
+  state: CREATED
 
-two:
-  name: MyString
-  settings: MyText
-  state: MyString
+
