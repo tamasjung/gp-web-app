@@ -10,6 +10,7 @@
   
     if(launch_params.files && launch_params.files.size() > 0){
       $$('#launch_files *').invoke('remove')
+      var idx = 0
       $('launch_files').appendChild(
         NodeBuilder(
           ['div', {'class': 'group'},
@@ -20,20 +21,18 @@
               ['tbody', {},
                 ['tr', {},
                   ['th', {}, 'name'],
-                  ['th', {}, 'start'],
-                  ['th', {}, 'max'  ],
-                  ['th', {}, 'diff']
+                  ['th', {}, 'content']
                 ]
               ].concat(
                 launch_params.files.map(function(f){
-                  ["tr", {'class': 'info_launch_file'},
-                    ["td", {},
-                      f.name
-                    ],
-                    ["td", {},
-                      f.content
-                    ]
-                  ]
+                  return ["tr", {'class': 'info_launch_file' + ((idx++ % 2 == 0) ? " even" : " odd")},
+                            ["td", {},
+                              f.name
+                            ],
+                            ["td", {},
+                              ["pre", {}, f.content]
+                            ]
+                          ]
                 }
                 )
               )

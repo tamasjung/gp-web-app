@@ -6,4 +6,8 @@ one:
   settings: '{"form_data": {"gravitational_constant": "1", "central_mass": "2", "orbital_a_0": "$a", "orbital_l_0": "23", "orbital_e_0": "", "orbital_w_0": "", "orbital_i_0": "", "orbital_o_0": "", "orbital_mass_0": "", "sequence_name_0": "a", "sequence_start_0": "20", "sequence_max_0": "200", "sequence_step_0": "1", "format": "", "precision": "", "order": "", "delta": "", "time": "", "lci": "on", "lli": "on", "difference": ""}, "launch_params": {"sequences": [{"name": "a", "start": "20", "max": "200", "diff": "1"}], "command_args": " --lci --lli --gravitational_constant 1", "display_str": "Lie integrator $id"}}'
   state: CREATED
 
-
+two:
+  id: 2
+  name: L2
+  settings: '{"form_data": {"mu": "0.001", "m0": "", "m1": "", "dimension_radio": "3D", "centre_radio": "ac", "type_radio": "lci", "xi1": "1", "xi2": "0", "xi3": "0", "xi4": "0", "xi5": "0", "xi6": "0", "Navg": "50", "epsilon": "10e-10", "Tmax": "1000", "e1_start": "0", "e1_max": "", "e1_n": "", "e1_d": "", "w1_start": "0", "w1_max": "", "w1_n": "", "w1_d": "", "M1_start": "0", "M1_max": "", "M1_n": "", "M1_d": "", "a_start": "", "a_max": "", "a_n": "", "a_d": "", "e_start": "0", "e_max": "", "e_n": "", "e_d": "", "i_start": "0", "i_max": "", "i_n": "", "i_d": "", "w_start": "0", "w_max": "", "w_n": "", "w_d": "", "O_start": "0", "O_max": "", "O_n": "", "O_d": "", "M_start": "0", "M_max": "", "M_n": "", "M_d": "", "file_prefix": "output"}, "launch_params": {"command_args": " -mu 0.001 -Navg 50 -eps 10e-10 -Tmax 1000 -ac -xi [1,0,0,0,0,0] -P1[1,0,0,0] -P2[,0,0,0,0,0] -oI output.out", "sequences": [], "display_str": "output"}}'
+  state: CREATED

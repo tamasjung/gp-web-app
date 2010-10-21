@@ -2,6 +2,7 @@
 
 module ApplicationHelper
   
+  
   def ordering_link(label, name, params, default_dir = 'ASC') 
     name = name.to_s
     ordering = OrderingParams.new params[:orders]
@@ -49,6 +50,8 @@ module ApplicationHelper
 
   
 end
+
+
 
 #from http://www.botvector.net/2008/08/willpaginate-on-ajax.html
 class RemoteLinkRenderer < WillPaginate::LinkRenderer  

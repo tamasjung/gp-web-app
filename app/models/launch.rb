@@ -7,7 +7,7 @@ class SettingsAdapter
   end
   
   def sequences
-    return [] unless @settings_hash.respond_to? :launch_params
+    return [] unless (@settings_hash.respond_to? :launch_params) && @settings_hash.launch_params
     sequences = @settings_hash.launch_params['sequences']
     return [] unless sequences
     sequences.map do |seq_hash|

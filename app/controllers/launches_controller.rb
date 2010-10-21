@@ -80,7 +80,7 @@ class LaunchesController < ApplicationController
     read_input_partial
     respond_to do |format|
       if save_ok 
-        flash[:notice] = "#{@launch.name} was successfully #{commit == 'save' ? 'created' : 'queued' }."
+        flash.now[:notice] = "#{@launch.name} was successfully #{commit == 'save' ? 'created' : 'queued' }."
       end
       format.html { render :action => :edit }
     end
@@ -123,7 +123,7 @@ class LaunchesController < ApplicationController
       clone.name = clone.generated_name
       clone.state = Launch::CREATED
       save_ok = clone.save
-      flash[:notice] = 'Launch was successfully cloned' if save_ok
+      flash.now[:notice] = 'Launch was successfully cloned' if save_ok
     end
     
     @launch = clone
