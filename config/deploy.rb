@@ -83,7 +83,7 @@ end
     
 #   after "deploy:stop",    "delayed_job:stop"
 #   after "deploy:start",   "delayed_job:start"
-after "deploy:restart", "delayed_job:restart"
+#after "deploy:restart", "delayed_job:restart"
 
 
 namespace :delayed_job do
@@ -103,6 +103,6 @@ namespace :delayed_job do
 
   desc "Restart the delayed_job process"
   task :restart, :roles => :app do
-    run "cd #{current_path};#{rails_env} script/delayed_job restart"
+    run "cd #{current_path};#{rails_env} script/delayed_job -n 10 restart"
   end
 end

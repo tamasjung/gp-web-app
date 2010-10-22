@@ -333,13 +333,13 @@
   }
   
   function buildCommandArgs(){
-    var cmdArgs = "";
+    var cmdArgs = "-i input.dat";
     
-    var flags = $A(['final', 'normal', 'lci', 'rli', 'lli', 'dmx']);
+    var flags = $w('final normal lci rli lli dmx');
     
     cmdArgs = flags.inject(cmdArgs, function(res, item){ return res + directFlag(item)});
     
-    var simpleValues = ['gravitational_constant', 'format', 'precision', 'order', 'delta', 'time', 'difference'];
+    var simpleValues = $w('gravitational_constant format precision order delta time difference');
     
     cmdArgs = simpleValues.inject(cmdArgs, function(res, item){ return res + directValue(item)});
     
@@ -366,7 +366,18 @@
         diff: $F('sequence_step_' + index)
       })
     })
+    var content = ""
+    $('orbitals').select("tr[id^='orbital_']").each(function (tr){
+      var index = getIndex(tr.id)
+      values = $w('a l e w i o mass').map(function (attr){
+        return $F('orbital_' + attr + "_" + index)
+      });
+      content += values.join(' ');
+      content += '\n';
+    })
+    
     var launch_params = {
+      files: [{name: 'input.dat', content: content}],
       sequences: sequences,
       command_args: buildCommandArgs(),
       display_str: 'Lie integrator $id'
