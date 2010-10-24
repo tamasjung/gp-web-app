@@ -5,6 +5,14 @@ require 'daemon-spawn'
 
 RAILS_ROOT = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 
+multiplicity = 1
+
+if ARGV[0] == '-n' && ARGV.size > 1
+  multiplicity = ARGV[1].to_i
+  ARGV.shift 2
+end
+
+
 class DelayedJobWorker < DaemonSpawn::Base
   def start(args)
     ENV['RAILS_ENV'] ||= args.first || 'development'
@@ -15,11 +23,14 @@ class DelayedJobWorker < DaemonSpawn::Base
   end
 
   def stop
-    system("kill `cat #{RAILS_ROOT}/tmp/pids/delayed_job.pid`")
+    system("kill `cat #{self.pid_file}`")
   end
 end
-DelayedJobWorker.spawn!(:log_file => File.join(RAILS_ROOT, "log", "delayed_job.log"),
-                        :pid_file => File.join(RAILS_ROOT, 'tmp', 'pids', 'delayed_job.pid'),
-                        :sync_log => true,
-                        :working_dir => RAILS_ROOT)
+
+multiplicity.times do |i|
+  DelayedJobWorker.spawn!({:log_file => File.join(RAILS_ROOT, "log", "delayed_job.log"),
+                          :pid_file => File.join(RAILS_ROOT, 'tmp', 'pids', "delayed_job_#{i}.pid"),
+                          :sync_log => true,
+                          :working_dir => RAILS_ROOT}, ARGV[0..0])
+end
 
