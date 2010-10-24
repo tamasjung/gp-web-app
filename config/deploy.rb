@@ -89,7 +89,7 @@ after "deploy:restart", "delayed_job:restart"
 
 namespace :delayed_job do
   def rails_env
-    fetch(:rails_env, false) ? "RAILS_ENV=#{fetch(:rails_env)}" : ''
+    fetch(:rails_env, false) ? "RAILS_ENV=#{fetch(:rails_env, 'production')}" : ''
   end
   
   desc "Stop the delayed_job process"
@@ -104,6 +104,6 @@ namespace :delayed_job do
 
   desc "Restart the delayed_job process"
   task :restart, :roles => :app do
-    run "cd #{current_path};#{rails_env} script/delayed_job -n 10 restart"
+    run "cd #{current_path};RAILS_ENV=production script/delayed_job -n 10 restart"
   end
 end
