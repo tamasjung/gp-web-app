@@ -14,8 +14,9 @@
 
 # be sure to change these
 set :user, 'griduser' 
-#set :domain, 'sl-grid.interface.hu' 
-set :domain, '10.0.0.35'
+set :domain, 'sl-grid.interface.hu' 
+#set :domain, '10.0.0.35'
+
 set :application, 'gp-web-app'
 # file paths
 #set :repository, "#{user}@#{git_repo_host}:git/#{application}.git" 
@@ -83,7 +84,7 @@ end
     
 #   after "deploy:stop",    "delayed_job:stop"
 #   after "deploy:start",   "delayed_job:start"
-#after "deploy:restart", "delayed_job:restart"
+after "deploy:restart", "delayed_job:restart"
 
 
 namespace :delayed_job do
