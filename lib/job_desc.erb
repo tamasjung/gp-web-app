@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<JobDefinition
+  xmlns="http://schemas.ggf.org/jsdl/2005/11/jsdl"
+  xmlns:posix="http://schemas.ggf.org/jsdl/2005/11/jsdl-posix"
+  xmlns:arc="http://www.nordugrid.org/ws/schemas/jsdl-arc">
+  <JobDescription>
+    <JobIdentification>
+      <JobName><%=job.subapp.executable%></JobName>
+    </JobIdentification>
+    <Application>
+     <posix:POSIXApplication>
+        <posix:Executable><%=job.subapp.executable%></posix:Executable>
+	      <posix:Argument><%=job.command_line%></posix:Argument>
+        <posix:Output>out.txt</posix:Output>
+        <posix:Error>err.txt</posix:Error>
+      </posix:POSIXApplication>
+    </Application>
+    <DataStaging>
+      <FileName>out.txt</FileName>
+      <DeleteOnTermination>false</DeleteOnTermination>
+    </DataStaging>
+    <DataStaging>
+      <FileName>err.txt</FileName>
+      <DeleteOnTermination>false</DeleteOnTermination>
+    </DataStaging>
+    <%output_files.each do |file|%>
+      <DataStaging>
+        <FileName><%=file%></FileName>
+        <DeleteOnTermination>false</DeleteOnTermination>
+      </DataStaging>
+    <%end%>
+    <%input_files.each do |file|%>
+    <DataStaging>
+      <FileName><%=file%></FileName>
+      <DeleteOnTermination>false</DeleteOnTermination>
+    </DataStaging>
+    <%end%>
+  </JobDescription>
+</JobDefinition>

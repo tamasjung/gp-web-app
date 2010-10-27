@@ -24,7 +24,9 @@ class JobExecutor
     command_line = Rails.root.join("lib", "script", "dummy_exec.rb ").to_s +  job.launch.subapp.executable.to_s + " " + command_args.to_s
     job.command_line = command_line.to_s
     job.save!
-    JobDirs.new(job).ensure_job_root
+    job_dirs = JobDirs.new(job)
+    job_dirs.ensure_job_root
+    job_dirs.copy_sent_dir
     job_interface = JobInterface.new @job_id
     pid = job_interface.submit
     job.address = pid

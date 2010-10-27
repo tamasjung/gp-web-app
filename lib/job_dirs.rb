@@ -24,20 +24,17 @@ class JobDirs
   def ensure_job_root
     ensure_dir job_root, launch_dir_mod
   end
-  
-  def working_dir(pid)
-    result = File.join job_root, pid.to_s
-    result
-  end
 
   def job_root_url
-    @launch_dirs.launch_root_url + "/" + @job_id.to_s + (@job_address.nil? ? "" : ("/" + @job_address.to_s))
+    [@launch_dirs.launch_root_url, "jobs", @job_id.to_s].join '/'
   end
   
-  def ensure_working_dir(pid)
-    result_path = working_dir(pid)
-    ensure_dir result_path, launch_dir_mod
-    result_path
+  def copy_sent_dir
+    working_dir = job_root
+    sent_dir = launch_dirs.dirs.sent_dir_path
+    cp_r Dir.glob(sent_dir + "/*"), working_dir
   end
+  
+
 
 end

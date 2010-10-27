@@ -9,7 +9,7 @@
       #header
         =link_to "", {:controller => :dashboard}, {:class => 'logo'}
         #title
-          =":Grid:Portál"
+          ="::Grid::Portál"
           #login{:onmouseover => "$('logout').show()", :onmouseout => "$('logout').hide()"}
             
             =(current_user ? "logged in as " + current_user.login.to_s : "") rescue ""
