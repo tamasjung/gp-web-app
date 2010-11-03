@@ -1,12 +1,19 @@
 = f.error_messages 
 %ul#subapps_tabs.subsection_tabs
   %li.tab
-    %a{ :href => "#one" }
+    %a{ :href => "#settings" }
       settings
   %li.tab
-    %a{ :href => "#two" }
+    %a{ :href => "#partial" }
       input partial
-#one.tabpanel
+  %li.tab
+    %a{ :href => "#files" }
+      files
+  %li.tab
+    %a{:href => "#jsdl"}
+      job template
+  
+#settings.tabpanel
   .prop_row
     .label
       = f.label :name 
@@ -26,12 +33,39 @@
       = f.text_field :tech_name, :size => 40
 
   
-#two.tabpanel
+#partial.tabpanel
   .label
     = f.label :input_partial
     
   .field
-    = f.text_area :input_partial, :size => "60x50"
+    = f.text_area :input_partial, :size => "80x50"
+    
+#files.tabpanel
+  -files = @subapp.application_files.find(:all, :select => "id, name, version, is_executable")
+  -if files
+    %table
+      %tr
+        %th
+          Name + Version
+        %th
+          Is executable?
+      -files.each_with_index do |file, idx|      
+        %tr{:class => ((idx % 2 == 0)? 'even' : 'odd')}
+          %td
+            =link_to [file.name, file.version].join, {:controller => :application_files, :action => :bytes, :id => file.id}, :target => '_blank'
+          %td=file.is_executable
+          %td
+            =link_to "Unlink", :action => :unlink, :application_file_id => file.id, :id => @subapp.id
+    
+  
+
+  =link_to "Add new", :controller => :application_files, :action => :new, :subapp_id => @subapp.id
+  
+#jsdl.tabpanel
+  .label
+    = f.label :jsdl
+  .field
+    = f.text_area :jsdl, :size => "80x50"
     
 :javascript
   new Control.Tabs('subapps_tabs');    

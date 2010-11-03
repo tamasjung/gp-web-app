@@ -21,7 +21,7 @@ class JobExecutor
   def start_job(job)
     sequence_args = job.sequence_args
     command_args = job.launch.settings_adapter.command_args + " " + (sequence_args || "")
-    command_line = Rails.root.join("lib", "script", "dummy_exec.rb ").to_s +  job.launch.subapp.executable.to_s + " " + command_args.to_s
+    command_line = command_args.to_s
     job.command_line = command_line.to_s
     job.save!
     job_dirs = JobDirs.new(job)
@@ -35,19 +35,7 @@ class JobExecutor
   end
   
   def refresh_state
-    job = Job.find @job_id
-    unless job.stable?
-      job_interface = JobInterface.new job.id
-      running = job_interface.running?
-      case job.state
-      when Job::SENT
-        job.state = Job::FINISHED unless running
-        job.save!
-      when Job::STOPPING
-        job.state = Job::STOPPED unless running
-        job.save!
-      end
-    end
+    JobInterface.new(@job_id).refresh_state
   end
   
   def restart
@@ -58,7 +46,6 @@ class JobExecutor
     start
   end
 
-  
   def stop
     job = Job.find @job_id
     (JobInterface.new job.id).stop

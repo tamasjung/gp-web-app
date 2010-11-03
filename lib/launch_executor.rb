@@ -104,14 +104,15 @@ class LaunchExecutor
     if(files)
       sent_dir = launch_dirs.dirs.sent_dir_path
       files.each do |file|
-        file_path = File.join sent_dir, file.name
-        File.open(file_path, "w") do |f|
-          f.write file.content
-        end
+        write_file sent_dir, file.name, file.content
       end
     end
-    #TODO create subapp files
+    launch.subapp.application_files.each do |file|
+      write_file sent_dir, file.name, file.bytes
+    end
     
   end
+  
+
   
 end

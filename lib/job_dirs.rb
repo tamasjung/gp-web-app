@@ -1,8 +1,10 @@
 require 'launch_dirs'
-
+require 'fileutils'
 class JobDirs
   
   include DirMaker
+  include FileUtils
+  
   
   dependencies :launch_base_dir, :launch_dir_mod
   

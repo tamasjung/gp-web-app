@@ -9,19 +9,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101020184155) do
+ActiveRecord::Schema.define(:version => 20101027195032) do
 
   create_table "application_files", :force => true do |t|
     t.string   "name"
+    t.string   "version"
     t.boolean  "is_executable"
-    t.binary   "bytes"
+    t.binary   "bytes",         :limit => 2147483647
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "application_files_subapps", :id => false, :force => true do |t|
-    t.integer "applications_file_id", :null => false
-    t.integer "subapp_id",            :null => false
+    t.integer "application_file_id", :null => false
+    t.integer "subapp_id",           :null => false
   end
 
   create_table "delayed_jobs", :force => true do |t|
@@ -105,6 +106,7 @@ ActiveRecord::Schema.define(:version => 20101020184155) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "tech_name"
+    t.text     "jsdl"
   end
 
 end

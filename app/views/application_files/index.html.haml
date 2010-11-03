@@ -1,0 +1,18 @@
+%h1 Listing application_files
+%table
+  %tr
+    %th Name
+    %th Version
+    %th Is executable
+    %th Bytes
+  - @application_files.each do |application_file|
+    %tr
+      %td= h application_file.name
+      %td= h application_file.version
+      %td= h application_file.is_executable
+      %td= h application_file.bytes
+      %td= link_to 'Show', application_file
+      %td= link_to 'Edit', edit_application_file_path(application_file)
+      %td= link_to 'Destroy', application_file, :confirm => 'Are you sure?', :method => :delete
+%br/
+= link_to 'New application_file', new_application_file_path

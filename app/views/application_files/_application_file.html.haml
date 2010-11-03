@@ -1,0 +1,26 @@
+= f.error_messages
+=hidden_field_tag :subapp_id, params[:subapp_id]
+%p
+  = f.label :name
+  %br/
+  = f.text_field :name
+%p
+  = f.label :version
+  %br/
+  = f.text_field :version
+%p
+  = f.label :is_executable
+  %br/
+  = f.check_box :is_executable
+%p
+  = f.label :bytes
+  %br/
+  = f.file_field :uploaded
+%p/
+
+:javascript
+  $('application_file_uploaded').observe("change", function(event){
+    if(!$F('application_file_name')){
+      $('application_file_name').value = event.element().value;
+    }
+  });

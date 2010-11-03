@@ -12,7 +12,7 @@ class JobInterfaceFork
   def submit
     job = Job.find @job_id
     job_dirs = JobDirs.new(job)
-    command_line = job.command_line
+    command_line = Rails.root.join("lib", "script", "dummy_exec.rb ").to_s +  job.launch.subapp.executable.to_s + " " +job.command_line
     logger.debug "fork follows"
     pid = fork do    
       #accessing the job inside the fork block caused exception, most of the time, it was not predictable 
@@ -29,8 +29,22 @@ class JobInterfaceFork
     pid
   end
   
-  def running?
+  def refresh_state
     job = Job.find @job_id
+    unless job.stable?
+      running = running? job
+      case job.state
+      when Job::SENT
+        job.state = Job::FINISHED unless running
+        job.save!
+      when Job::STOPPING
+        job.state = Job::STOPPED unless running
+        job.save!
+      end
+    end
+  end
+  
+  def running?(job)
     result = false
     if job.address
       has_pid = (`ps -o pid= -p #{(Job.find @job_id).address}`.length > 0)

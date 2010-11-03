@@ -391,7 +391,7 @@
  
  
   function buildCommandArgs(){
-    var res = "";
+    var res = "3D_r3bp_lce_3 ";
     var iterators = [];
     var sequences = [];//iterators are resolved in the r3bp program, sequences are resolved outside of it (in the portal or on the node)
     var is_3D = radio_value('dimension_radio') == '3D';
@@ -434,14 +434,14 @@
         comp.idx = idx + 1;
       });
     
-      res += " -P1[1," + [icVal['e1'], icVal['w1'], icVal['M1']].join(',') + "]"
+      res += " -P1 [1," + [icVal['e1'], icVal['w1'], icVal['M1']].join(',') + "]"
   
       var p2Array = $w("a e i w O M");
       if(!is_3D){
         p2Array = p2Array.without('i', 'O');
       }
   
-      res += " -P2[" + p2Array.map(function(s){
+      res += " -P2 [" + p2Array.map(function(s){
         return icVal[s];
       }).join(',') + "]"; 
     }

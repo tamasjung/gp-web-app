@@ -1,0 +1,7 @@
+%h1 Editing application_file
+- form_for(@application_file) do |f|
+  = render :partial => 'application_file', :locals =>{:f => f}
+  = f.submit 'Update'
+= link_to 'Show', @application_file
+|
+\#{link_to 'Back', application_files_path}

@@ -37,6 +37,14 @@ class SubappsController < ApplicationController
   def edit
     @subapp = Subapp.find(params[:id])
   end
+  
+  def unlink
+    edit
+    application_file_id = params[:application_file_id]
+    file = ApplicationFile.find application_file_id
+    @subapp.application_files.delete file
+    render :action => :edit
+  end
 
   # POST /subapps
   # POST /subapps.xml

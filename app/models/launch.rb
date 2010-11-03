@@ -57,7 +57,7 @@ class Launch < ActiveRecord::Base
     :CREATED=>[:save, :start, :destroy],#not used yet
     :QUEUED => [:refresh_state, :stop],
     :SENDING=>[:refresh_state],
-    :SENT=>[:refresh_state, :stop],
+    :SENT=>[:refresh_state, :restart, :stop],
     :STOPPING=>[:refresh_state],
     :STOPPED=>[:restart, :destroy, :refresh_state],
     :FINISHED=>[:restart, :destroy, :refresh_state],

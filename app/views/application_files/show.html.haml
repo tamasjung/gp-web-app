@@ -1,0 +1,13 @@
+%p
+  %b Name:
+  = h @application_file.name
+%p
+  %b Version:
+  = h @application_file.version
+%p
+  %b Is executable:
+  = h @application_file.is_executable
+
+= link_to 'Edit', edit_application_file_path(@application_file)
+|
+\#{link_to 'Back', application_files_path}

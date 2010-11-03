@@ -1,45 +1,63 @@
+require 'erb'
 require 'arc_client_r'
 
 class JobInterfaceArc
    
   include AppLogger
   include FileUtils
+  
+  JOB_LIST_FILE_NAME = ".job_list.xml"
 
   def initialize(job_id)
     @job_id = job_id
   end
   
+  def joblist(job)
+    job_dirs = JobDirs.new job
+    result = File.join job_dirs.job_root, JOB_LIST_FILE_NAME
+    result
+  end
+  
   def submit
     job = Job.find @job_id
     job_dirs = JobDirs.new(job)
-    command_line = job.command_line
     
     logger.debug "submit follows"
     
     working_dir = job_dirs.job_root
+    
+    files = job.launch.subapp.application_files.find :all, :select => "name, is_executable"
+    
+    template = job.launch.subapp.jsdl
+    
+    jsdl = ERB.new(template).result(binding)
+    
     arc_client = ArcClientR.new
-    arc_client.submit
-      
+    message, job.address = arc_client.submit ["-e", jsdl, "-j", joblist(job)]
+    logger.debug message
+    job.save!
 
   end
   
-  def running?
+  def refresh_state
     job = Job.find @job_id
-    result = false
-    if job.address
-      has_pid = (`ps -o pid= -p #{(Job.find @job_id).address}`.length > 0)
-      result = has_pid
+    arc_client = ArcClientR.new
+    message, stat = arc_client.stat(["-j", joblist(job), job.address])
+    logger.debug message if message
+    case stat
+    when 'FINISHED'
+      job_dirs = JobDirs.new job
+      working_dir = job_dirs.job_root
+      get_message, get_result = arc_client.get(["-D", working_dir, "-j", joblist(job), job.address])
+      logger.debug get_message if get_message
+      logger.debug get_result
+      job.state = Job::FINISHED if get_result == 0
+      job.save!
     end
-    return result
   end
   
   def stop
-    job = Job.find @job_id
-    job.state = Job::STOPPING
-    job.save!
-    #Process.kill(:KILL, job.address.to_i) rescue 0 #dangerous, we should check if we are in the same "uptime session"
-    job.state = Job::STOPPED
-    job.save!
+    logger.error "Stop is not implemented yet"
   end
    
 end

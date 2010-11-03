@@ -47,6 +47,13 @@ def inspect_part(obj, *props)
   props.map do |prop| (obj.send prop).inspect end.join ', '
 end
 
+def write_file(dir, file_name, content, mod = nil)
+  file_path = File.join dir, file_name
+  File.open(file_path, "w") do |f|
+    f.write content
+  end
+end
+
 #TODO into different file
 $dependency_context = DependencyContext.new({
   :launch_base_dir => File.join(Rails.root, 'public', 'system', 'launches'),
@@ -58,7 +65,8 @@ $dependency_context = DependencyContext.new({
 })
 
 
-JobInterface = JobInterfaceFork
+#JobInterface = JobInterfaceFork
+JobInterface = JobInterfaceArc
 
 require_dependency 'launch_executor'
 require_dependency 'job_executor'
