@@ -34,9 +34,10 @@
           =@git_version
           
 #main_debug.debug{:title => "DEBUG"}
-= (ENV['RAILS_ENV'] == 'development') ? "" : periodically_call_remote(:url => {:controller => 'application',  
-  :action => 'pool_broadcast'}, 
-  :update => 'bc', :frequency => 60)
+-if current_user
+  = (ENV['RAILS_ENV'] == 'developmentYYY') ? "" : periodically_call_remote(:url => {:controller => 'application',  
+    :action => 'pool_broadcast'}, 
+    :update => 'bc', :frequency => 60)
 
 
 
