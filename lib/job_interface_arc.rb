@@ -33,10 +33,9 @@ class JobInterfaceArc
     jsdl = ERB.new(template).result(binding)
     
     arc_client = ArcClientR.new
-    message, job.address = arc_client.submit ["-e", jsdl, "-j", joblist(job)]
+    message, result = arc_client.submit ["-e", jsdl, "-j", joblist(job)]
     logger.debug message
-    job.save!
-
+    result
   end
   
   def refresh_state

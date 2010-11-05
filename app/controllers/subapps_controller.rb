@@ -43,6 +43,9 @@ class SubappsController < ApplicationController
     application_file_id = params[:application_file_id]
     file = ApplicationFile.find application_file_id
     @subapp.application_files.delete file
+    if file.subapps.count == 0
+      file.destroy
+    end
     render :action => :edit
   end
 

@@ -114,9 +114,9 @@ def substitute_seq_values(str, values)
   values.each do |value|
     name = value[:name]
     val = value[:value]
-    str.gsub! "$" + name, val.to_s
-    str.gsub! "$(#{name})", val.to_s
-    str.gsub! /\$\(fixed\s+(\d+)\s+(\d+)\s+#{name}\s*\)/ do 
+    str.gsub! "%" + name, val.to_s
+    str.gsub! "%(#{name})", val.to_s
+    str.gsub! /\%\(fixed\s+(\d+)\s+(\d+)\s+#{name}\s*\)/ do 
       fixed_format($1, $2, val)
     end
   end

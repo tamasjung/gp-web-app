@@ -376,7 +376,7 @@
         result.d = d;
         if(!result.map){
           result.seq = {name: cid, start: start, max: max, diff: d, type: 'start_max_diff'};
-          result.cl = "$(" + result.seq.name + ")";
+          result.cl = "%(" + result.seq.name + ")";
         }
       } 
       result.max = max;
@@ -450,7 +450,7 @@
     }
     var file_name = $('file_prefix').value
     sequences.each(function(e){
-      file_name = file_name + "_" + e.name + "_$(fixed 4 14 " + e.name + ")";
+      file_name = file_name + "_" + e.name + "_%(fixed 4 14 " + e.name + ")";
     });
     file_name += ".out";
     if(iterators.length > 0){
