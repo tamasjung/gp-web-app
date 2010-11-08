@@ -182,4 +182,13 @@ class Launch < ActiveRecord::Base
     subapp.name + "-" + id.to_s
   end
   
+  def all_files_info
+    subapp_files = subapp.application_files.find :all, :select => "name, is_executable"
+    settings_files = settings_adapter.files.map do |sfile|
+      ApplicationFile.new :name => sfile.name, :is_executable => false
+    end
+    #TODO input_files??
+    result = subapp_files + settings_files
+    result
+  end
 end

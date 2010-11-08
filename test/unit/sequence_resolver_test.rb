@@ -16,10 +16,11 @@ class TestSequenceResolver < Test::Unit::TestCase
   
   def test_command_line_subst
     results = []
-    argv = "$qqq AaAaA %(e) ---seq qqq 1 10 1 BbBbB ---seq yyy 2 4 2 %(fixed 5 10 yyy) CcCcC ---seqval e 11 ---seqval u 3".split(' ')
+    argv = "%qqq AaAaA %(e) ---seq qqq 1 10 1 BbBbB ---seq yyy 2 4 2 %(fixed 5 10 yyy) CcCcC ---seqval e 11 ---seqval u 3".split(' ')
     iterate_parallel(argv) do |values, args|
       results << substitute_seq_values(args.join(' '), values)
     end
+    p results
     assert results.include? "7.0 AaAaA 11 BbBbB 00004.0000000000 CcCcC"
   end
 end

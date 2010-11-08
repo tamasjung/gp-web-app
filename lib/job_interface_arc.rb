@@ -26,7 +26,7 @@ class JobInterfaceArc
     
     working_dir = job_dirs.job_root
     
-    files = job.launch.subapp.application_files.find :all, :select => "name, is_executable"
+    files = job.launch.all_files_info
     
     template = job.launch.subapp.jsdl
     

@@ -262,7 +262,7 @@
     clone.select("input").each(function(e){
       e.observe('change', function(event){
         var val = event.element().value;
-        if(val && val.match(/^\$\w+$/)){
+        if(val && val.match(/^%\w+$/)){
           generateSequence(val);
         }
         removeUnusedSequences();
@@ -293,7 +293,7 @@
   function removeUnusedSequences(){
     var seqs = [];
     $('orbitals').select('input').each(function(e){
-      if(e.value.startsWith("$")){
+      if(e.value.startsWith("%")){
         seqs.push(e.value.slice(1));
       }
     });
@@ -333,7 +333,7 @@
   }
   
   function buildCommandArgs(){
-    var cmdArgs = "-i input.dat";
+    var cmdArgs = "lieint";
     
     var flags = $w('final normal lci rli lli dmx');
     
@@ -366,7 +366,8 @@
         diff: $F('sequence_step_' + index)
       })
     })
-    var content = ""
+    
+    var content = $F('central_mass') + '\n';
     $('orbitals').select("tr[id^='orbital_']").each(function (tr){
       var index = getIndex(tr.id)
       values = $w('a l e w i o mass').map(function (attr){
@@ -376,10 +377,19 @@
       content += '\n';
     })
     
+    var postfix = ""
+    sequences.each(function(e){
+      postfix = postfix + "_" + e.name + "_%(fixed 4 14 " + e.name + ")";
+    });
+    var output_file_name = "result" + postfix + ".dat";
+    var input_file_name = "input" + postfix + ".dat";
+    
+    var command_args = buildCommandArgs() + " --input " + input_file_name + " --output " + output_file_name;
+    
     var launch_params = {
       files: [{name: 'input.dat', content: content}],
       sequences: sequences,
-      command_args: buildCommandArgs(),
+      command_args: command_args,
       display_str: 'Lie integrator $id'
     }
     return launch_params;

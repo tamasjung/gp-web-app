@@ -116,7 +116,7 @@ def substitute_seq_values(str, values)
     val = value[:value]
     str.gsub! "%" + name, val.to_s
     str.gsub! "%(#{name})", val.to_s
-    str.gsub! /\%\(fixed\s+(\d+)\s+(\d+)\s+#{name}\s*\)/ do 
+    str.gsub! /%\(fixed\s+(\d+)\s+(\d+)\s+#{name}\s*\)/ do 
       fixed_format($1, $2, val)
     end
   end
