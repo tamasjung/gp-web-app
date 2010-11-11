@@ -43,14 +43,17 @@ class JobInterfaceArc
     arc_client = ArcClientR.new
     message, stat = arc_client.stat(["-j", joblist(job), job.address])
     logger.debug message if message
-    case stat
-    when 'FINISHED'
+    arc_state = stat.upcase rescue nil
+    case arc_state
+    when 'FINISHED', 'FAILED'
       job_dirs = JobDirs.new job
       working_dir = job_dirs.job_root
       get_message, get_result = arc_client.get(["-D", working_dir, "-j", joblist(job), job.address])
       logger.debug get_message if get_message
       logger.debug get_result
-      job.state = Job::FINISHED if get_result == 0
+      if get_result == 0
+        job.state = arc_state
+      end
       job.save!
     end
   end

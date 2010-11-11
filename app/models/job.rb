@@ -8,7 +8,8 @@ class Job < ActiveRecord::Base
     :SENT=>[:stop],
     :STOPPING=>[],
     :STOPPED=>[:restart],
-    :FINISHED=>[:restart]
+    :FINISHED=>[:restart],
+    :FAILED=>[:restart]
   }
   
   enum_field 'state', STATE_ACTIONS.keys.map {|k| k.to_s}

@@ -61,6 +61,7 @@ class Launch < ActiveRecord::Base
     :STOPPING=>[:refresh_state],
     :STOPPED=>[:restart, :destroy, :refresh_state],
     :FINISHED=>[:restart, :destroy, :refresh_state],
+    :FAILED=>[:restart, :destroy, :refresh_state],
     :RESTARTING => [:refresh_state],
     :DESTROYING=>[],
     :INVALID => [:destroy]
@@ -154,9 +155,14 @@ class Launch < ActiveRecord::Base
       jobs_state = result.first[0]
       case state
       when SENT, RESTARTING
-        self.state = jobs_state if jobs_state == Job::FINISHED
+        self.state = jobs_state if jobs_state == Job::FINISHED || jobs_state == Job::FAILED
       when STOPPING
         self.state = jobs_state if jobs_state == Job::STOPPED
+      end
+    when 2
+      #TODO handle mixed stable states as FINISHED and FAILED together
+      if ['FAILED', 'FINISHED'].sort == result.keys.sort
+        self.state = FAILED
       end
     end
     save!
