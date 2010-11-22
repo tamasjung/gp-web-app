@@ -6,6 +6,7 @@ class Job < ActiveRecord::Base
     :CREATED=>[],
     :SENDING=>[],
     :SENT=>[:stop],
+    :UNSENT=>[:restart],
     :STOPPING=>[],
     :STOPPED=>[:restart],
     :FINISHED=>[:restart],
@@ -45,6 +46,6 @@ class Job < ActiveRecord::Base
   end
   
   def stable?
-    [:STOPPED, :FINISHED].include? state
+    [:STOPPED, :FINISHED, :UNSENT].include? state
   end
 end

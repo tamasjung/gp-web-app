@@ -30,7 +30,11 @@ class JobExecutor
     job_interface = JobInterface.new @job_id
     pid = job_interface.submit
     job.address = pid
-    job.state = Job::SENT
+    if pid
+      job.state = Job::SENT
+    else
+      job.state = Job::UNSENT
+    end
     job.save!
   end
   
