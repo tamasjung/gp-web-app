@@ -14,8 +14,8 @@
 
 # be sure to change these
 set :user, 'griduser' 
-#set :domain, 'sl-grid.interface.hu' 
-set :domain, '192.168.1.106'
+set :domain, 'sl-grid.interface.hu' 
+#set :domain, '192.168.1.106'
 
 set :application, 'gp-web-app'
 # file paths
@@ -104,6 +104,6 @@ namespace :delayed_job do
 
   desc "Restart the delayed_job process"
   task :restart, :roles => :app do
-    run "cd #{current_path};RAILS_ENV=production script/delayed_job -n 10 restart"
+    run "cd #{current_path};RAILS_ENV=production script/delayed_job -n 1 restart"
   end
 end

@@ -21,5 +21,5 @@
 every :reboot do
   #command File.expand_path(File.dirname(__FILE__) + "/script/delayed_job start")
   #rake 'jobs:work'
-  command "cd #{File.expand_path(File.dirname(__FILE__) + "..")}; export RAILS_ENV=production; script/delayed_job -n 10 restart"
+  command "cd #{File.expand_path(File.dirname(__FILE__) + "..")}; export RAILS_ENV=production; script/delayed_job -n 1 start"
 end
