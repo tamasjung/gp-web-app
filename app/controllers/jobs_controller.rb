@@ -22,7 +22,13 @@ class JobsController < ApplicationController
     end
     launch_id = params[:launch_id]
     if launch_id
-      (options[:conditions] ||= {})[:launch_id] = launch_id
+      cond = options[:conditions] 
+      if cond
+        cond[0] += ' AND launch_id = :launch_id'
+        cond[1][:launch_id] = launch_id
+      else
+        options[:conditions] = {:launch_id => launch_id}
+      end
       @jobs = Job.paginate options
       @launch = Launch.find launch_id
     end

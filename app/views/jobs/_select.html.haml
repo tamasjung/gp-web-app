@@ -47,6 +47,8 @@
     %table
       %tr
         %th
+          id
+        %th
           = ordering_link "Address", :address, params
         %th
           = ordering_link "State", :state, params
@@ -55,6 +57,7 @@
       
       -@jobs.each_with_index do |job, idx|
         %tr{:class => (idx % 2 == 0) ? "even" : "odd"}
+          %td=job.id
           %td=(job.address ? job.address[/\d+$/] : "")
           %td=job.state
           %td

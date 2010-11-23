@@ -23,4 +23,15 @@ class TestSequenceResolver < Test::Unit::TestCase
     p results
     assert results.include? "7.0 AaAaA 11 BbBbB 00004.0000000000 CcCcC"
   end
+  
+  def teeeeest_invalid_args#exists the main thread as well
+    results = []
+    argv = "3D_r3bp_lce_3  -mu 0.001 -Navg 50 -eps 10e-10 -Tmax 1000 -ac -xi [1,0,0,0,0,0] -P1 [1,0,0,0] -P2 [%(a),0,0,0,0,0] -oI output_a_%(fixed 4 14 a).out ---seq  7.0 0.0 1.0".split(' ')
+    iterate_parallel(argv) do |values, args|
+      results << substitute_seq_values(args.join(' '), values)
+    end
+    p results
+    assert results.size == 0
+  end
+    
 end

@@ -36,14 +36,14 @@ def parse_sequences(argv)
         sequences.push({:name => argv[idx + 1], :start => argv[idx + 2], :max => argv[idx + 3], :diff => argv[idx + 4]})
         idx += 5
       else
-        raise "missing sequence attributes #{argv[idx..-1]}"
+        raise "missing sequence attributes #{argv[idx..-1].inspect}"
       end
     when "---seqval"
       if(argv.size > (idx + 2))
         values.push({:name => argv[idx + 1], :value => argv[idx + 2]})
         idx += 3
       else
-        raise "missing sequence value attributes #{argv[idx..-1]}"
+        raise "missing sequence value attributes #{argv[idx..-1].inspect}"
       end
     else
       args.push argv[idx]
@@ -78,6 +78,7 @@ end
 
 require 'thread'
 def iterate_parallel(argv, &block)
+  Thread.abort_on_exception = true
   cpu_num = number_of_processors rescue 1
   queue = SizedQueue.new cpu_num
   quit = Object.new

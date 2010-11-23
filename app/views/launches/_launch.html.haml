@@ -26,11 +26,16 @@
           = f.label :name 
         .field
           = f.text_field :name, :size => 40
+        .long_desc{:style => 'display: none'}
+          It must be unique although it is not necessary to fill it out. In case you leave it empty the portal generate
+          a proper name. 
       .prop_row
         .label
           parent launch
         .field
           = (@launch.parent ? @launch.parent.name : '-')
+        .long_desc{:style => 'display: none'}
+          The 'parent' launch, if exists.
       .prop_row
         .label
           launch type
@@ -38,6 +43,9 @@
           = @launch.subapp.name
           #subapp_id{:style => 'display:none'}<
             =@launch.subapp.id
+        .long_desc{:style => 'display: none'}
+          The type of the launch describes the name of the executables, the files you want to get uploaded by the 
+          portal and other technical options.
     
       =f.submit "Clone", :onclick=> 'collect_and_submit();' if (@launch.id && @launch.state != Launch::DESTROYING) 
     
@@ -49,12 +57,16 @@
           current state
         .field
           =@launch.state.to_s.humanize
+        .long_desc{:style => 'display: none'}
+          The state of the launch is the aggregation of the jobs states belongs to it.
       .prop_row
         .label
           actions
         .field
           -@launch.available_actions.each do |action|
             =f.submit action.to_s.humanize, :onclick => 'collect_and_submit()'
+        .long_desc{:style => 'display: none'}
+          Be aware that these actions are started asynchronously, do not expect immediate result.
       -unless @launch.new_record?
         .prop_row
           .label
@@ -63,24 +75,31 @@
             -url = LaunchDirs.new(@launch).launch_root_url
             %a{:href => "#{url}", :target => "_blank"}
               open in new window
-        
-      
+          .long_desc{:style => 'display: none'}
+            Click to the link to see the working directory.
       #jobs.group
   
 #info.tabpanel
   .panel_in_tab
     .prop_row
       .label
-        command
+        executable
       #info_command.field
+      .long_desc{:style => 'display: none'}
+        The name of the executable to run.
       
     .prop_row
       .label
         command arguments
       #info_command_args.field
+      .long_desc{:style => 'display: none'}
+        The command argument, might be parametric, if you are using sequences.
     
     #launch_files
+    
     #launch_sequences
+
+        
       
     
 :javascript

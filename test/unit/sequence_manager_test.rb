@@ -54,6 +54,7 @@ class SequenceManagerTest < ::Test::Unit::TestCase
 
   test "one simple big seq" do
     seqdefs = collect([{:name => 'a', :start => 0.5, :max => 10, :diff => 1}], 5)
+    p seqdefs
     assert_equal 5, seqdefs.size
   end
 
@@ -89,11 +90,10 @@ class SequenceManagerTest < ::Test::Unit::TestCase
       {:name => 'a', :start => 0.5, :max => 2, :diff => 1},
       {:name => 'b', :start => 3.5, :max => 5, :diff => 1}
     ], 100)
-    p seqdefs.to_yaml
     expected_line = "---seqval a 0.5 ---seqval b 3.5|---seqval a 0.5 ---seqval b 4.5|---seqval a 1.5 ---seqval b 3.5|---seqval a 1.5 ---seqval b 4.5"
     actual_line = seqdefs.map{|seqs| seqs.map{|seq| seq.to_arg}.join(' ')}.join('|')
     assert_equal 4, seqdefs.size
-    assert_equal expected_line, actual_line  
+    assert_equal expected_line, actual_line
   end  
   
   test "big collect check" do
@@ -125,7 +125,7 @@ class SequenceManagerTest < ::Test::Unit::TestCase
       [0.5, 99, 1]
       ], 100
     assert_equal 2, result.size
-    assert result[0].end == result[1].end
+    assert result[0].max == result[1].max
   end
   
   test "search one big" do
@@ -137,6 +137,16 @@ class SequenceManagerTest < ::Test::Unit::TestCase
     
     assert_equal 1, result.size
     assert result[0].max == 100
+  end
+  
+  test "max was missing is fixed" do
+    seqdefs = collect([
+      {:name => 'a', :start => 1, :max => 11.5, :diff => 1}
+    ], 5)
+    expected_line = "---seq a 1.0 3.5 1.0|---seq a 4.0 6.5 1.0|---seq a 7.0 9.5 1.0"
+    actual_line = seqdefs.map{|seqs| seqs.map{|seq| seq.to_arg}.join(' ')}.join('|')
+    assert_equal 3, seqdefs.size
+    assert_equal expected_line, actual_line
   end
   
 end

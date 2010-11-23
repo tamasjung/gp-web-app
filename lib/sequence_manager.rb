@@ -63,7 +63,7 @@ class SequenceManager
           seq_start = start + i * step
           seq_max = seq_start + step - (biggest_seq.diff/2.0)
           seq_max = biggest_seq.max if((seq_max - biggest_seq.max)/biggest_seq.diff > 0)  
-          subseq = Sequence.new :start => seq_start, :end => seq_max, :diff => biggest_seq.diff
+          subseq = Sequence.new :name => biggest_seq.name, :start => seq_start, :max => seq_max, :diff => biggest_seq.diff
           job_seq = remaining_seqs + [subseq]
           block.call job_seq
         end

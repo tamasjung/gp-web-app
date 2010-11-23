@@ -18,6 +18,11 @@ class JobInterfaceArc
     result
   end
   
+  def backup_joblist(job)
+    joblist_file = joblist(job)
+    cp joblist_file, joblist_file + '.backup.xml'
+  end
+  
   def submit
     job = Job.find @job_id
     job_dirs = JobDirs.new(job)
@@ -48,7 +53,8 @@ class JobInterfaceArc
     when 'FINISHED', 'FAILED'
       job_dirs = JobDirs.new job
       working_dir = job_dirs.job_root
-      get_message, get_result = arc_client.get(["-D", working_dir, "-j", joblist(job), job.address])
+      backup_joblist job
+      get_message, get_result = arc_client.get(["--keep", "-D", working_dir, "-j", joblist(job), job.address])
       logger.debug get_message if get_message
       logger.debug get_result
       if get_result == 0
