@@ -16,7 +16,8 @@ class LaunchDirs
     return HashAccessor.new({
       :launch_root => launch_dir,
       :sent_dir_path => (File.join launch_dir, 'sent'),
-      :jobs_dir_path => (File.join launch_dir, 'jobs')
+      :jobs_dir_path => (File.join launch_dir, 'jobs'),
+      :publish_dir_path => (File.join launch_dir, 'publish')
     })
   end
   
@@ -30,7 +31,7 @@ class LaunchDirs
     
     raise "launch_base_dir - #{launch_base_dir} - directory does not exist" unless (isDir launch_base_dir)
     
-    [_dirs.launch_root, _dirs.sent_dir_path, _dirs.jobs_dir_path].each do |path|
+    [_dirs.launch_root, _dirs.sent_dir_path, _dirs.jobs_dir_path, _dirs.publish_dir_path].each do |path|
       ensure_dir path, launch_dir_mod
     end
   end

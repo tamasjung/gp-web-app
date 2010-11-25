@@ -76,9 +76,19 @@ class LaunchExecutor
         end
       end
       launch.check_state
+      if launch.state == Launch::FINISHED
+        post_finish launch
+      end
     ensure
       launch.refreshing = false
       launch.save!
+    end
+  end
+  
+  def post_finish(launch)
+    publish_dir = LaunchDirs.new(launch).dirs.publish_dir_path
+    Dir.chdir(publish_dir) do
+      system %q[find ../jobs -name 'outputs.tar' -exec tar xf {} \;]
     end
   end
   
