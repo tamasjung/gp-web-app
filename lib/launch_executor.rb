@@ -90,6 +90,7 @@ class LaunchExecutor
     publish_dir = LaunchDirs.new(launch).dirs.publish_dir_path
     Dir.chdir(publish_dir) do
       system %q[find ../jobs -name 'outputs.tar' -exec tar xf {} \;]
+      system('chmod -R a+rX .')
     end
   end
   
