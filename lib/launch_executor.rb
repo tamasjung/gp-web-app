@@ -66,6 +66,7 @@ class LaunchExecutor
   
   def refresh_state
     launch = Launch.find @launch_id
+    return if launch.stable?
     begin
       launch.refreshing = true
       launch.save!

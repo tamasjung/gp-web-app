@@ -55,6 +55,7 @@ class JobInterfaceArc
       working_dir = job_dirs.job_root
       backup_joblist job
       get_message, get_result = arc_client.get(["-D", working_dir, "-j", joblist(job), job.address])
+      system('chmod -R a+rX ' + working_dir)
       logger.debug get_message if get_message
       logger.debug get_result
       if get_result == 0

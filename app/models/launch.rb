@@ -85,6 +85,10 @@ class Launch < ActiveRecord::Base
     self.state == NEW || self.state == CREATED 
   end
   
+  def stable?
+    [STOPPED, FINISHED, FAILED, INVALID].include? self.state
+  end
+  
   def available_actions
     STATE_ACTIONS[state.to_sym]
   end

@@ -14,8 +14,8 @@
 
 # be sure to change these
 set :user, 'griduser' 
-set :domain, 'sl-grid.interface.hu' 
-#set :domain, '192.168.1.106'
+#set :domain, 'sl-grid.interface.hu' 
+set :domain, '192.168.1.106'
 
 set :application, 'gp-web-app'
 # file paths
