@@ -4,6 +4,6 @@
 
 system('meep ' + ARGV.join(" "))
 
-system('h5topng *.h5')
+system('h5topng  -x 0 *.h5')
 
 system('tar cf outputs.tar *.png *.h5')
