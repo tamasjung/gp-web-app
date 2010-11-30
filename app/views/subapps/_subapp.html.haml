@@ -31,6 +31,18 @@
       = f.label :tech_name
     .field
       = f.text_field :tech_name, :size => 40
+      
+  .prop_row
+    .label
+      = f.label :state
+    .field
+      = @subapp.state
+      
+  .prop_row
+    .label
+      actions
+    .field
+      =link_to 'Clone', :action => 'clone_action', :id => @subapp.id
 
   
 #partial.tabpanel
@@ -41,18 +53,25 @@
     = f.text_area :input_partial, :size => "80x50"
     
 #files.tabpanel
-  -files = @subapp.application_files.find(:all, :select => "id, name, version, is_executable")
+  -files = @subapp.application_files.find(:all, :select => "id, name, version, is_executable, created_at")
   -if files
     %table
       %tr
         %th
-          Name + Version
+          Name 
+        %th
+          Version
+        %th
+          Created at
         %th
           Is executable?
       -files.each_with_index do |file, idx|      
         %tr{:class => ((idx % 2 == 0)? 'even' : 'odd')}
           %td
-            =link_to [file.name, file.version].join, {:controller => :application_files, :action => :bytes, :id => file.id}, :target => '_blank'
+            =link_to file.name, {:controller => :application_files, :action => :bytes, :id => file.id}, :target => '_blank'
+          %td=file.version
+          %td=file.created_at.to_s(:db)
+          
           %td=file.is_executable
           %td
             =link_to "Unlink", :action => :unlink, :application_file_id => file.id, :id => @subapp.id

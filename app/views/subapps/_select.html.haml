@@ -1,0 +1,62 @@
+= render :partial => '/layouts/flash', :object => flash
+=#%h3.subapp_select_title Sub-application select by
+%div
+  %span.paginate_info
+    =page_entries_info(@subapps, {})
+    , filtered by
+  -form_remote_tag :html => { :id => 'subapp_search_form', :action => url_for(:controller => :subapps , :action => :select )} do
+    -params.each do |key, value|
+      %input{:type => 'hidden', :name => key, :value => value}
+    %input#subapp_search{:type => 'text', :name => 'subapp_search', :value => params[:subapp_search]}
+    %input{:type => 'hidden', :name=>'page', :value => '1'}
+    #subapp_choices.autocomplete
+:javascript
+  new Ajax.Autocompleter("subapp_search", "subapp_choices", "#{url_for(:controller => :subapps, :action => :search_autocomplete)}", {
+    paramName: "value",
+    callback: function (input, query){
+      return $H({value: input.value}).toQueryString()
+    }
+  });
+  
+  $('subapp_search').observe("keydown", function(event){
+    if(whichKey(event) == 13){
+      even.element().up('form').submit()
+    }
+  });
+.long_desc{:style => 'display: none'}
+  .title
+    Examples for filtering:
+  .row
+    .code
+      name like Lie
+    .explanation
+      the name contains 'Lie' 
+       
+      
+
+%table
+  %tr
+    %th
+      = ordering_link "Name", :name, params
+    %th 
+      = ordering_link "Created at", :"subapps.created_at", params, 'DESC'
+    %th 
+      = ordering_link "State", :state, params
+    %th
+      Creator
+    %th
+      Actions
+  - @subapps.each_with_index do |subapp, idx|
+    %tr{:class => (idx % 2 == 0) ? "even" : "odd"}
+      %td= h subapp.name
+      %td= h subapp.created_at.to_s(:db)
+      %td= h subapp.state
+      %td= h subapp.person.login
+      %td
+        .action_link= link_to 'show', edit_subapp_path(subapp)
+        =#.action_link= link_to_remote 'destroy', :url => subapp_url(subapp, :orders => params[:orders], :subapp_search => params[:subapp_search]), :confirm => 'Are you sure?', :method => :delete
+        .action_link= link_to 'new launch', new_subapp_launch_path(subapp)
+        
+=will_paginate(@subapps, :renderer => RemoteLinkRenderer, :params => params)
+:javascript
+  document.fire("gp:new_panel")

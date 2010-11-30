@@ -88,7 +88,8 @@ class LaunchesController < ApplicationController
 
   def update
     commit = unhumanize params[:commit]
-    return clone_action if commit == 'clone' 
+    return clone_action if commit == 'clone'
+    return transpose_action if commit == 'transpose' 
     @launch = Launch.find(params[:id])
     return edit unless @launch.valid?
     
@@ -132,6 +133,28 @@ class LaunchesController < ApplicationController
       format.html {render :action => "edit"}
     end
   end
+  
+  def transpose_action
+    @launch = Launch.find(params[:id])
+    new_subapp_name = params[:subapp_lookup]
+    if @launch.subapp.name != new_subapp_name
+      subapp = Subapp.find_by_name new_subapp_name
+      unless subapp
+        flash.now[:error] = 'Wrong sub-application name'
+      else
+        @launch.subapp = subapp
+        if @launch.save
+          flash.now[:notice] = 'Launch was successfully transposed'
+        end
+      end
+    end
+    read_input_partial
+    respond_to do |format|
+      format.html {render :action => "edit"}
+    end
+  end
+  
+
 
   # DELETE /launches/1
   # DELETE /launches/1.xml
@@ -148,14 +171,17 @@ class LaunchesController < ApplicationController
   
   private
   def read_input_partial
-    begin
-      dir  = "app/views/input"
-      file_name = "#{dir}/#{@launch.subapp.tech_name}.html.haml"
-      raise "file not found #{file_name}" unless File.exist? file_name
-      raise "illegal file path #{file_name}" unless (File.dirname(File.expand_path file_name) == File.expand_path(dir))
-      input_page = IO.read(file_name)
-    rescue  
-      input_page = "No template found"
+    input_page = @launch.subapp.input_partial
+    if input_page.strip.length == 0 #load default
+      begin
+        dir  = "app/views/input"
+        file_name = "#{dir}/#{@launch.subapp.tech_name}.html.haml"
+        raise "file not found #{file_name}" unless File.exist? file_name
+        raise "illegal file path #{file_name}" unless (File.dirname(File.expand_path file_name) == File.expand_path(dir))
+        input_page = IO.read(file_name)
+      rescue  
+        input_page = "No template found"
+      end
     end
     @embedded_css = input_page[/EMBEDDED_STYLE(.*)EMBEDDED_STYLE/m, 1] rescue ""
     engine = Haml::Engine.new(input_page, :suppress_eval => false)

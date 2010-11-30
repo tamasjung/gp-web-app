@@ -1,14 +1,9 @@
-%h3 Listing apps
-%table
-  %tr
-    %th Name
-  - @subapps.each_with_index do |subapp, idx|
-    
-    %tr{:class => "#{(idx % 2 == 0) ? 'even' : 'odd'}"}
-      %td= h subapp.name
-      %td= link_to 'Show', subapp
-      %td= link_to 'Edit', edit_subapp_path(subapp)
-      %td= link_to 'Destroy', subapp, :confirm => 'Are you sure?', :method => :delete
-      -#%td= link_to 'Clone', :action => :clone_subapp, :method => :post
-%br/
-= link_to 'New subapp', new_subapp_path
+%h3 Listing sub-applications
+#subapp_select.remote_module
+:javascript
+  new Ajax.Request('#{url_for(:controller => :subapps, :action => :select, :params => {:orders => 'subapps.created_at DESC'})}');
+
+-if current_user.has_role? :admin    
+  .remote_module 
+    =link_to "New subapp", new_subapp_path
+

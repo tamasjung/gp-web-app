@@ -38,11 +38,32 @@
           The 'parent' launch, if exists.
       .prop_row
         .label
-          launch type
-        .field
-          = @launch.subapp.name
+          sub-application
           #subapp_id{:style => 'display:none'}<
             =@launch.subapp.id
+          
+        .field
+          -if @launch.state == Launch::CREATED
+            -subappname = @launch.subapp ? @launch.subapp.name : ""
+            -sent_subappname = params[:subapp_lookup]
+            -subappname = sent_subappname if sent_subappname
+            
+            
+            %input#subapp_lookup{:type => 'text', :name => 'subapp_lookup', :value => subappname, :size => 40}
+            #subapp_name_choices.autocomplete
+            :javascript
+              new Ajax.Autocompleter("subapp_lookup", "subapp_name_choices", "#{url_for(:controller => :subapps, :action => :subapp_name_autocomplete)}", {
+                paramName: "value",
+                callback: function (input, query){
+                  return $H({value: input.value}).toQueryString()
+                }
+              });
+            =f.submit "Transpose", :onclick=> 'collect_and_submit();'
+          -else
+            = @launch.subapp.name
+          
+          
+          
         .long_desc{:style => 'display: none'}
           The type of the launch describes the name of the executables, the files you want to get uploaded by the 
           portal and other technical options.

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101027195032) do
+ActiveRecord::Schema.define(:version => 20101130160614) do
 
   create_table "application_files", :force => true do |t|
     t.string   "name"
@@ -107,6 +107,9 @@ ActiveRecord::Schema.define(:version => 20101027195032) do
     t.datetime "updated_at"
     t.string   "tech_name"
     t.text     "jsdl"
+    t.string   "state"
+    t.integer  "person_id"
+    t.integer  "parent_id"
   end
 
 end

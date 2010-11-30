@@ -1,4 +1,72 @@
 class SubappsController < ApplicationController
+  
+  def select
+    search_string = params[:subapp_search]
+    options = {:page => params[:page], :order => params[:orders]}
+    if search_string
+      begin
+        parser = FilterParser.new(:subapp, [:name, :state], {:creator => 'people.login', :created_at => 'subapps.created_at'})
+        options.merge!(parser.parse(search_string)) 
+      end
+    end
+    @subapps = Subapp.paginate options
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          page.replace_html 'subapp_select', :partial => "select"
+        end
+      end
+    end
+  end
+  
+  def search_autocomplete
+    value = params[:value]
+    @results = FilterAutoComplete.new(Subapp, [:name, :state]).get_results(value)
+    render :partial => '/layouts/search_autocomplete'
+  end  
+  
+  def clone_action
+    orig_subapp = Subapp.find(params[:id])
+    clone = orig_subapp.clone
+    clone.state = Subapp::CREATED
+    clone.person = current_user
+    clone.parent = orig_subapp
+    [:created_at, :updated_at].each do |method|
+      clone.send((method.to_s + "="), nil)
+    end
+    
+    version_num = 1
+    while true
+      clone.name = orig_subapp.name + "." + version_num.to_s
+      break unless Subapp.find_by_name clone.name
+      version_num += 1
+    end 
+    
+    files = orig_subapp.application_files.find(:all, :select => "id")
+    clone.application_files << files
+    
+    save_ok = clone.save
+    if save_ok
+      flash.now[:notice] = 'Sub-application was successfully cloned' if save_ok
+    end
+    
+    @subapp = clone
+    respond_to do |format|
+      format.html {render :action => "edit"}
+    end
+  end  
+  
+  def subapp_name_autocomplete
+    value = params[:value]
+    @results = Subapp.find :all, :select => :name, \
+                            :conditions => ['name like ?', '%' + value + '%'] ,\
+                            :order => 'name ASC', :limit => 10
+                            
+    @results.map! do |item| item.name end 
+    render :partial => '/layouts/search_autocomplete'
+  end
+  
+  
   # GET /subapps
   # GET /subapps.xml
   def index
