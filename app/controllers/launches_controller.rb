@@ -172,7 +172,7 @@ class LaunchesController < ApplicationController
   private
   def read_input_partial
     input_page = @launch.subapp.input_partial
-    if input_page.strip.length == 0 #load default
+    if input_page.nil? || input_page.strip.length == 0 #load default
       begin
         dir  = "app/views/input"
         file_name = "#{dir}/#{@launch.subapp.tech_name}.html.haml"

@@ -7,7 +7,7 @@
   -form_remote_tag :html => { :id => 'subapp_search_form', :action => url_for(:controller => :subapps , :action => :select )} do
     -params.each do |key, value|
       %input{:type => 'hidden', :name => key, :value => value}
-    %input#subapp_search{:type => 'text', :name => 'subapp_search', :value => params[:subapp_search]}
+    %input#subapp_search.search_field{:type => 'text', :name => 'subapp_search', :value => params[:subapp_search]}
     %input{:type => 'hidden', :name=>'page', :value => '1'}
     #subapp_choices.autocomplete
 :javascript

@@ -11,6 +11,7 @@ class PeopleController < ApplicationController
 
   def create
     @person = Person.new(params[:person])
+    @person.password = params[:person][:password]
     if @person.save
       flash[:notice] = "Account registered!"
       redirect_back_or_default account_url

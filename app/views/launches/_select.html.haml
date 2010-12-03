@@ -7,7 +7,7 @@
   -form_remote_tag :html => { :id => 'launch_search_form', :action => url_for(:controller => :launches , :action => :select )} do
     -params.each do |key, value|
       %input{:type => 'hidden', :name => key, :value => value}
-    %input#launch_search{:type => 'text', :name => 'launch_search', :value => params[:launch_search]}
+    %input#launch_search.search_field{:type => 'text', :name => 'launch_search', :value => params[:launch_search]}
     %input{:type => 'hidden', :name=>'page', :value => '1'}
     #launch_choices.autocomplete
 :javascript
@@ -79,7 +79,10 @@
       %td= h launch.person.login
       %td
         .action_link= link_to 'show', edit_launch_path(launch)
-        =#.action_link= link_to_remote 'destroy', :url => launch_url(launch, :orders => params[:orders], :launch_search => params[:launch_search]), :confirm => 'Are you sure?', :method => :delete
+        -if can? :destroy, launch
+          .action_link
+            = link_to_remote 'destroy', :url => launch_url(launch, :orders => params[:orders], :launch_search => params[:launch_search]), :confirm => 'Are you sure?', :method => :delete
+        
         
 =will_paginate(@launches, :renderer => RemoteLinkRenderer, :params => params)
 :javascript

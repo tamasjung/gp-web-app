@@ -1129,12 +1129,14 @@ body a.help_off {
 #launch_select .long_desc .row .explanation {
   margin-left: 260px;
 }
-/* line 481, ../../../app/stylesheets/partials/_main.sass */
-#launch_select #launch_search_form #launch_search {
-  width: 70%;
-}
-/* line 486, ../../../app/stylesheets/partials/_main.sass */
+/* line 479, ../../../app/stylesheets/partials/_main.sass */
 #launch_select .launch_select_title {
+  display: inline;
+}
+
+/* line 482, ../../../app/stylesheets/partials/_main.sass */
+.search_field {
+  width: 70%;
   display: inline;
 }
 

@@ -3,8 +3,10 @@ class Ability
 
   def initialize(user)
     can :create, Person
-    if !user.nil? && user.has_role?(:admin)
-      can :manage, :all
+    unless user.nil?
+      #can :destroy, [Launch], :person_id => user.id
+      can :manage, Person, :id => user.id
+      can :manage, :all if user.has_role?(:admin)
     end
     
   end
