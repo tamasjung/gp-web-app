@@ -62,7 +62,7 @@ class ApplicationController < ActionController::Base
     ENV.sort.each do |i|
       lines << i.join('=')
     end
-    render :text => (Rails::Info.to_s + "\n\nENVIRONMENT VARIABLES:\n" + lines.join("\n")) , :content_type => 'text/plain'
+    render :text => ((Rails::Info.to_s rescue "") + "\n\nENVIRONMENT VARIABLES:\n" + lines.join("\n")) , :content_type => 'text/plain'
   end
   
   def init
