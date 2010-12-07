@@ -62,6 +62,14 @@ class ApplicationController < ActionController::Base
     ENV.sort.each do |i|
       lines << i.join('=')
     end
+    lines << "PARAMS"
+    params.each do |k,v|
+      lines << "#{k}=#{v}"
+    end
+    lines << "ENV"
+    request.env.each do |k,v|
+      lines << "#{k}=#{v}"
+    end
     render :text => ((Rails::Info.to_s rescue "") + "\n\nENVIRONMENT VARIABLES:\n" + lines.join("\n")) , :content_type => 'text/plain'
   end
   
