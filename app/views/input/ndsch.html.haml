@@ -1069,6 +1069,10 @@
     return fileContent
   }
   
+  function buildPotentialFile(){
+    return "hello"
+  }
+  
   var fileName = 'f'
   
   function buildCommandArgs(){
@@ -1079,13 +1083,15 @@
 
   function prepareSubmit(){
   
-    var meshContent = buildMeshFile()
-    var modelContent = buildModelFile()
+    var meshContent = buildMeshFile();
+    var modelContent = buildModelFile();
+    var potentialContent = buildPotentialFile();
     var result = {
       command_args: buildCommandArgs(),
       files: [
         {name: fileName + '.meshx', content: meshContent},
-        {name: fileName + '.model', content: modelContent}
+        {name: fileName + '.model', content: modelContent},
+        {name: 'potential.txt', content: potentialContent}
       ]
     }
     return result;
