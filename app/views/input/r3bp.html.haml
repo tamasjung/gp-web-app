@@ -455,7 +455,7 @@
     file_name += ".out";
     if(iterators.length > 0){
       res += " -grid " + iterators.map(function(e){
-        return e.idx + "[" + [e.max, e.d].join(',') + "]"
+        return e.idx + "[" + [e.d, e.max].join(',') + "]"
       }).join(',');
       
       if($('indicator').checked){

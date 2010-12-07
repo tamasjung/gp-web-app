@@ -57,7 +57,12 @@ class ApplicationController < ActionController::Base
   end  
   
   def debug_info 
-    render :text => Rails::Info, :content_type => 'text/plain'
+    
+    lines = []
+    ENV.sort.each do |i|
+      lines << i.join('=')
+    end
+    render :text => ((Rails::Info.to_s rescue "") + "\n\nENVIRONMENT VARIABLES:\n" + lines.join("\n")) , :content_type => 'text/plain'
   end
   
   def init
