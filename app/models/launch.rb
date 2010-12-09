@@ -24,6 +24,15 @@ class SettingsAdapter
     end
   end
   
+  def references
+    return [] unless @settings_hash.respond_to? :launch_params
+    references = @settings_hash.launch_params['references']
+    return [] unless references
+    references.map do |ref_hash|
+      HashAccessor.new(ref_hash)
+    end
+  end
+  
   def command_args
     return "" unless @settings_hash.respond_to? :launch_params
     @settings_hash.launch_params['command_args']

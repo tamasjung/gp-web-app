@@ -259,7 +259,7 @@
         %li.tab
           %a{:href => '#bodies_panel' }
             bodies
-        %li.tab
+        -#%li.tab
           %a{:href => '#file_panel' }
             file upload
         %li.tab
@@ -580,7 +580,7 @@
             
       
                  
-    #file_panel.tabpanel
+    -#file_panel.tabpanel
       .prop_row
         .label
           file
@@ -635,6 +635,8 @@
   
 :javascript 
 
+  var NL = "\n"
+
   document.observe('mousemove', function(event){
     debug($('main_view').getAttribute('position') + "/" + $('main_view').getAttribute('orientation')  +  "[" + event.clientX + "," + event.clientY + "]")
   })
@@ -681,7 +683,7 @@
   }
 
   var ATOMS = [
-    {id: 'oxigen', gauss: [[0.1,2],[3,4],[5,6]]},
+    {id: 'oxigen', gauss: [[0.1,2],[3,4],[5,6]]}, 
     {id: 'coal', gauss: [[0.7,8],[9,10],[11,12]]}    
   ];
   
@@ -716,12 +718,23 @@
       //dont use editorId directly because it may change but the closure remembers the old one
       eval('createX3D_' + prototype_id).apply({}, [editor.id]);
     }
+    $(editorId).potentialText = function(){
+      return eval('potential4_' + prototype_id).apply(this)
+    }
     if(call === undefined || call){
       $(editorId).createX3D();
     }
-    return editorId;  
+    return editorId;
   }
   
+  
+  function potential4_sphere(){
+    var index = getIndex(this.id);
+    var r = $("sphere_r_" + index).value;
+    var result = objectsPotentialText(this, 'sphere', "1 " + r )
+    return result;
+  }
+    
   function createX3D_sphere(editorId){
     var transformAttrs = {};
     
@@ -732,15 +745,35 @@
     createX3DNode(editorId, 'sphere', transformAttrs, {radius: r});
   }
   
+  function boxSizeArray(index){
+    return $w("width height depth").map(function(dim){return +$F("box_" + dim + "_" + index)}).join(' ');
+  }
+  
+  function potential4_box(){
+    var index = getIndex(this.id);
+    var result = objectsPotentialText(this, 'box', "3 " + boxSizeArray(index))
+    return result;
+  }
+  
   function createX3D_box(editorId){
     var transformAttrs = {}
     
     var index = getIndex(editorId)
-    var size = $w("width height depth").map(function(dim){return +$F("box_" + dim + "_" + index)}).join(' ');
+    var size = boxSizeArray(index)
     
     setRotationBySpherical('box', index, transformAttrs)
     
     createX3DNode(editorId, 'box', transformAttrs, {size: size});
+  }
+  
+  
+  
+  function potential4_cylinder(){
+    var index = getIndex(this.id);
+    var r = +$F("cylinder_r_" + index);
+    var height = +$F('cylinder_h_' + index);
+    var result = objectsPotentialText(this, 'cylinder', [2, r, height].join(' '))
+    return result;
   }
   
   function createX3D_cylinder(editorId){
@@ -752,6 +785,13 @@
     setRotationBySpherical('cylinder', index, transformAttrs)
     createX3DNode(editorId, 'cylinder', transformAttrs, {radius: r, height: height});
   }
+  
+  function potential4_halfspace(){
+    var index = getIndex(this.id);
+    var result = objectsPotentialText(this, 'halfspace', '0')
+    return result; 
+  }
+  
   
   function createX3D_halfspace(editorId){
     
@@ -782,6 +822,24 @@
     return atom_dictionary[atom_type].gauss[0][0]
   }
   
+  function potential4_atom(){
+    var index = getIndex(this.id);
+    var atom_type = $F("atom_select_" + index);
+    var repeaterVec = repeaterVector(index)
+    var repeaterNum = repeaterNumber(index)
+    var center = centerCoords('atom', index)
+    var atoms = ""
+    var translation = center
+    for(var i = 0; i < repeaterNum; i++){
+      atoms += atom_type + " " + translation.join(' ') + NL
+      translation = translation.map(function(coord, index){
+        return coord + repeaterVec[index];
+      });
+    }
+    var result = multiatomPotential(atoms)
+    return result;
+  }
+  
   function createX3D_atom(editorId){
     var transformAttrs = {};
     
@@ -789,6 +847,14 @@
     var atom_type = $F("atom_select_" + index);
     var r = getAtomRadius(atom_type);
     createX3DNode(editorId, 'sphere', transformAttrs, {radius: r}, 'atom');
+  }
+  
+  function potential4_multiatom(){
+    var index = getIndex(this.id);
+    
+    var coordsString = $F('multiatom_coords_' + index);
+    var result = multiatomPotential(coordsString.gsub(',', ' ').strip())
+    return result
   }
   
   function createX3D_multiatom(editorId){
@@ -813,17 +879,85 @@
     $(editorId).createX3D();
   }
   
+  function multiatomPotential(atomsString){
+    var lines = []
+    var atoms = atomsString.split('\n').map(function(row){
+      var result = row.strip().split(' ')
+      return (result.size() == 4 ? result : undefined) 
+    }).compact().map(function(arr){
+      return {name: arr[0], center: arr.slice(1, 4).join(' ')}
+    })
+    var atomTypes = atoms.map(function(atom){return atom.name}).uniq()
+    var result = "atoms" + NL
+    result += atomTypes.size() + NL
+    atomTypes.each(function(atomType, index){
+      var params = atom_dictionary[atomType].gauss.flatten()
+      result += params.size() + NL
+      params.each(function(param){
+        result += param + NL
+      })
+    })
+    result += atoms.size() + NL
+    atoms.each(function(atom){
+      result += (atomTypes.indexOf(atom.name) + 1) + " " + atom.center + NL 
+    })
+    return result
+  }
+  
+  function repeaterVector(index){
+    return  $w('x y z').map(function(axis){
+      return (+$('repeater_' + axis + '_' + index).value);
+    });
+  }
+  
+  function repeaterNumber(index){
+    return $('repeater_n_' + index).value;
+  }
+  
+  function objectsPotentialText(editor, editorType, specificLine){
+    var index = getIndex(editor.id)
+    var repeaterVec = repeaterVector(index)
+    var repeaterNum = repeaterNumber(index)
+    var center = centerCoords(editorType, index)
+    
+    var theta = 0
+    var thetaId = editorType + '_theta_' + index
+    if($(thetaId)){
+     theta = $F(thetaId) 
+    }
+    
+    var phi = 0
+    var phiId = editorType + '_phi_' + index
+    if($(phiId)){
+      phi = $F(phiId)
+    }
+    
+    var v = $F(editorType + '_v_' + index)
+    var result = "objects" + NL
+    var translation = center
+    for(var i = 0; i < repeaterNum; i++){
+      result += editorType + NL
+      result += translation.join(' ') + NL
+      result += theta + " " + phi + NL
+      result += specificLine + NL
+      result += v + NL
+      translation = translation.map(function(coord, index){
+        return coord + repeaterVec[index];
+      });
+    }
+    result += 'end' + NL
+    return result
+  }
+  
   function createX3DNode(editorId, bodyType, transformAttrs, bodyAttrs, editorType, decorator){
     
     transformAttrs.id = "tr_" + editorId;
     
     var index = getIndex(transformAttrs.id);
     
-    var vector = $w('x y z').map(function(axis){
-      return (+$('repeater_' + axis + '_' + index).value);
-    });
+    var vector = repeaterVector(index)
     
-    var n = $('repeater_n_' + index).value;
+    var n = repeaterNumber(index)
     
     if(editorType === undefined){
       editorType = bodyType;
@@ -843,8 +977,8 @@
       trAttrs.translation = translation.join(" ");
       trAttrs.id += "_" + i; 
       renderer.addX3DNode(bodyType, trAttrs, bodyAttrs, decorator);
-      translation = translation.map(function(i, index){
-        return i + vector[index];
+      translation = translation.map(function(coord, index){
+        return coord + vector[index];
       });
     };
   }
@@ -1069,8 +1203,33 @@
     return fileContent
   }
   
+
   function buildPotentialFile(){
-    return "hello"
+    //fejlec 
+    //elso azonosito
+    var result = "Gridportal " + NL
+    //masodik azonosito
+    result += new Date().toString() + NL 
+    //mesh
+    //xyz pontok szama
+    result += $w('x y z').map(function (item){
+      return $F('n' + item)
+    }).join(' ') + NL
+    //kezdo koordinatak angst-ben TODO
+    result += "0 0 0" + NL
+    //a racs teljes merete angst-ben
+    result += "0 0 0" + NL
+    //V0
+    result += $F('default')
+    $('bodies').select('table').each(function(e){
+      result += e.potentialText();
+    })
+    
+    //vegjel
+    result += 'end' + NL
+    //lablec
+    result += 'T' + NL + 'T' + NL + 'output.bin' + NL 
+    return result
   }
   
   var fileName = 'f'
@@ -1080,20 +1239,30 @@
   }
   
 
-
+  var potentialContainer = 'bodies_panel';
   function prepareSubmit(){
   
     var meshContent = buildMeshFile();
     var modelContent = buildModelFile();
-    var potentialContent = buildPotentialFile();
+    var potentialContent;
+
     var result = {
       command_args: buildCommandArgs(),
       files: [
         {name: fileName + '.meshx', content: meshContent},
-        {name: fileName + '.model', content: modelContent},
-        {name: 'potential.txt', content: potentialContent}
-      ]
+        {name: fileName + '.model', content: modelContent}
+      ],
+      potentialContainer: potentialContainer
     }
+    if(potentialContainer == 'bodies_panel'){
+      result.files.push({name: 'potential.txt' , content: buildPotentialFile()});
+    } 
+    else{
+      potentialReference = $F('potential_reference')
+      result.references = []
+      result.references.push({name: 'potential.bin', url: potentialReference})
+    }
+    
     return result;
   }
   
@@ -1109,9 +1278,12 @@
     });
     editors.each(function(editor_type){
       addBody(editor_type, false);
-    });   
+    });
+    if(settings.launch_params && settings.launch_params.potentialContainer){  
+      potentialContainer = settings.launch_params.potentialContainer
+    }
   }
-
+  var initialized = false;
   $('partial_form').init = function (){
     $$('.hidden_prototype').invoke('hide');
     //$$('.long_desc').invoke('hide');
@@ -1121,7 +1293,21 @@
         e.writeAttribute('placeholder', translate4human(ph));
       }
     });
-    new Control.Tabs('potential_tabs');
+    
+    new Control.Tabs('potential_tabs',{  
+      beforeChange: function(old_container, new_container){
+        if(!initialized || confirm('Only one kind of settings of potential is available, the other is ignored. Are you sure?')){
+          potentialContainer = new_container.id
+        }
+        else{
+          throw $break;
+        }
+      },
+      defaultTab: potentialContainer
+      
+    });
+    
+    initialized = true
     $$('.long_desc').invoke('toggle');
     rebuildScene();
   }
