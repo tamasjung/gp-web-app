@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101130160614) do
+ActiveRecord::Schema.define(:version => 20101211210439) do
 
   create_table "application_files", :force => true do |t|
     t.string   "name"
@@ -20,10 +20,14 @@ ActiveRecord::Schema.define(:version => 20101130160614) do
     t.datetime "updated_at"
   end
 
+  add_index "application_files", ["name"], :name => "index_application_files_on_name"
+
   create_table "application_files_subapps", :id => false, :force => true do |t|
     t.integer "application_file_id", :null => false
     t.integer "subapp_id",           :null => false
   end
+
+  add_index "application_files_subapps", ["subapp_id"], :name => "index_application_files_subapps_on_subapp_id"
 
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
@@ -62,6 +66,9 @@ ActiveRecord::Schema.define(:version => 20101130160614) do
     t.string   "sequence_args"
   end
 
+  add_index "jobs", ["launch_id"], :name => "index_jobs_on_launch_id"
+  add_index "jobs", ["state"], :name => "index_jobs_on_state"
+
   create_table "launches", :force => true do |t|
     t.string   "name"
     t.text     "settings"
@@ -76,6 +83,12 @@ ActiveRecord::Schema.define(:version => 20101130160614) do
     t.boolean  "single"
     t.boolean  "refreshing"
   end
+
+  add_index "launches", ["name"], :name => "index_launches_on_name"
+  add_index "launches", ["parent_id"], :name => "index_launches_on_parent_id"
+  add_index "launches", ["person_id"], :name => "index_launches_on_person_id"
+  add_index "launches", ["state"], :name => "index_launches_on_state"
+  add_index "launches", ["subapp_id"], :name => "index_launches_on_subapp_id"
 
   create_table "people", :force => true do |t|
     t.string   "nick"
@@ -111,5 +124,10 @@ ActiveRecord::Schema.define(:version => 20101130160614) do
     t.integer  "person_id"
     t.integer  "parent_id"
   end
+
+  add_index "subapps", ["name"], :name => "index_subapps_on_name"
+  add_index "subapps", ["parent_id"], :name => "index_subapps_on_parent_id"
+  add_index "subapps", ["person_id"], :name => "index_subapps_on_person_id"
+  add_index "subapps", ["state"], :name => "index_subapps_on_state"
 
 end
