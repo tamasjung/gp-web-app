@@ -1,4 +1,9 @@
 :javascript
+
+  function files_or_references_table(which){
+    
+  }
+
   $('info_tab').observe('click', function(event){
 
     var launch_params = prepareSubmit()
@@ -31,6 +36,39 @@
                             ],
                             ["td", {},
                               ["pre", {}, f.content]
+                            ]
+                          ]
+                }
+                )
+              )
+            ]
+          ]
+        )  
+      )
+    }
+    if(launch_params.references && launch_params.references.size() > 0){
+      $$('#launch_references *').invoke('remove')
+      var idx = 0
+      $('launch_references').appendChild(
+        NodeBuilder(
+          ['div', {'class': 'group'},
+            ['div', {'class': 'group_title'},
+              "Launch file references"
+            ],
+            ['table', {},
+              ['tbody', {},
+                ['tr', {},
+                  ['th', {}, 'name'],
+                  ['th', {}, 'URI']
+                ]
+              ].concat(
+                launch_params.references.map(function(f){
+                  return ["tr", {'class': 'info_launch_file' + ((idx++ % 2 == 0) ? " even" : " odd")},
+                            ["td", {},
+                              f.name
+                            ],
+                            ["td", {},
+                              ["a", {href: f.url}, f.url]
                             ]
                           ]
                 }
