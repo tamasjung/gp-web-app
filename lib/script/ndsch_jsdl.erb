@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<JobDefinition
+  xmlns="http://schemas.ggf.org/jsdl/2005/11/jsdl"
+  xmlns:posix="http://schemas.ggf.org/jsdl/2005/11/jsdl-posix"
+  xmlns:arc="http://www.nordugrid.org/ws/schemas/jsdl-arc">
+  <JobDescription>
+    <JobIdentification>
+      <JobName>Job-<%=job.id%></JobName>
+    </JobIdentification>
+    <Application>
+     <posix:POSIXApplication>
+        <posix:Executable><%=job.launch.subapp.executable%></posix:Executable>
+        <%job.command_line.split.each do |arg| %>
+	        <posix:Argument><%=arg%></posix:Argument>
+	      <%end%>
+        <posix:Output>out.txt</posix:Output>
+        <posix:Error>err.txt</posix:Error>
+      </posix:POSIXApplication>
+    </Application>
+    <DataStaging>
+      <FileName>out.txt</FileName>
+      <DeleteOnTermination>false</DeleteOnTermination>
+    </DataStaging>
+    <DataStaging>
+      <FileName>err.txt</FileName>
+      <DeleteOnTermination>false</DeleteOnTermination>
+    </DataStaging>
+
+    <%files.each do |file|%>
+      <DataStaging>
+        <FileName><%=file.name%></FileName>
+        <DeleteOnTermination>false</DeleteOnTermination>
+        <%if file.is_executable%>
+          <IsExecutable>true</IsExecutable>
+        <%end%>
+        <Source><URI>file://<%=working_dir%>/<%=file.name%></URI></Source>
+      </DataStaging>
+    <%end%>
+    
+    <%references.each do |ref|%>
+      <DataStaging>
+        <FileName><%=ref.name%></FileName>
+        <DeleteOnTermination>false</DeleteOnTermination>
+        <Source><URI><%=ref.url%></URI></Source>
+      </DataStaging>
+    <%end%>
+    
+    <DataStaging>
+      <FileName>outputs.tar</FileName>
+      <DeleteOnTermination>false</DeleteOnTermination>
+    </DataStaging>
+  </JobDescription>
+</JobDefinition>

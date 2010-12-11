@@ -33,6 +33,8 @@ class JobInterfaceArc
     
     files = job.launch.all_files_info
     
+    references = job.launch.settings_adapter.references
+    
     template = job.launch.subapp.jsdl
     
     jsdl = ERB.new(template).result(binding)
