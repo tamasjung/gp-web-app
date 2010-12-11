@@ -25,6 +25,10 @@ class LaunchDirs
     launch_base_url + "/" + @launch_id.to_s #keep it in sync with the above
   end
   
+  def launch_publish_url
+    launch_base_url + "/" + @launch_id.to_s + "/publish"  #keep it in sync with the above
+  end
+  
   def ensure_dirs
     
     _dirs = dirs

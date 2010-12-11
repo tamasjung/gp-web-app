@@ -33,7 +33,11 @@
         .label
           parent launch
         .field
-          = (@launch.parent ? @launch.parent.name : '-')
+          -if @launch.parent
+            %a{:href=> edit_launch_path(@launch.parent)}
+              =@launch.parent.name
+          -else
+            \-
         .long_desc{:style => 'display: none'}
           The 'parent' launch, if exists.
       .prop_row
@@ -61,6 +65,10 @@
             =f.submit "Transpose", :onclick=> 'collect_and_submit();'
           -else
             = @launch.subapp.name
+          %a{:href=> edit_subapp_path(@launch.subapp)}
+            show
+            
+          
           
           
           
@@ -78,13 +86,16 @@
           current state
         .field
           =@launch.state.to_s.humanize
+          =f.submit :refresh_state.to_s.humanize, :onclick => 'collect_and_submit()'
         .long_desc{:style => 'display: none'}
           The state of the launch is the aggregation of the jobs' states belong to it.
+
+          
       .prop_row
         .label
           actions
         .field
-          -@launch.available_actions.each do |action|
+          -(@launch.available_actions - [:refresh_state]).each do |action|
             =f.submit action.to_s.humanize, :onclick => 'collect_and_submit()'
         .long_desc{:style => 'display: none'}
           Be aware that these actions are started asynchronously, do not expect immediate result.
@@ -98,6 +109,16 @@
               open in new window
           .long_desc{:style => 'display: none'}
             Click to the link to see the working directory.
+      -if @launch.state == Launch::FINISHED
+        .prop_row
+          .label
+            published results
+          .field
+            -url = LaunchDirs.new(@launch).launch_publish_url
+            %a{:href => "#{url}", :target => "_blank"}
+              open in new window
+          .long_desc{:style => 'display: none'}
+            Click to the link to see the publish directory.        
       #jobs.group
   
 #info.tabpanel

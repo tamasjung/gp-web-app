@@ -73,12 +73,12 @@
       Actions
   - @launches.each_with_index do |launch, idx|
     %tr{:class => (idx % 2 == 0) ? "even" : "odd"}
-      %td= h launch.name
+      %td
+        .launch_link= link_to(h(launch.name), edit_launch_path(launch))
       %td= h launch.created_at.to_s(:db)
       %td= h launch.state
       %td= h launch.person.login
       %td
-        .action_link= link_to 'show', edit_launch_path(launch)
         -if can? :destroy, launch
           .action_link
             = link_to_remote 'destroy', :url => launch_url(launch, :orders => params[:orders], :launch_search => params[:launch_search]), :confirm => 'Are you sure?', :method => :delete
