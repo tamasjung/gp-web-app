@@ -3,6 +3,16 @@ class LaunchesController < ApplicationController
   def select
     search_string = params[:launch_search]
     options = {:page => params[:page], :order => params[:orders]}
+    
+    unless search_string
+      if params[:preferences] == 'true'
+        pref = Preference.find_mine current_user
+        search_string = pref.get_last_launch_search
+        params[:launch_search] = search_string
+      end
+    else
+      (Preference.find_mine current_user).save_last_launch_search search_string
+    end
     if search_string
       begin
         parser = FilterParser.new(:launch, [:name, :state], {:creator => 'people.login', :created_at => 'launches.created_at'})

@@ -9,7 +9,7 @@ class Person < ActiveRecord::Base
   has_one :preference
   
   def display_name
-    self.nick
+    self.nickname
   end
   
   def has_role?(role_name)

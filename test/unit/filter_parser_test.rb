@@ -21,10 +21,10 @@ class TestFilterParser < Test::Unit::TestCase
   def test_subs
     
     str = "user like me"
-    parser = FilterParser.new :foo_table, [:name], :user => 'people.nick'
+    parser = FilterParser.new :foo_table, [:name], :user => 'people.nickname'
     result = parser.parse str
   
-    assert_equal "people.nick like :p0", result[:conditions][0]
+    assert_equal "people.nickname like :p0", result[:conditions][0]
     assert_equal "person", result[:include][0]
     
   end
@@ -32,20 +32,20 @@ class TestFilterParser < Test::Unit::TestCase
   def test_subs2
     
     str = "user like me"
-    parser = FilterParser.new :person, [:name], :user => 'people.nick'
+    parser = FilterParser.new :person, [:name], :user => 'people.nickname'
     result = parser.parse str
   
-    assert_equal "people.nick like :p0", result[:conditions][0]
+    assert_equal "people.nickname like :p0", result[:conditions][0]
     assert_equal 0, result[:include].size
     
   end
   
   def test_bug
     str = "created_at = 2010-10-05 13:45:52 and creator like fire"
-    parser = FilterParser.new(:launch, [:name, :state], {:creator => 'people.nick', :created_at => 'launches.created_at'})
+    parser = FilterParser.new(:launch, [:name, :state], {:creator => 'people.nickname', :created_at => 'launches.created_at'})
     result = parser.parse str
   
-    assert_equal "launches.created_at = :p0 and people.nick like :p1", result[:conditions][0]
+    assert_equal "launches.created_at = :p0 and people.nickname like :p1", result[:conditions][0]
     assert_equal 1, result[:include].size
   end
   

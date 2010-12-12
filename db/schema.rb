@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101211210439) do
+ActiveRecord::Schema.define(:version => 20101211215952) do
 
   create_table "application_files", :force => true do |t|
     t.string   "name"
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(:version => 20101211210439) do
     t.string   "sequence_args"
   end
 
+  add_index "jobs", ["created_at"], :name => "index_jobs_on_created_at"
   add_index "jobs", ["launch_id"], :name => "index_jobs_on_launch_id"
   add_index "jobs", ["state"], :name => "index_jobs_on_state"
 
@@ -84,6 +85,7 @@ ActiveRecord::Schema.define(:version => 20101211210439) do
     t.boolean  "refreshing"
   end
 
+  add_index "launches", ["created_at"], :name => "index_launches_on_created_at"
   add_index "launches", ["name"], :name => "index_launches_on_name"
   add_index "launches", ["parent_id"], :name => "index_launches_on_parent_id"
   add_index "launches", ["person_id"], :name => "index_launches_on_person_id"
@@ -91,7 +93,7 @@ ActiveRecord::Schema.define(:version => 20101211210439) do
   add_index "launches", ["subapp_id"], :name => "index_launches_on_subapp_id"
 
   create_table "people", :force => true do |t|
-    t.string   "nick"
+    t.string   "nickname"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "roles"
@@ -125,6 +127,7 @@ ActiveRecord::Schema.define(:version => 20101211210439) do
     t.integer  "parent_id"
   end
 
+  add_index "subapps", ["created_at"], :name => "index_subapps_on_created_at"
   add_index "subapps", ["name"], :name => "index_subapps_on_name"
   add_index "subapps", ["parent_id"], :name => "index_subapps_on_parent_id"
   add_index "subapps", ["person_id"], :name => "index_subapps_on_person_id"

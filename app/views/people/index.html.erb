@@ -7,7 +7,7 @@
 
 <% @people.each do |person| %>
   <tr>
-    <td><%=h person.nick %></td>
+    <td><%=h person.nickname %></td>
     <td><%= link_to 'Show', person %></td>
     <td><%= link_to 'Edit', edit_person_path(person) %></td>
     <td><%= link_to 'Destroy', person, :confirm => 'Are you sure?', :method => :delete %></td>
