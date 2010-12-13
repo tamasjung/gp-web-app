@@ -1136,8 +1136,11 @@ body a.help_off {
 
 /* line 482, ../../../app/stylesheets/partials/_main.sass */
 .search_field {
-  width: 70%;
+  width: 99%;
   display: inline;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
 }
 
 /* line 1, ../../../app/stylesheets/partials/_new_main.scss */

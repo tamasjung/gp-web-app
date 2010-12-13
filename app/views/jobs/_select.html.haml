@@ -28,7 +28,7 @@
       -form_remote_tag :html => { :id => 'job_search_form', :action => url_for(:controller => :jobs , :action => :select )} do
         -params.each do |key, value|
           %input{:type => 'hidden', :name => key, :value => value}
-        %input#job_search{:type => 'text', :name => 'job_search', :value => params[:job_search]}
+        %input#job_search.search_field{:type => 'text', :name => 'job_search', :value => params[:job_search]}
         %input{:type => 'hidden', :name=>'page', :value => '1'}
         #job_choices.autocomplete
     :javascript
