@@ -1141,6 +1141,9 @@ body a.help_off {
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
+  border-width: 0px;
+  padding: 3px;
+  background: #c7e6ed;
 }
 
 /* line 1, ../../../app/stylesheets/partials/_new_main.scss */
