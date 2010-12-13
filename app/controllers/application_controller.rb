@@ -22,9 +22,14 @@ class ApplicationController < ActionController::Base
       if remote_user
         person = Person.find_by_remote_id remote_user
         unless person
-          
+          person = Person.new
+          person.remote_id = remote_user
+          person.save!
+          UserSession.create(@person)
         end
         result = person
+      else
+        #TBD raising an exception?
       end
     end
     result        
@@ -32,9 +37,8 @@ class ApplicationController < ActionController::Base
 
   def current_user
     return @current_user if defined?(@current_user)
-
         
-    @current_user = current_user_session && current_user_session.person
+    @current_user = remote_user || (current_user_session && current_user_session.person)
   end
   
   
@@ -92,7 +96,9 @@ class ApplicationController < ActionController::Base
     @git_version = @@git_version
     bm = params[:broadcast]
     self.class.save_broadcast bm if bm 
-    
+    if ENV['RAILS_ENV'] == 'development'
+      request.env['REMOTE_USER'] = '123456@vho.aai.niif.hu'
+    end
   end
   
   DIR_NAME = 'tmp/broadcast'

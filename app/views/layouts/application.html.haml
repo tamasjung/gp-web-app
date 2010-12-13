@@ -12,7 +12,7 @@
           ="::Grid::Portál"
           #login{:onmouseover => "$('logout').show()", :onmouseout => "$('logout').hide()"}
             
-            =(current_user ? "logged in as " + current_user.login.to_s : "") rescue ""
+            =(current_user ? "logged in as " + current_user.display_name.to_s : "") rescue ""
             #logout{:style => 'display: none'}
               =link_to "logout", logout_url
         #static_header_panel

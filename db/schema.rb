@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101211215952) do
+ActiveRecord::Schema.define(:version => 20101212224354) do
 
   create_table "application_files", :force => true do |t|
     t.string   "name"
@@ -97,14 +97,17 @@ ActiveRecord::Schema.define(:version => 20101211215952) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "roles"
-    t.string   "login",               :null => false
-    t.string   "email",               :null => false
-    t.string   "crypted_password",    :null => false
-    t.string   "password_salt",       :null => false
+    t.string   "login"
+    t.string   "email"
+    t.string   "crypted_password"
+    t.string   "password_salt"
     t.string   "persistence_token",   :null => false
     t.string   "single_access_token", :null => false
     t.string   "perishable_token",    :null => false
+    t.string   "remote_id"
   end
+
+  add_index "people", ["remote_id"], :name => "index_people_on_remote_id"
 
   create_table "preferences", :force => true do |t|
     t.integer  "person_id"
