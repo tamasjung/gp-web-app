@@ -56,6 +56,7 @@ end
 
 #TODO into different file
 $dependency_context = DependencyContext.new({
+  :remote_logout_url => '/Shibboleth.sso/Logout',
   :launch_base_dir => File.join(Rails.root, 'public', 'system', 'launches'),
   :launch_base_url => "/system/launches",
   :launch_dir_mod => 0755,

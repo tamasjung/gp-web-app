@@ -1,4 +1,7 @@
 class UserSessionsController < ApplicationController
+  
+  dependencies :remote_logout_url
+  
   before_filter :require_no_user, :only => [:new, :create]
   skip_before_filter :require_user, :only => [:new, :create]
   
@@ -17,8 +20,13 @@ class UserSessionsController < ApplicationController
   end
   
   def destroy
+    remote_logout = current_user.has_remote_id?
     current_user_session.destroy if current_user_session
-    flash[:notice] = "Logout successful!"
-    redirect_back_or_default new_user_session_url
+    if remote_logout
+      redirect_to remote_logout_url
+    else
+      flash[:notice] = "Logout successful!"
+      redirect_back_or_default new_user_session_url
+    end
   end
 end
