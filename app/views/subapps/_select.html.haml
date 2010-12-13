@@ -51,7 +51,7 @@
       %td= h subapp.name
       %td= h subapp.created_at.to_s(:db)
       %td= h subapp.state
-      %td= h subapp.person.login
+      %td= h subapp.person.display_name
       %td
         .action_link= link_to 'show', edit_subapp_path(subapp)
         =#.action_link= link_to_remote 'destroy', :url => subapp_url(subapp, :orders => params[:orders], :subapp_search => params[:subapp_search]), :confirm => 'Are you sure?', :method => :delete
