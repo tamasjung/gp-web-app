@@ -129,7 +129,7 @@ class LaunchesController < ApplicationController
       clone.send((method.to_s + "="), nil)
     end
     
-    save_ok = clone.save
+    save_ok = clone.save#for getting the id
     if save_ok
       clone.name = clone.generated_name
       clone.state = Launch::CREATED

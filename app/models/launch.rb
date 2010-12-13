@@ -42,6 +42,8 @@ end
 
 class Launch < ActiveRecord::Base
   
+  include SerialName
+  
   dependencies :sync_or_async
   
   validates_uniqueness_of :name, :allow_nil => true
@@ -198,7 +200,13 @@ class Launch < ActiveRecord::Base
   end
   
   def generated_name
-    subapp.name + "-" + id.to_s
+    result = nil
+    if parent
+      result = generate_unique_name parent.name
+    else
+      result = generate_unique_name(subapp.name + "-1")
+    end
+    result
   end
   
   def all_files_info
