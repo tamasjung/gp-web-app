@@ -121,7 +121,7 @@ class SubappsController < ApplicationController
   # POST /subapps.xml
   def create
     @subapp = Subapp.new(params[:subapp])
-
+    @subapp.person = current_user
     respond_to do |format|
       if @subapp.save
         flash[:notice] = 'Subapp was successfully created.'

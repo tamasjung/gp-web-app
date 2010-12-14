@@ -29,6 +29,7 @@ end
 class HashAccessor
   
   def initialize(hash)
+    return unless hash
     hash.each do |key, value|
       self.class.instance_eval do
         attr_accessor key

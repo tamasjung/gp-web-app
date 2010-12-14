@@ -23,6 +23,19 @@
         .place_holder
         #bc.broadcast
           = h ApplicationController.broadcast
+        #statistics
+          .title
+            Statistics
+          %ul
+            -ApplicationController.stats.each do |pair|
+              %li
+                %span.name
+                  =pair[0]
+                %span<
+                  \:
+                %span.value
+                  =pair[1]
+          
       #content
         = render :partial => '/layouts/flash', :object => flash
 
