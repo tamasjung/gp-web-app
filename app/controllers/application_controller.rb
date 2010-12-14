@@ -117,12 +117,13 @@ class ApplicationController < ActionController::Base
   def self.stats
     result = []
     m = Benchmark.measure do
-      result << ['unprocessed messages', ActiveRecord::Base.connection.execute('select count(*) as c from delayed_jobs').to_a[0][0]]
+      #result << ['unprocessed messages', ActiveRecord::Base.connection.execute('select count(*) as c from delayed_jobs').to_a[0][0]]
       #result << ['your running jobs', Job.count(:conditions => ["state = 'SENT and launch.person_id = ?", current_user.id])]
       result << ['running jobs', Job.count(:conditions => "state = 'SENT'") ]
       result << ['time', Time.now]
     end
     result << ['seconds this report took', m.format('%r').gsub(/\(|\)/, '')]
+    result
   end
   
   
