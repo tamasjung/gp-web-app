@@ -13,7 +13,8 @@ class ApplicationController < ActionController::Base
   
   filter_parameter_logging :password, :password_confirmation
   helper_method :current_user_session, :current_user
-  before_filter :require_user
+  before_filter :require_user, :require_nickname
+  skip_before_filter :require_nickname, :only => [:pool_broadcast]
 
   def remote_user
     result = nil
@@ -48,6 +49,17 @@ class ApplicationController < ActionController::Base
     @current_user_session = UserSession.find
   end
   
+  def require_nickname
+    user = current_user
+    if user && user.has_remote_id? && user.nickname.nil?
+      store_location
+      flash[:notice] = "Choose a nickname, please."
+      redirect_to edit_person_url user
+      return false
+    end
+    true
+  end
+  
   def require_user
     unless current_user
       store_location
@@ -70,7 +82,7 @@ class ApplicationController < ActionController::Base
     session[:return_to] = request.request_uri
   end
   
-  def redirect_back_or_default(default)
+  def redirect_back_or_default(default = '')
     redirect_to(session[:return_to] || default)
     session[:return_to] = nil
   end  
@@ -97,6 +109,7 @@ class ApplicationController < ActionController::Base
     bm = params[:broadcast]
     self.class.save_broadcast bm if bm 
     if ENV['RAILS_ENV'] == 'development'
+      request.env['HTTPS'] = 'onnn'
       request.env['REMOTE_USER'] = '123456@vho.aai.niif.hu'
     end
   end

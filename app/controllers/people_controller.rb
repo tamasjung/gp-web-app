@@ -2,6 +2,7 @@ class PeopleController < ApplicationController
   load_and_authorize_resource
   before_filter :require_no_user, :only => [:new, :create]
   skip_before_filter :require_user, :only => [:new, :create]
+  skip_before_filter :require_nickname, :only => [:edit, :update]
   
 
 
@@ -30,11 +31,20 @@ class PeopleController < ApplicationController
 
   def update
     @person = @current_user # makes our views "cleaner" and more consistent
-    if @person.update_attributes(params[:person])
-      flash[:notice] = "Account updated!"
-      redirect_to account_url
+    if params[:for_remote]
+      @person.nickname = params[:person][:nickname]
+      if @person.save
+        redirect_back_or_default
+      else
+        render :action => :edit
+      end
     else
-      render :action => :edit
+      if @person.update_attributes(params[:person])
+        flash[:notice] = "Account updated!"
+        redirect_to account_url
+      else
+        render :action => :edit
+      end
     end
   end
 end
