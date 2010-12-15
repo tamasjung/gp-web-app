@@ -16,25 +16,25 @@
 #settings.tabpanel
   .prop_row
     .label
-      = f.label :name 
+      name
     .field
       = f.text_field :name, :size => 40
 
   .prop_row
     .label
-      = f.label :executable
+      executable
     .field
       = f.text_area :executable, :rows => 5
       
   .prop_row
     .label
-      = f.label :tech_name
+      tech_name
     .field
       = f.text_field :tech_name, :size => 40
       
   .prop_row
     .label
-      = f.label :state
+      state
     .field
       = @subapp.state
       
@@ -47,7 +47,7 @@
   
 #partial.tabpanel
   .label
-    = f.label :input_partial
+    input_partial
     
   .field
     = f.text_area :input_partial, :size => "80x50"
@@ -58,13 +58,13 @@
     %table
       %tr
         %th
-          Name 
+          name 
         %th
-          Version
+          version
         %th
-          Created at
+          created at
         %th
-          Is executable?
+          is executable?
       -files.each_with_index do |file, idx|      
         %tr{:class => ((idx % 2 == 0)? 'even' : 'odd')}
           %td

@@ -665,32 +665,38 @@ body.three-col #content {
 div.autocomplete {
   position: absolute;
   width: 250px;
-  background-color: white;
-  border: 1px solid #888888;
+  background-color: #eeeeee;
+  border: 1px solid white;
   margin: 0;
   padding: 0;
+  border-radius: 15px;
+  -moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
 }
-/* line 131, ../../../app/stylesheets/partials/_main.sass */
+/* line 132, ../../../app/stylesheets/partials/_main.sass */
 div.autocomplete ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
-/* line 136, ../../../app/stylesheets/partials/_main.sass */
+/* line 137, ../../../app/stylesheets/partials/_main.sass */
 div.autocomplete ul li.selected {
   background-color: #ffffbb;
 }
-/* line 139, ../../../app/stylesheets/partials/_main.sass */
+/* line 140, ../../../app/stylesheets/partials/_main.sass */
 div.autocomplete ul li {
   list-style-type: none;
   display: block;
   margin: 0;
-  padding: 2px;
-  height: 32px;
+  padding: 5px;
   cursor: pointer;
+  color: grey;
+  border-radius: 15px;
+  -moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
 }
 
-/* line 147, ../../../app/stylesheets/partials/_main.sass */
+/* line 150, ../../../app/stylesheets/partials/_main.sass */
 .page_title {
   border-radius: 15px;
   -moz-border-radius: 15px;
@@ -699,14 +705,14 @@ div.autocomplete ul li {
   background-color: #dddddd;
 }
 
-/* line 152, ../../../app/stylesheets/partials/_main.sass */
+/* line 155, ../../../app/stylesheets/partials/_main.sass */
 body.bp .notice {
   border-radius: 15px;
   -moz-border-radius: 15px;
   -webkit-border-radius: 15px;
   background: #ffdeb4;
 }
-/* line 155, ../../../app/stylesheets/partials/_main.sass */
+/* line 158, ../../../app/stylesheets/partials/_main.sass */
 body.bp .error {
   border-radius: 15px;
   -moz-border-radius: 15px;
@@ -714,7 +720,7 @@ body.bp .error {
   background: #f4b4b0;
 }
 
-/* line 159, ../../../app/stylesheets/partials/_main.sass */
+/* line 162, ../../../app/stylesheets/partials/_main.sass */
 .dashboard {
   border-radius: 15px;
   -moz-border-radius: 15px;
@@ -723,7 +729,7 @@ body.bp .error {
   padding: 10px;
 }
 
-/* line 165, ../../../app/stylesheets/partials/_main.sass */
+/* line 168, ../../../app/stylesheets/partials/_main.sass */
 .remote_module {
   border-radius: 15px;
   -moz-border-radius: 15px;
@@ -734,7 +740,7 @@ body.bp .error {
   background: #eeeeee;
 }
 
-/* line 173, ../../../app/stylesheets/partials/_main.sass */
+/* line 176, ../../../app/stylesheets/partials/_main.sass */
 .tabpanel {
   display: block;
   clear: both;
@@ -745,7 +751,7 @@ body.bp .error {
   margin: none;
   background-color: #eeeeee;
 }
-/* line 180, ../../../app/stylesheets/partials/_main.sass */
+/* line 183, ../../../app/stylesheets/partials/_main.sass */
 .tabpanel .sub2panel {
   padding-top: 5px;
   padding-bottom: 5px;
@@ -756,7 +762,7 @@ body.bp .error {
   -webkit-border-radius: 5px;
   border: solid 1px white;
 }
-/* line 187, ../../../app/stylesheets/partials/_main.sass */
+/* line 190, ../../../app/stylesheets/partials/_main.sass */
 .tabpanel .sub2panel .sub2panel_title {
   font-weight: bold;
   margin: 3px;
@@ -764,16 +770,16 @@ body.bp .error {
   padding: 3px;
 }
 
-/* line 195, ../../../app/stylesheets/partials/_main.sass */
+/* line 198, ../../../app/stylesheets/partials/_main.sass */
 body.gridportal table tbody {
   font-size: 0.9em;
 }
-/* line 198, ../../../app/stylesheets/partials/_main.sass */
+/* line 201, ../../../app/stylesheets/partials/_main.sass */
 body.gridportal table tbody tr.even td {
   background-color: #e3e3e3;
 }
 
-/* line 204, ../../../app/stylesheets/partials/_main.sass */
+/* line 207, ../../../app/stylesheets/partials/_main.sass */
 .panel_in_tab {
   background-color: #f6f6f6;
   border-radius: 3px;
@@ -781,12 +787,12 @@ body.gridportal table tbody tr.even td {
   -webkit-border-radius: 3px;
 }
 
-/* line 208, ../../../app/stylesheets/partials/_main.sass */
+/* line 211, ../../../app/stylesheets/partials/_main.sass */
 .group {
   margin: 8px;
   padding: 10px;
 }
-/* line 211, ../../../app/stylesheets/partials/_main.sass */
+/* line 214, ../../../app/stylesheets/partials/_main.sass */
 .group .group_title {
   background-color: #eff2b2;
   border-radius: 5px;
@@ -797,7 +803,7 @@ body.gridportal table tbody tr.even td {
   margin: 3px;
 }
 
-/* line 220, ../../../app/stylesheets/partials/_main.sass */
+/* line 223, ../../../app/stylesheets/partials/_main.sass */
 #container .action_link {
   text-decoration: none;
   border-radius: 3px;
@@ -815,7 +821,7 @@ body.gridportal table tbody tr.even td {
   display: inline-block;
 }
 
-/* line 236, ../../../app/stylesheets/partials/_main.sass */
+/* line 239, ../../../app/stylesheets/partials/_main.sass */
 #container ul.subsection_tabs {
   list-style-type: none;
   list-style-image: none;
@@ -827,14 +833,14 @@ body.gridportal table tbody tr.even td {
   margin-top: 1em;
   padding-left: 0px;
 }
-/* line 248, ../../../app/stylesheets/partials/_main.sass */
+/* line 251, ../../../app/stylesheets/partials/_main.sass */
 #container ul.subsection_tabs .tab {
   display: block;
   float: left;
   margin: 0px;
   margin-bottom: 0px;
 }
-/* line 253, ../../../app/stylesheets/partials/_main.sass */
+/* line 256, ../../../app/stylesheets/partials/_main.sass */
 #container ul.subsection_tabs .tab a {
   display: block;
   text-decoration: none;
@@ -854,7 +860,7 @@ body.gridportal table tbody tr.even td {
   -webkit-border-top-left-radius: 7px;
   outline: none;
 }
-/* line 267, ../../../app/stylesheets/partials/_main.sass */
+/* line 270, ../../../app/stylesheets/partials/_main.sass */
 #container ul.subsection_tabs .tab a.active {
   background-color: #eeeeee;
   background-image: none;
@@ -862,7 +868,7 @@ body.gridportal table tbody tr.even td {
   text-shadow: white 1px 1px 0px;
 }
 
-/* line 274, ../../../app/stylesheets/partials/_main.sass */
+/* line 277, ../../../app/stylesheets/partials/_main.sass */
 #container ul.group_title_tabs {
   float: right;
   list-style-type: none;
@@ -872,13 +878,13 @@ body.gridportal table tbody tr.even td {
   margin: 0px;
   padding-left: 0px;
 }
-/* line 286, ../../../app/stylesheets/partials/_main.sass */
+/* line 289, ../../../app/stylesheets/partials/_main.sass */
 #container ul.group_title_tabs .tab {
   display: inline-block;
   margin: 0px;
   margin-bottom: 0px;
 }
-/* line 291, ../../../app/stylesheets/partials/_main.sass */
+/* line 294, ../../../app/stylesheets/partials/_main.sass */
 #container ul.group_title_tabs .tab a {
   display: block;
   text-decoration: none;
@@ -897,7 +903,7 @@ body.gridportal table tbody tr.even td {
   -webkit-border-top-right-radius: 7px;
   -webkit-border-top-left-radius: 7px;
 }
-/* line 305, ../../../app/stylesheets/partials/_main.sass */
+/* line 308, ../../../app/stylesheets/partials/_main.sass */
 #container ul.group_title_tabs .tab a.active {
   background-color: #eeeeee;
   background-image: none;
@@ -906,18 +912,18 @@ body.gridportal table tbody tr.even td {
   text-shadow: white 1px 1px 0px;
 }
 
-/* line 313, ../../../app/stylesheets/partials/_main.sass */
+/* line 316, ../../../app/stylesheets/partials/_main.sass */
 .label {
   color: grey;
 }
 
-/* line 316, ../../../app/stylesheets/partials/_main.sass */
+/* line 319, ../../../app/stylesheets/partials/_main.sass */
 .prop_row {
   clear: both;
   display: table-row;
   margin-top: 20px;
 }
-/* line 320, ../../../app/stylesheets/partials/_main.sass */
+/* line 323, ../../../app/stylesheets/partials/_main.sass */
 .prop_row .label {
   text-align: right;
   padding-right: 20px;
@@ -930,7 +936,7 @@ body.gridportal table tbody tr.even td {
 * html .prop_row .label {
   overflow-x: hidden;
 }
-/* line 325, ../../../app/stylesheets/partials/_main.sass */
+/* line 328, ../../../app/stylesheets/partials/_main.sass */
 .prop_row .field {
   display: inline;
   float: left;
@@ -941,11 +947,11 @@ body.gridportal table tbody tr.even td {
 * html .prop_row .field {
   overflow-x: hidden;
 }
-/* line 328, ../../../app/stylesheets/partials/_main.sass */
+/* line 331, ../../../app/stylesheets/partials/_main.sass */
 .prop_row .field input, .prop_row .field textarea {
   position: relative;
 }
-/* line 331, ../../../app/stylesheets/partials/_main.sass */
+/* line 334, ../../../app/stylesheets/partials/_main.sass */
 .prop_row .field input[type="text"], .prop_row .field textarea[type="text"] {
   padding-top: 2px;
   padding-bottom: 2px;
@@ -953,7 +959,7 @@ body.gridportal table tbody tr.even td {
   margin-bottom: 2px;
 }
 
-/* line 338, ../../../app/stylesheets/partials/_main.sass */
+/* line 341, ../../../app/stylesheets/partials/_main.sass */
 .long_desc {
   display: block;
   clear: left;
@@ -968,43 +974,43 @@ body.gridportal table tbody tr.even td {
   margin-bottom: 1em;
 }
 
-/* line 354, ../../../app/stylesheets/partials/_main.sass */
+/* line 357, ../../../app/stylesheets/partials/_main.sass */
 .upload_iframe {
   height: 2em;
   padding: 5px;
 }
 
-/* line 358, ../../../app/stylesheets/partials/_main.sass */
+/* line 361, ../../../app/stylesheets/partials/_main.sass */
 #upload_form {
   margin-top: 2px;
 }
 
-/* line 361, ../../../app/stylesheets/partials/_main.sass */
+/* line 364, ../../../app/stylesheets/partials/_main.sass */
 input.invalid, div.invalid {
   color: black;
   background: #f9aea8;
   border: solid 2px #ff8935;
 }
 
-/* line 366, ../../../app/stylesheets/partials/_main.sass */
+/* line 369, ../../../app/stylesheets/partials/_main.sass */
 div.invalid {
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
 }
 
-/* line 382, ../../../app/stylesheets/partials/_main.sass */
+/* line 385, ../../../app/stylesheets/partials/_main.sass */
 .help_shown {
   display: inline;
 }
 
-/* line 389, ../../../app/stylesheets/partials/_main.sass */
+/* line 392, ../../../app/stylesheets/partials/_main.sass */
 .window {
   min-width: 150px;
   min-height: 100px;
   background: url('/images/grey79.png?1277223885');
 }
-/* line 390, ../../../app/stylesheets/partials/_main.sass */
+/* line 393, ../../../app/stylesheets/partials/_main.sass */
 .window .window_title {
   margin-top: -7px;
   margin-bottom: 7px;
@@ -1012,39 +1018,39 @@ div.invalid {
   cursor: move;
 }
 
-/* line 402, ../../../app/stylesheets/partials/_main.sass */
+/* line 405, ../../../app/stylesheets/partials/_main.sass */
 body a.add {
   background: url('/images/protocons/24px/actions/add.png?1277223885') no-repeat center center;
 }
-/* line 404, ../../../app/stylesheets/partials/_main.sass */
+/* line 407, ../../../app/stylesheets/partials/_main.sass */
 body a.add:hover {
   background: url('/images/protocons/32px/actions/add.png?1277223885') no-repeat center center;
 }
-/* line 407, ../../../app/stylesheets/partials/_main.sass */
+/* line 410, ../../../app/stylesheets/partials/_main.sass */
 body a.minus {
   background: url('/images/protocons/24px/actions/minus.png?1277223885') no-repeat center center;
 }
-/* line 409, ../../../app/stylesheets/partials/_main.sass */
+/* line 412, ../../../app/stylesheets/partials/_main.sass */
 body a.minus:hover {
   background: url('/images/protocons/32px/actions/minus.png?1277223885') no-repeat center center;
 }
-/* line 412, ../../../app/stylesheets/partials/_main.sass */
+/* line 415, ../../../app/stylesheets/partials/_main.sass */
 body a.edit {
   background: url('/images/protocons/24px/actions/edit.png?1277223885') no-repeat center center;
 }
-/* line 414, ../../../app/stylesheets/partials/_main.sass */
+/* line 417, ../../../app/stylesheets/partials/_main.sass */
 body a.edit:hover {
   background: url('/images/protocons/32px/actions/edit.png?1277223885') no-repeat center center;
 }
-/* line 417, ../../../app/stylesheets/partials/_main.sass */
+/* line 420, ../../../app/stylesheets/partials/_main.sass */
 body a.play {
   background: url('/images/protocons/24px/actions/play.png?1277223885') no-repeat center center;
 }
-/* line 419, ../../../app/stylesheets/partials/_main.sass */
+/* line 422, ../../../app/stylesheets/partials/_main.sass */
 body a.play:hover {
   background: url('/images/protocons/32px/actions/play.png?1277223885') no-repeat center center;
 }
-/* line 423, ../../../app/stylesheets/partials/_main.sass */
+/* line 426, ../../../app/stylesheets/partials/_main.sass */
 body a.clickable {
   opacity: 0.6;
   border: solid 1px #cccccc;
@@ -1057,21 +1063,21 @@ body a.clickable {
   height: 20px;
   display: block;
 }
-/* line 433, ../../../app/stylesheets/partials/_main.sass */
+/* line 436, ../../../app/stylesheets/partials/_main.sass */
 body a.help {
   background: url('/images/protocons/32px/status/help.png?1277223885') no-repeat center center;
 }
-/* line 435, ../../../app/stylesheets/partials/_main.sass */
+/* line 438, ../../../app/stylesheets/partials/_main.sass */
 body a.help_off {
   background: url('/images/protocons/24px/status/help.png?1277223885') no-repeat center center;
 }
 
-/* line 440, ../../../app/stylesheets/partials/_main.sass */
+/* line 443, ../../../app/stylesheets/partials/_main.sass */
 .add_image {
   background: url('/images/protocons/48px/actions/add.png?1277223885') no-repeat center center;
 }
 
-/* line 443, ../../../app/stylesheets/partials/_main.sass */
+/* line 446, ../../../app/stylesheets/partials/_main.sass */
 .dyn_help {
   background: url('/images/grey79.png?1277223885');
   display: block;
@@ -1084,25 +1090,25 @@ body a.help_off {
   paddding-right: 5px;
 }
 
-/* line 453, ../../../app/stylesheets/partials/_main.sass */
+/* line 456, ../../../app/stylesheets/partials/_main.sass */
 .rounded_15 {
   border-radius: 15;
   -moz-border-radius: 15;
   -webkit-border-radius: 15;
 }
 
-/* line 456, ../../../app/stylesheets/partials/_main.sass */
+/* line 459, ../../../app/stylesheets/partials/_main.sass */
 .error_box {
   padding-left: 10px;
   padding-right: 10px;
 }
 
-/* line 460, ../../../app/stylesheets/partials/_main.sass */
+/* line 463, ../../../app/stylesheets/partials/_main.sass */
 .no_display {
   display: none;
 }
 
-/* line 463, ../../../app/stylesheets/partials/_main.sass */
+/* line 466, ../../../app/stylesheets/partials/_main.sass */
 #launch_select .long_desc {
   padding: 5px;
   margin-top: 10px;
@@ -1110,41 +1116,41 @@ body a.help_off {
   -moz-border-radius: 15px;
   -webkit-border-radius: 15px;
 }
-/* line 467, ../../../app/stylesheets/partials/_main.sass */
+/* line 470, ../../../app/stylesheets/partials/_main.sass */
 #launch_select .long_desc .title {
   font-weight: bold;
   margin-bottom: 10px;
 }
-/* line 470, ../../../app/stylesheets/partials/_main.sass */
+/* line 473, ../../../app/stylesheets/partials/_main.sass */
 #launch_select .long_desc .explanation {
   font-style: italic;
 }
-/* line 472, ../../../app/stylesheets/partials/_main.sass */
+/* line 475, ../../../app/stylesheets/partials/_main.sass */
 #launch_select .long_desc .row {
   clear: left;
 }
-/* line 474, ../../../app/stylesheets/partials/_main.sass */
+/* line 477, ../../../app/stylesheets/partials/_main.sass */
 #launch_select .long_desc .row .code {
   width: 250px;
   float: left;
 }
-/* line 477, ../../../app/stylesheets/partials/_main.sass */
+/* line 480, ../../../app/stylesheets/partials/_main.sass */
 #launch_select .long_desc .row .explanation {
   margin-left: 260px;
 }
-/* line 480, ../../../app/stylesheets/partials/_main.sass */
+/* line 483, ../../../app/stylesheets/partials/_main.sass */
 #launch_select .paginate_info {
   display: block;
   font-size: 0.9em;
   color: grey;
   margin-bottom: 8px;
 }
-/* line 485, ../../../app/stylesheets/partials/_main.sass */
+/* line 488, ../../../app/stylesheets/partials/_main.sass */
 #launch_select .launch_select_title {
   display: inline;
 }
 
-/* line 488, ../../../app/stylesheets/partials/_main.sass */
+/* line 491, ../../../app/stylesheets/partials/_main.sass */
 .search_field {
   width: 99%;
   display: inline;
@@ -1160,16 +1166,16 @@ body a.help_off {
   color: grey;
 }
 
-/* line 501, ../../../app/stylesheets/partials/_main.sass */
+/* line 504, ../../../app/stylesheets/partials/_main.sass */
 #statistics {
   font-size: 0.9em;
   color: grey;
 }
-/* line 502, ../../../app/stylesheets/partials/_main.sass */
+/* line 505, ../../../app/stylesheets/partials/_main.sass */
 #statistics .title {
   font-weight: bold;
 }
-/* line 508, ../../../app/stylesheets/partials/_main.sass */
+/* line 511, ../../../app/stylesheets/partials/_main.sass */
 #statistics li {
   margin-left: -20px;
 }

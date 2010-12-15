@@ -123,10 +123,11 @@ $grid_logo = "grid_logo.png"
 div.autocomplete 
   position: absolute
   width: 250px
-  background-color: white
-  border: 1px solid #888
+  background-color: #eee
+  border: 1px solid #fff
   margin: 0
   padding: 0
+  +rounded
 
   ul 
     list-style-type: none
@@ -140,9 +141,11 @@ div.autocomplete
       list-style-type: none
       display: block
       margin: 0
-      padding: 2px
-      height: 32px
+      padding: 5px
+      //height: 12px
       cursor: pointer
+      color: grey
+      +rounded
 
 .page_title
   +rounded

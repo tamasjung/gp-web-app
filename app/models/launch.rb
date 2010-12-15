@@ -56,9 +56,9 @@ class Launch < ActiveRecord::Base
   
   has_many :children, :class_name => "Launch", :foreign_key => "parent_id"
   
-  has_many :jobs, :dependent => :delete_all
+  has_many :jobs, :dependent => :destroy
   
-  has_and_belongs_to_many :input_files
+  has_and_belongs_to_many :input_files #TBD do we need this?
   
   cattr_reader :per_page
   @@per_page = 10
@@ -218,4 +218,11 @@ class Launch < ActiveRecord::Base
     result = subapp_files + settings_files
     result
   end
+  
+  #callbacks
+  def before_destroy
+    #parent rewrite for children
+    Launch.update_all(['parent_id = ?', parent.id], ["parent_id = ?", self.id]) if parent
+  end
+  
 end

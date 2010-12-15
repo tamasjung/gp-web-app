@@ -23,4 +23,12 @@ class Subapp < ActiveRecord::Base
     super(*args)
     self.state = CREATED
   end
+  
+  def before_destroy
+    if Launch.count(:conditions => {:subapp_id => self.id}) > 0
+      raise 'Cannot destroy sub-application while launches belong to it.' 
+    end
+    #parent rewrite
+    Subapp.update_all(['parent_id = ?', parent.id], ["parent_id = ?", self.id]) if parent
+  end
 end

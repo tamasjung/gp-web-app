@@ -48,4 +48,9 @@ class Job < ActiveRecord::Base
   def stable?
     [:STOPPED, :FINISHED, :UNSENT].include? state
   end
+  
+  #callbacks
+  def before_destroy
+    raise 'Cannot destroy job with state #{self.state}' if [SENDING, SENT, STOPPING].include? self.state
+  end
 end
