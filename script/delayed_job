@@ -5,6 +5,7 @@ require 'daemon_spawn'
 
 RAILS_ROOT = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 
+
 multiplicity = 1
 
 if ARGV[0] == '-n' && ARGV.size > 1

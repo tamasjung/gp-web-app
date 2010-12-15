@@ -65,6 +65,7 @@ class LaunchExecutor
   end
   
   def refresh_state
+    logger.debug "LaunchExecutor#refresh_state begins"
     launch = Launch.find @launch_id
     return if launch.stable?
     begin
@@ -83,6 +84,7 @@ class LaunchExecutor
     ensure
       launch.refreshing = false
       launch.save!
+      logger.debug "LaunchExecutor#refresh_state ends"
     end
   end
   
