@@ -1,6 +1,7 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
+  id: 1
   nickname: MyString
   login: o
   email: e@dsf.hu
@@ -9,5 +10,17 @@ one:
   persistence_token: 0
   single_access_token: 0
   perishable_token: 0
+  
+two:
+  id: 2
+  nickname: MyString2
+  login: o2
+  email: e2@dsf.hu
+  crypted_password: 0
+  password_salt: 0
+  persistence_token: 0
+  single_access_token: 0
+  perishable_token: 0
+  
 
 

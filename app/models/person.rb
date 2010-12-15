@@ -18,8 +18,8 @@ class Person < ActiveRecord::Base
   
   attr_protected :password, :roles, :remote_id
   attr_readonly :login
-  has_and_belongs_to_many :subapps
-  has_and_belongs_to_many :launches
+  has_many :subapps
+  has_many :launches
   has_one :preference
   
   def display_name
@@ -32,5 +32,17 @@ class Person < ActiveRecord::Base
   
   def has_remote_id?
     not self.remote_id.nil?
+  end
+  
+  def current_dependents
+    result = [Subapp, Launch, Preference].reduce(0) do |memo, model|
+      count = model.count :conditions => {:person_id => self.id}
+      logger.debug "#{model} has #{count} dependent(s)" if count > 0
+      memo + count
+    end
+  end
+  
+  def before_destroy
+    raise 'Cannot destroy a person with existing dependents' if current_dependents   > 0
   end
 end
