@@ -1,5 +1,7 @@
 class PeopleController < ApplicationController
+  
   load_and_authorize_resource
+  
   before_filter :require_no_user, :only => [:new, :create]
   skip_before_filter :require_user, :only => [:new, :create]
   skip_before_filter :require_nickname, :only => [:edit, :update]

@@ -21,6 +21,7 @@ class Person < ActiveRecord::Base
   has_many :subapps
   has_many :launches
   has_one :preference
+  validates_uniqueness_of :remote_id, :allow_nil => true
   
   def display_name
     self.nickname || self.login || self.remote_id

@@ -1,5 +1,7 @@
 class LaunchesController < ApplicationController
   
+  load_and_authorize_resource
+  
   def select
     search_string = params[:launch_search]
     options = {:page => params[:page], :order => params[:orders]}

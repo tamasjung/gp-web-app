@@ -1,4 +1,7 @@
 class ApplicationFilesController < ApplicationController
+  
+  load_and_authorize_resource
+  
   # GET /application_files
   # GET /application_files.xml
   def index

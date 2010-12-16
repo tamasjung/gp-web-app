@@ -1,5 +1,7 @@
 class SubappsController < ApplicationController
   
+  load_and_authorize_resource
+  
   def select
     search_string = params[:subapp_search]
     options = {:page => params[:page], :order => params[:orders]}

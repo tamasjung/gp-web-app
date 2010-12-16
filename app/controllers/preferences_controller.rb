@@ -1,4 +1,7 @@
 class PreferencesController < ApplicationController
+  
+  load_and_authorize_resource
+  
   # GET /preferences
   # GET /preferences.xml
   def index
