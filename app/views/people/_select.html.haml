@@ -1,0 +1,58 @@
+= render :partial => '/layouts/flash', :object => flash
+=#%h3.launch_select_title People select by
+%div
+  %span.paginate_info
+    =page_entries_info(@people, {})
+    , filtered by
+  -form_remote_tag :html => { :id => 'person_search_form', :action => url_for(:controller => :people , :action => :select )} do
+    -params.each do |key, value|
+      %input{:type => 'hidden', :name => key, :value => value}
+    %input#person_search.search_field{:type => 'text', :name => 'person_search', :value => params[:person_search]}
+    %input{:type => 'hidden', :name=>'page', :value => '1'}
+    #person_choices.autocomplete
+:javascript
+  new Ajax.Autocompleter("person_search", "person_choices", "#{url_for(:controller => :people, :action => :search_autocomplete)}", {
+    paramName: "value",
+    callback: function (input, query){
+      return $H({value: input.value}).toQueryString()
+    }
+  });
+  
+  $('person_search').observe("keydown", function(event){
+    if(whichKey(event) == 13){
+      even.element().up('form').submit()
+    }
+  });
+  
+  $('person_search').focus()
+  
+.long_desc{:style => 'display: none'}
+  .title
+    Example for filtering:
+  .row
+    .code
+      nickname like foo
+    .explanation
+      the name contains 'foo' 
+
+      
+
+%table
+  %tr
+    %th
+      = ordering_link "Nickname", :nickname, params
+    %th
+      Actions
+  - @people.each_with_index do |person, idx|
+    %tr{:class => (idx % 2 == 0) ? "even" : "odd"}
+      %td
+        .person_link= link_to(h(person.nickname || "(#{person.display_name})"), edit_person_path(person))
+      %td
+        -if can? :destroy, person
+          .action_link
+            = link_to_remote 'destroy', :url => person_url(person, :orders => params[:orders], :person_search => params[:person_search]), :confirm => 'Are you sure?', :method => :delete
+        
+        
+=will_paginate(@people, :renderer => RemoteLinkRenderer, :params => params)
+:javascript
+  document.fire("gp:new_panel")
