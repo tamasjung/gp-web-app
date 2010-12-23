@@ -22,7 +22,7 @@
       #sidebar.last
         .place_holder
         #bc.broadcast
-          = h ApplicationController.broadcast
+          =# h ApplicationController.broadcast#TBD turned off
         #statistics
           .title
             Statistics
@@ -48,9 +48,9 @@
           
 #main_debug.debug{:title => "DEBUG"}
 -if current_user
-  = (ENV['RAILS_ENV'] == 'developmentYYY') ? "" : periodically_call_remote(:url => {:controller => 'application',  
+  = (ENV['RAILS_ENV'] == 'developmentYYY') ? periodically_call_remote(:url => {:controller => 'application',  
     :action => 'pool_broadcast'}, 
-    :update => 'bc', :frequency => 60)
+    :update => {:success => 'bc' }, :frequency => 60) : ""#TBD this feature is turned off
 
 
 

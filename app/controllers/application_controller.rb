@@ -117,6 +117,7 @@ class ApplicationController < ActionController::Base
   DIR_NAME = 'tmp/broadcast'
   BC_FILE = DIR_NAME + '/message.txt'
   def self.save_broadcast(message)
+    return
     FileUtils.mkdir_p DIR_NAME
     File.open(BC_FILE, "w") do |file|
       file.puts(message)
@@ -149,6 +150,7 @@ class ApplicationController < ActionController::Base
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
   def pool_broadcast
+    raise "deprecated"
     render :text => ApplicationController.broadcast
   end
 

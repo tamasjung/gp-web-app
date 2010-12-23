@@ -13,11 +13,11 @@ class Person < ActiveRecord::Base
     end
   end
   
-  
+  ROLES = %w/researcher senior admin/
 
   
-  attr_protected :password, :roles, :remote_id
-  attr_readonly :login
+  attr_protected :remote_id
+  attr_readonly :login, :remote_id
   has_many :subapps
   has_many :launches
   has_one :preference
@@ -28,7 +28,29 @@ class Person < ActiveRecord::Base
   end
   
   def has_role?(role_name)
+    raise 'invalid role: #{role_name}' unless ROLES.include? role_name.to_s
     (self.roles || '').include? "|#{role_name}|"
+  end
+  
+  def role_list
+    result = []
+    ROLES.each do |role|
+      result << role if !roles.nil? && roles.include?("|#{role}|")
+    end
+    result
+  end
+  
+  def add_role(role)
+    list = role_list
+    unless role_list.include? role
+      self.roles = "|#{role_list.join('|')}|#{role}|"
+    end
+  end
+  
+  def remove_role(role)
+    list = role_list
+    list.delete role
+    self.roles = "|#{list.join('|')}|"
   end
   
   def has_remote_id?

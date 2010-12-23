@@ -92,6 +92,9 @@ class LaunchExecutor
     publish_dir = LaunchDirs.new(launch).dirs.publish_dir_path
     Dir.chdir(publish_dir) do
       system %q[find ../jobs -name 'outputs.tar' -exec tar xf {} \;]
+      if launch.settings_adapter.launch_params['compressed_publishing']
+        system %q[tar --remove-files -c -z -f result.tar.gz *]
+      end
       system('chmod -R a+rX .')
     end
   end

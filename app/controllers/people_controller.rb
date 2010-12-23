@@ -48,15 +48,15 @@ class PeopleController < ApplicationController
   end
 
   def show
-    @person = @current_user
+    @person = Person.find(params[:id])
   end
 
   def edit
-    @person = @current_user
+    @person = Person.find(params[:id])
   end
 
   def update
-    @person = @current_user # makes our views "cleaner" and more consistent
+    @person = Person.find(params[:id])
     if params[:for_remote]
       @person.nickname = params[:person][:nickname]
       if @person.save

@@ -38,6 +38,11 @@ class SettingsAdapter
     @settings_hash.launch_params['command_args']
   end
   
+  def launch_params
+    return "" unless @settings_hash.respond_to? :launch_params
+    @settings_hash.launch_params
+  end
+  
 end
 
 class Launch < ActiveRecord::Base

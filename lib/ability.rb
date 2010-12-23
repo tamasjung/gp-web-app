@@ -24,6 +24,7 @@ class Ability
         can :manage, :all 
         can :appoint_researcher, Person
         can :appoint_senior, Person
+        can :appoint_admin, Person
       end
     end
     
