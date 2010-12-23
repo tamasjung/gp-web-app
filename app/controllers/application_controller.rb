@@ -117,7 +117,7 @@ class ApplicationController < ActionController::Base
   DIR_NAME = 'tmp/broadcast'
   BC_FILE = DIR_NAME + '/message.txt'
   def self.save_broadcast(message)
-    return
+    return if true#this feature is turned of
     FileUtils.mkdir_p DIR_NAME
     File.open(BC_FILE, "w") do |file|
       file.puts(message)
