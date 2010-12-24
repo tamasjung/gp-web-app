@@ -17,7 +17,7 @@ class Ability
       if true || user.has_role?(:senior) #TODO delete 'true' after roles setting
         can :manage, [Subapp], :person_id => user.id
         can :manage, ApplicationFile
-        can :manage, [Launch]
+        can :manage, [Launch, Job]
         can :appoint_researcher, Person
       end
       if user.has_role? :admin
