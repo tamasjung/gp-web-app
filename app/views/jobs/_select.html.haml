@@ -5,15 +5,17 @@
       Job
     .prop_row
       .label
-        Address
-      .field=job.address
+        remote directory
+      .field
+        %a{:href => "#{job.proxied_address}", :target => "_blank"}
+          =job.proxied_address
     .prop_row
       .label
-        State
+        state
       .field=job.state.humanize
     .prop_row
       .label
-        working directory
+        portal directory
       .field
         -url = JobDirs.new(job).job_root_url
         %a{:href => "#{url}", :target => "_blank"}
@@ -47,26 +49,28 @@
     %table
       %tr
         %th
-          id
+          Portal
         %th
-          = ordering_link "Address", :address, params
+          Remote
         %th
           = ordering_link "State", :state, params
         %th
           Actions
       
       -@jobs.each_with_index do |job, idx|
+        -url = JobDirs.new(job).job_root_url
         %tr{:class => (idx % 2 == 0) ? "even" : "odd"}
-          %td=job.id
-          %td=(job.address ? job.address[/\d+$/] : "")
+          %td
+            %a{:href => "#{url}", :target => "_blank"}
+              =job.id
+          %td
+            %a{:href => "#{job.proxied_address}", :target => "_blank"}
+              =job.id_in_address
           %td=job.state
           %td
             -job.available_actions.each do |action|
               .action_link= link_to_remote action.to_s, params.merge({:url => {:action => action, :id => job.id,}})
-              
-            -url = JobDirs.new(job).job_root_url
-            %a{:href => "#{url}", :target => "_blank"}
-              working directory
+
             
     =will_paginate(@jobs, :renderer => RemoteLinkRenderer, :params => params)
 :javascript

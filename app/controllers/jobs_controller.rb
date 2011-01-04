@@ -19,7 +19,7 @@ class JobsController < ApplicationController
     options[:page] ||= 1
     if search_string
       begin
-        parser = FilterParser.new(:job, [:address, :state])
+        parser = FilterParser.new(:job, [:state])
         options.merge!(parser.parse(search_string)) 
       end
     end

@@ -62,7 +62,8 @@ $dependency_context = DependencyContext.new({
   :launch_base_url => "/system/launches",
   :launch_dir_mod => 0755,
   :local_sequence_limit => 10,
-  :sync_or_async => :send_later
+  :sync_or_async => :send_later,
+  :reverse_proxy_prefix => '/arex/'
   #:sync_or_async => :send
 })
 

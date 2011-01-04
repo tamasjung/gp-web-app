@@ -1,6 +1,6 @@
 class Job < ActiveRecord::Base
   
-  dependencies :sync_or_async
+  dependencies :sync_or_async, :reverse_proxy_prefix
   
   STATE_ACTIONS = {
     :CREATED=>[],
@@ -22,6 +22,14 @@ class Job < ActiveRecord::Base
   
   def address_path
     address ? address.to_s.gsub(/[^\w\.\-]/, '_') : nil
+  end
+  
+  def id_in_address
+    self.address ? self.address[/\d+$/] : ""
+  end
+  
+  def proxied_address
+    reverse_proxy_prefix + id_in_address
   end
   
   def available_actions

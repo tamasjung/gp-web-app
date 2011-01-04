@@ -11,7 +11,7 @@
       control
   %li.tab
     %a{ :id => "info_tab", :href => "#info"}
-      info
+      information
 #settings.tabpanel
   =@input_html
 -form_for @launch do |f|
@@ -101,7 +101,7 @@
       -unless @launch.new_record?
         .prop_row
           .label
-            working directory
+            portal directory
           .field
             -url = LaunchDirs.new(@launch).launch_root_url
             %a{:href => "#{url}", :target => "_blank"}
