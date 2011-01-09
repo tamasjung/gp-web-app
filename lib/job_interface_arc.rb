@@ -40,25 +40,22 @@ class JobInterfaceArc
     jsdl = ERB.new(template).result(binding)
     
     arc_client = ArcClientR.new
-    message, result = arc_client.submit ["-e", jsdl, "-j", joblist(job)]
-    logger.debug message
+    result = arc_client.submit ["-e", jsdl, "-j", joblist(job)]
     result
   end
   
   def refresh_state
     job = Job.find @job_id
     arc_client = ArcClientR.new
-    message, stat = arc_client.stat(["-j", joblist(job), job.address])
-    logger.debug message if message
+    stat = arc_client.stat(["-j", joblist(job), job.address])
     arc_state = stat.upcase rescue nil
     case arc_state
     when 'FINISHED', 'FAILED'
       job_dirs = JobDirs.new job
       working_dir = job_dirs.job_root
       backup_joblist job
-      get_message, get_result = arc_client.get(["-D", working_dir, "-j", joblist(job), job.address])
+      get_result = arc_client.get(["-D", working_dir, "-j", joblist(job), job.address])
       system('chmod -R a+rX ' + working_dir)
-      logger.debug get_message if get_message
       logger.debug get_result
       if get_result == 0
         job.state = arc_state
@@ -68,7 +65,13 @@ class JobInterfaceArc
   end
   
   def stop
-    logger.error "Stop is not implemented yet"
+    job = Job.find @job_id
+    arc_client = ArcClientR.new
+    result = arc_client.kill(["-j", joblist(job), job.address])
+    if result == 0
+      job.state = Job::STOPPED
+      job.save!
+    end
   end
    
 end
