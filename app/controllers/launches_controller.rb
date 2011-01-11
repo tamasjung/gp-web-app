@@ -47,11 +47,15 @@ class LaunchesController < ApplicationController
     unless subapp_id
       raise "missing subapp_id"
     else
-      cookies[:last_subapp] = subapp_id
+      cookies[:last_subapp] = subapp_id#TODO check if this is required
     end
     
     @subapp = Subapp.find subapp_id
+    
+    raise "The subapp(id:#{@subapp.id}) is not permitted" unless @subapp.is_permitted?
+    
     @launch.subapp = @subapp
+    
     read_input_partial
     
     respond_to do |format|

@@ -57,7 +57,8 @@
       %td
         .action_link= link_to 'edit', edit_subapp_path(subapp)
         =#.action_link= link_to_remote 'destroy', :url => subapp_url(subapp, :orders => params[:orders], :subapp_search => params[:subapp_search]), :confirm => 'Are you sure?', :method => :delete
-        .action_link= link_to 'new launch', new_subapp_launch_path(subapp)
+        -if subapp.is_permitted?
+          .action_link= link_to 'new launch', new_subapp_launch_path(subapp)
         
 =will_paginate(@subapps, :renderer => RemoteLinkRenderer, :params => params)
 :javascript

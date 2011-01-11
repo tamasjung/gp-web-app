@@ -39,7 +39,7 @@
           -else
             \-
         .long_desc{:style => 'display: none'}
-          The 'parent' launch, if exists.
+          The 'parent' launch, if exists. It is the launch from which this one was cloned.
       .prop_row
         .label
           sub-application
@@ -63,6 +63,9 @@
                 }
               });
             =f.submit "Transpose", :onclick=> 'collect_and_submit();'
+            .long_desc{:style => 'display: none'}
+              Transpose is available only if the launch is created but is not yet started. It tries to rejoin your
+              launch settings to another sub-application, for example after an upgrade happened.
           -else
             = @launch.subapp.name
           %a{:href=> edit_subapp_path(@launch.subapp)}
@@ -70,10 +73,12 @@
             
 
         .long_desc{:style => 'display: none'}
-          The type of the launch describes the name of the executables, the files you want to get uploaded by the 
-          portal and other technical options.
+          The sub-application describes the name of the executables, the files you want to get uploaded by the 
+          portal and other technical options. Click 'show' for more details.
     
       =f.submit "Clone", :onclick=> 'collect_and_submit();' if (@launch.id && @launch.state != Launch::DESTROYING) 
+      .long_desc{:style => 'display: none'}
+        Cloning is a creation of new launch based on this launch.
     
 
   #control.tabpanel
@@ -107,7 +112,7 @@
             %a{:href => "#{url}", :target => "_blank"}
               open in new window
           .long_desc{:style => 'display: none'}
-            Click to the link to see the working directory.
+            Click to the link to see the working directory managed by the portal itself.
       -if @launch.state == Launch::FINISHED
         .prop_row
           .label
