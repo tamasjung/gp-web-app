@@ -1,5 +1,6 @@
 -if @person.has_remote_id?
   = hidden_field_tag 'for_remote', 'true'
+  =form.hidden_field :id
   .prop_row
     .label
       nickname
@@ -11,7 +12,7 @@
       -Person::ROLES.each do |role|
         .role
           = check_box_tag role, role, @person.has_role?(role), :disabled => cannot?(('appoint_' + role).to_sym, @person)
-          =role + can?(('appoint_' + role).to_sym, @person).to_s
+          =role 
         
   %br/
   

@@ -24,8 +24,16 @@ class Subapp < ActiveRecord::Base
     self.state = CREATED
   end
   
+  def is_permitted?
+    self.state == PERMITTED
+  end 
+  
+  def has_launches
+    Launch.count(:conditions => {:subapp_id => self.id}) > 0
+  end
+  
   def before_destroy
-    if Launch.count(:conditions => {:subapp_id => self.id}) > 0
+    if has_launches
       raise 'Cannot destroy sub-application while launches belong to it.' 
     end
     #parent rewrite

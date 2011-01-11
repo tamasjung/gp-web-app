@@ -1,5 +1,16 @@
 .dashboard
-       
+  .long_desc{:style => 'display: none'}
+    This is the dashboard of the Gridportal. You can jump back here all the time by clicking at the NIIFI icon at 
+    the top-left corner.
+  .long_desc{:style => 'display: none'}
+    Choose a launch bellow to examine its state or clone and run your own computation.
+    Find the link at the bottom to see the list of sub-applications - another place from you are able to create a 
+    brand new launch without cloning.
+  .long_desc{:style => 'display: none'}
+    All over the application you can use multilevel ordering - the darker an arrow the higher priority it has. 
+  .long_desc{:style => 'display: none'}
+    Click on the question mark icon to turn the help off and on anytime.
+    
   #launch_select.remote_module
   :javascript
     new Ajax.Request('#{url_for(:controller => :launches, :action => :select, :params => {:orders => 'launches.created_at DESC', :preferences=>'true'})}');
@@ -8,7 +19,10 @@
   
     
   .remote_module 
-    =link_to "List sub-applications", subapps_path
+    =link_to "Manage sub-applications", subapps_path
+    
+  .remote_module
+    =link_to "Manage users", people_path
       
   
 

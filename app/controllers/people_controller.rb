@@ -56,20 +56,34 @@ class PeopleController < ApplicationController
   end
 
   def update
-    @person = Person.find(params[:id])
+    @person = Person.find(params[:person][:id])
+    update_roles(@person)
     if params[:for_remote]
       @person.nickname = params[:person][:nickname]
-      if @person.save
-        redirect_back_or_default
-      else
-        render :action => :edit
-      end
+      @person.save
+      render :action => :edit
     else
       if @person.update_attributes(params[:person])
         flash[:notice] = "Account updated!"
         redirect_to account_url
       else
         render :action => :edit
+      end
+    end
+  end
+  
+  private
+  
+  def update_roles(person)
+    Person::ROLES.each do |role|
+      has_role = !params[role].nil?
+      changed = (person.has_role? role) ^ (has_role)
+      if changed && can?(('appoint_' + role).to_sym, person)
+        if has_role
+          person.add_role role
+        else
+          person.remove_role role
+        end
       end
     end
   end

@@ -1,9 +1,14 @@
 %h3 Listing sub-applications
+.long_desc{:style => 'display: none'}
+  
 #subapp_select.remote_module
 :javascript
   new Ajax.Request('#{url_for(:controller => :subapps, :action => :select, :params => {:orders => 'subapps.created_at DESC'})}');
 
--if current_user.has_role? :admin    
+-if can? :create, Subapp   
   .remote_module 
     =link_to "New subapp", new_subapp_path
+    .long_desc{:style => 'display: none'}
+      Be aware that the usual way of upgrading an existing sub-application is not creating a new one but
+      choosing an old one and cloning it.
 

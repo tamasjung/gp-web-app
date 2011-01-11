@@ -36,7 +36,11 @@
     .label
       state
     .field
-      = @subapp.state
+      -if cannot? :approve, @subapp
+        = @subapp.state
+      -else
+        -@state_pairs = Subapp::STATE_LIST.map {|state| [state.humanize, state]; }
+        =f.select :state, @state_pairs
       
   .prop_row
     .label

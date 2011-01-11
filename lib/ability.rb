@@ -22,6 +22,7 @@ class Ability
       end
       if user.has_role? :admin
         can :manage, :all 
+        can :approve, Subapp
         can :appoint_researcher, Person
         can :appoint_senior, Person
         can :appoint_admin, Person
