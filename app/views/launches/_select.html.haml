@@ -82,9 +82,9 @@
       %td= h launch.state
       %td= h launch.person.display_name
       %td
-        -if can? :destroy, launch
+        -if can? :create, launch
           .action_link
-            = link_to_remote 'destroy', :url => launch_url(launch, :orders => params[:orders], :launch_search => params[:launch_search]), :confirm => 'Are you sure?', :method => :delete
+            = link_to 'clone', :controller => 'launches', :action => 'clone_action', :id => launch.id, :method => :put
         
         
 =will_paginate(@launches, :renderer => RemoteLinkRenderer, :params => params)
