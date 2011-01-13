@@ -1,7 +1,5 @@
 class DashboardController < ApplicationController
-  def index
-    @subapps = Subapp.all#TODO: filter, history, mru top
-    
+  def index    
   end
   
   private 

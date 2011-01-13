@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101212224354) do
+ActiveRecord::Schema.define(:version => 20110112223744) do
 
   create_table "application_files", :force => true do |t|
     t.string   "name"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(:version => 20101212224354) do
     t.integer  "launch_id"
     t.string   "command_line"
     t.string   "sequence_args"
+    t.string   "remote_state"
   end
 
   add_index "jobs", ["created_at"], :name => "index_jobs_on_created_at"

@@ -19,18 +19,24 @@
       name
     .field
       = f.text_field :name, :size => 40
+    .long_desc{:style => 'display: none'}
+      The unique name of the sub-application.
 
   .prop_row
     .label
       executable
     .field
       = f.text_area :executable, :rows => 5
+    .long_desc{:style => 'display: none'}
+      The main executable to run. 
       
   .prop_row
     .label
       tech_name
     .field
       = f.text_field :tech_name, :size => 40
+    .long_desc{:style => 'display: none'}
+      Shortcut name for development purposes.
       
   .prop_row
     .label
@@ -41,24 +47,28 @@
       -else
         -@state_pairs = Subapp::STATE_LIST.map {|state| [state.humanize, state]; }
         =f.select :state, @state_pairs
-      
-  .prop_row
-    .label
-      actions
-    .field
-      =link_to 'Clone', :action => 'clone_action', :id => @subapp.id
-
+    .long_desc{:style => 'display: none'}
+      The state of approval.
+  -if @subapp.id    
+    .prop_row
+      .label
+        actions
+      .field
+        =link_to 'Clone', :action => 'clone_action', :id => @subapp.id
+    .long_desc{:style => 'display: none'}
+      Cloning is copying every attribute to a new instance except the state and the name which will be generated.
   
 #partial.tabpanel
   .label
-    input_partial
-    
+    input partial
   .field
     = f.text_area :input_partial, :size => "80x50"
+  .long_desc{:style => 'display: none'}
+    This is the HTML code fragment which builds the settings tab of launch editing.
     
 #files.tabpanel
   -files = @subapp.application_files.find(:all, :select => "id, name, version, is_executable, created_at")
-  -if files
+  -if files && files.count > 0
     %table
       %tr
         %th
@@ -83,12 +93,16 @@
   
 
   =link_to "Add new", :controller => :application_files, :action => :new, :subapp_id => @subapp.id
+  .long_desc{:style => 'display: none'}
+    Click here to add new files in the working directory.
   
 #jsdl.tabpanel
   .label
     = f.label :jsdl
   .field
     = f.text_area :jsdl, :size => "80x50"
+  .long_desc{:style => 'display: none'}
+    The job description file template as a Ruby ERB template.
     
 :javascript
   new Control.Tabs('subapps_tabs');    

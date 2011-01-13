@@ -63,12 +63,18 @@ class LaunchesController < ApplicationController
       format.xml  { render :xml => @launch }
     end
   end
+  
+  def show
+    edit
+    render :action => :edit
+  end
 
   # GET /launches/1/edit
   def edit
     @launch = Launch.find(params[:id])
     read_input_partial
   end
+  
 
   # POST /launches
   # POST /launches.xml

@@ -34,8 +34,7 @@
           parent launch
         .field
           -if @launch.parent
-            %a{:href=> edit_launch_path(@launch.parent)}
-              =@launch.parent.name
+            =link_to @launch.parent.name, @launch.parent, :confirm => "Modifications will be lost, are you sure?"
           -else
             \-
         .long_desc{:style => 'display: none'}
@@ -64,12 +63,10 @@
               });
             =f.submit "Transpose", :onclick=> 'collect_and_submit();'
             .long_desc{:style => 'display: none'}
-              Transpose is available only if the launch is created but is not yet started. It tries to rejoin your
-              launch settings to another sub-application, for example after an upgrade happened.
+              Transpose is available only if the launch is created but not started. It tries to reapply your
+              launch settings to another sub-application, for example after a sub-application upgrade happened.
           -else
-            = @launch.subapp.name
-          %a{:href=> edit_subapp_path(@launch.subapp)}
-            show
+            =link_to @launch.subapp.name,  edit_subapp_path(@launch.subapp), :confirm => "Modifications will be lost, are you sure?"
             
 
         .long_desc{:style => 'display: none'}

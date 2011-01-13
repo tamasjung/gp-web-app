@@ -61,7 +61,12 @@
   
 :javascript
 
+
   var sessStorage = sessionStorage || {}
+  
+  if(sessStorage.helpIsOn === undefined){
+    sessStorage.helpIsOn = 0
+  }
 
   function checkHelp(){
     if(sessStorage.helpIsOn == 1){
@@ -78,10 +83,12 @@
   document.observe('gp:new_panel', function(event){
     checkHelp();
   });
-
-  if(sessStorage.helpIsOn === undefined){
-    sessStorage.helpIsOn = 0
+  
+  
+  window.onbeforeunload = function(event){
+    return "did you save your settings?"
   }
+
   document.fire("gp:new_panel")
   $('help_button').observe('click', function(){
     
