@@ -49,6 +49,7 @@ class JobInterfaceArc
     arc_client = ArcClientR.new
     stat = arc_client.stat(["-j", joblist(job), job.address])
     arc_state = stat.upcase rescue nil
+    job.remote_state = arc_state if arc_state
     case arc_state
     when 'FINISHED', 'FAILED'
       job_dirs = JobDirs.new job
@@ -60,8 +61,8 @@ class JobInterfaceArc
       if get_result == 0
         job.state = arc_state
       end
-      job.save!
     end
+    job.save!
   end
   
   def stop
