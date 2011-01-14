@@ -52,18 +52,26 @@ class ApplicationFilesController < ApplicationController
     
     subapp_id = params[:subapp_id]
     subapp = nil
-    save_ok = false
-    begin
-    ApplicationFile.transaction do 
-      save_ok = @application_file.save!
-      subapp = Subapp.find subapp_id
-      @application_file.subapps << subapp
+    save_ok = true
+    subapp = Subapp.find subapp_id
+    if subapp.application_files.exists?(:name => @application_file.name)
+        save_ok = false
+        flash[:error] = 'Name should be unique in a sub-application.'
     end
-    rescue ActiveResource::ResourceInvalid
+    if save_ok
+      begin
+        ApplicationFile.transaction do 
+          save_ok = @application_file.save!
+          subapp = subapp
+          @application_file.subapps << subapp
+        end
+      rescue ActiveResource::ResourceInvalid
+      end
     end
 
     respond_to do |format|
-      if @application_file.save
+      save_ok &&= @application_file.save
+      if save_ok
         if subapp_id
           format.html { redirect_to :controller => :subapps, :action => :edit, :id => subapp_id, :notice => "ApplicationFile was successfully added"}
         else

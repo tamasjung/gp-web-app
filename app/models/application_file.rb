@@ -1,5 +1,6 @@
 class ApplicationFile < ActiveRecord::Base
   
+  
   has_and_belongs_to_many :subapps
   
   def uploaded=(file_field) 
@@ -10,5 +11,10 @@ class ApplicationFile < ActiveRecord::Base
   
   def base_part_of(file_name) 
     File.basename(file_name).gsub(/[^\w._-]/, '')
+  end
+  
+  def unique_name_in_subapp
+    
+    errors.add_to_base("Must be friends to leave a comment")
   end
 end

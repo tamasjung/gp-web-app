@@ -14,13 +14,15 @@
 
 # be sure to change these
 set :user, 'griduser' 
-set :domain, 'sl-grid.interface.hu' 
-#set :domain, '192.168.1.106'
+#set :domain, 'sl-grid.interface.hu' 
+set :domain, '192.168.1.106'
 
 set :application, 'gp-web-app'
 # file paths
 #set :repository, "#{user}@#{git_repo_host}:git/#{application}.git" 
-set :repository, "ssh://git@interface11.repositoryhosting.com/interface11/gp-web-app.git"
+#set :repository, "ssh://git@interface11.repositoryhosting.com/interface11/gp-web-app.git"
+set :repository, "git@github.com:tamasjung/gp-web-app.git"
+
 set :deploy_to, "/home/#{user}/#{application}"
 
 role :app, domain 

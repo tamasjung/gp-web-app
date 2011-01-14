@@ -1,6 +1,7 @@
-%h1 New application_file
+%h1 New application file
 - form_for(@application_file, :html => { :multipart => true }) do |f|
   = render :partial => 'application_file', :locals =>{:f => f}
   %p
     = f.submit 'Create'
-= link_to 'Back', application_files_path
+    = button_to_function "Cancel", 'history.back()'
+
