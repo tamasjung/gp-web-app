@@ -25,5 +25,5 @@ every :reboot do
 end
 
 every 1.minute do 
-  runner 'p "hello #{Time.new}"', :output => 'exp.out'
+  runner 'sleep 120; p "hello #{Time.new}"', :output => 'log/exp.out'
 end
