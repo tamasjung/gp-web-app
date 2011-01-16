@@ -25,5 +25,5 @@ every :reboot do
 end
 
 every 1.minute do 
-  'p "hello #{Time.new}"'
+  'p "hello #{Time.new}"' exp.out
 end
