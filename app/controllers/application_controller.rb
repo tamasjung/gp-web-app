@@ -108,7 +108,7 @@ class ApplicationController < ActionController::Base
     @git_version = @@git_version
     bm = params[:broadcast]
     self.class.save_broadcast bm if bm 
-    if (ENV['RAILS_ENV'] == 'development') || ENV['GP-BACKDOOR']#TODO remove this or comment out at least
+    if (ENV['RAILS_ENV'] == 'development') || ENV['GP_BACKDOOR']#TODO remove this or comment out at least
       request.env['HTTPS'] = 'onnn'
       request.env['REMOTE_USER'] = '123456@vho.aai.niif.hu'
     end

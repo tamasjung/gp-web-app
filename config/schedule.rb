@@ -23,3 +23,7 @@ every :reboot do
   #rake 'jobs:work'
   command "cd #{File.expand_path(File.dirname(__FILE__) + "..")}; export RAILS_ENV=production; script/delayed_job -n 10 start"
 end
+
+every 1.minute do 
+  'p "hello #{Time.new}"'
+end
