@@ -7,6 +7,7 @@ class Refresher
   end
   
   def check_launches
+    p "refresher #{Time.new}"
     logger.debug "check_launches begins"
     sent_launches = Launch.find :all, :limit => 100, :conditions => {:state => Launch::SENT}
     sent_launches.each do |launch|
