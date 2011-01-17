@@ -10,7 +10,7 @@ class LaunchExecutor
   
   def initialize(launch_id)
     @launch_id = launch_id
-    logger.info "Launch created #{launch_id}" 
+    logger.info "LaunchExecutor initialized #{launch_id}" 
   end
 
   
