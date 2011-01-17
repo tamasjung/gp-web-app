@@ -72,8 +72,8 @@
           %td
             -r_state_display = job.remote_state
             -r_state_display = ".do" if r_state_display == job.state
-            -r_state_display = "/" + r_state_display
-            =job.state + r_state_display
+            -r_state_display = "/" + r_state_display.to_s if r_state_display
+            =job.state + r_state_display.to_s
           %td
             -job.available_actions.each do |action|
               .action_link= link_to_remote action.to_s, params.merge({:url => {:action => action, :id => job.id,}})
