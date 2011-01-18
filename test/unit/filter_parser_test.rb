@@ -49,4 +49,13 @@ class TestFilterParser < Test::Unit::TestCase
     assert_equal 1, result[:include].size
   end
   
+  def test_empty
+    str = ""
+    parser = FilterParser.new(:launch, [:name, :state], {:creator => 'people.nickname', :created_at => 'launches.created_at'})
+    result = parser.parse str
+  
+    assert_equal "", result[:conditions][0]
+    assert_equal 0, result[:include].size
+  end
+  
 end

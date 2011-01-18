@@ -17,7 +17,8 @@ class LaunchesController < ApplicationController
     if search_string
       begin
         parser = FilterParser.new(:launch, [:name, :state], {:creator => 'people.nickname', :created_at => 'launches.created_at'})
-        options.merge!(parser.parse(search_string)) 
+        options.merge!(parser.parse(search_string))
+      rescue Exception 
       end
     end
     @launches = Launch.paginate options
