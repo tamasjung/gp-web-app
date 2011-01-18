@@ -24,7 +24,7 @@ class Person < ActiveRecord::Base
   validates_uniqueness_of :remote_id, :allow_nil => true
   
   def display_name
-    self.nickname || self.login || self.remote_id
+    self.nickname || "invalid user: id = #{self.id}!"
   end
   
   def has_role?(role_name)
