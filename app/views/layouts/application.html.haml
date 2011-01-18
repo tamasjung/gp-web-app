@@ -23,6 +23,29 @@
         .place_holder
         #bc.broadcast
           =# h ApplicationController.broadcast#TBD turned off
+        #shortcuts
+          .title 
+            Shotcuts
+          .list
+            -last_subapp_id = current_pref.get_value :last_subapp_id
+            -if last_subapp_id
+              -last_subapp = Subapp.find_by_id last_subapp_id
+              -if last_subapp
+              
+                .item
+                   
+                  =link_to "New launch as last time", new_subapp_launch_path(last_subapp)
+              -last_launch_id = current_pref.get_value :last_launch_id
+            -if last_launch_id
+              -last_launch = Launch.find_by_id last_launch_id
+              -if last_launch
+                .item
+                  =link_to "Open your last launch", launch_path(last_launch)
+                .item
+                  =link_to "Clone your last launch", :controller => 'launches', :action => 'clone_action', :id => last_launch_id, :method => :put
+          
+          
+        
         #statistics
           .title
             Statistics

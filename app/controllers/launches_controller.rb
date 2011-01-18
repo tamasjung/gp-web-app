@@ -8,12 +8,11 @@ class LaunchesController < ApplicationController
     
     unless search_string
       if params[:preferences] == 'true'
-        pref = Preference.find_mine current_user
-        search_string = pref.get_last_launch_search
+        search_string = current_pref.get_value :last_launch_search
         params[:launch_search] = search_string
       end
     else
-      (Preference.find_mine current_user).save_last_launch_search search_string
+      current_pref.save_value :last_launch_search, search_string
     end
     if search_string
       begin
@@ -55,6 +54,8 @@ class LaunchesController < ApplicationController
     raise "The subapp(id:#{@subapp.id}) is not permitted" unless @subapp.is_permitted?
     
     @launch.subapp = @subapp
+    
+    current_pref.set_value :last_subapp_id, subapp_id
     
     read_input_partial
     
@@ -98,7 +99,7 @@ class LaunchesController < ApplicationController
       @launch.name = @launch.generated_name
       save_ok = @launch.save
     end
-    #cookies[:last_subapp] = @launch.subapp.id
+    current_pref.set_value(:last_launch_id, @launch.id) if @launch.id
     read_input_partial
     respond_to do |format|
       if save_ok 

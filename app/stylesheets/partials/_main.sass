@@ -82,7 +82,7 @@ $grid_logo = "grid_logo.png"
   :background= image_url($grid_logo)
   :background-repeat repeat-y
   :height 700px
-  :padding-top 25px
+  :padding-top 5px
   
   >.place_holder
     :padding 2px
@@ -513,6 +513,34 @@ body
   color: grey
   li
     margin-left: -20px
+
+#shortcuts, statistics
+  font-size: 0.9em
+  color: grey
+  margin-bottom: 20px
+  .title
+    font-weight: bold
+  
+  .list
+    .item 
+      padding: 2px
+      color: grey
+      a 
+        text-decoration: none
+        color: grey
+        //padding: 3px
+        &:hover
+          text-decoration: underline
+        &:visited
+          color: grey
+        &:active
+          color: #555
+        
+        
+        
+      
+  
+    
 
   
 

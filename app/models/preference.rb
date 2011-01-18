@@ -26,14 +26,14 @@ class Preference < ActiveRecord::Base
     result
   end
   
-  def save_last_launch_search(str)
+  def set_value(name, value)
     data = load
-    data[:last_launch_search] = str
+    data[name] = value
     store data
   end
   
-  def get_last_launch_search
-    load[:last_launch_search]
+  def get_value(name)
+    load[name]
   end
   
 end
