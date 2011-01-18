@@ -1186,35 +1186,35 @@ body a.help_off {
 }
 
 /* line 517, ../../../app/stylesheets/partials/_main.sass */
-#shortcuts, statistics {
+#shortcuts {
   font-size: 0.9em;
   color: grey;
   margin-bottom: 20px;
 }
 /* line 521, ../../../app/stylesheets/partials/_main.sass */
-#shortcuts .title, statistics .title {
+#shortcuts .title {
   font-weight: bold;
 }
 /* line 525, ../../../app/stylesheets/partials/_main.sass */
-#shortcuts .list .item, statistics .list .item {
+#shortcuts .list .item {
   padding: 2px;
   color: grey;
 }
 /* line 528, ../../../app/stylesheets/partials/_main.sass */
-#shortcuts .list .item a, statistics .list .item a {
+#shortcuts .list .item a {
   text-decoration: none;
   color: grey;
 }
 /* line 532, ../../../app/stylesheets/partials/_main.sass */
-#shortcuts .list .item a:hover, statistics .list .item a:hover {
+#shortcuts .list .item a:hover {
   text-decoration: underline;
 }
 /* line 534, ../../../app/stylesheets/partials/_main.sass */
-#shortcuts .list .item a:visited, statistics .list .item a:visited {
+#shortcuts .list .item a:visited {
   color: grey;
 }
 /* line 536, ../../../app/stylesheets/partials/_main.sass */
-#shortcuts .list .item a:active, statistics .list .item a:active {
+#shortcuts .list .item a:active {
   color: #555555;
 }
 
