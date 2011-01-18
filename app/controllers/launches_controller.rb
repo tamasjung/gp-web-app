@@ -12,7 +12,7 @@ class LaunchesController < ApplicationController
         params[:launch_search] = search_string
       end
     else
-      current_pref.save_value :last_launch_search, search_string
+      current_pref.set_value :last_launch_search, search_string
     end
     if search_string
       begin

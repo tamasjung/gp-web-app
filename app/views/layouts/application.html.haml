@@ -34,7 +34,7 @@
               
                 .item
                    
-                  =link_to "New launch as last time", new_subapp_launch_path(last_subapp)
+                  =link_to "New launch, as last time", new_subapp_launch_path(last_subapp)
               -last_launch_id = current_pref.get_value :last_launch_id
             -if last_launch_id
               -last_launch = Launch.find_by_id last_launch_id
