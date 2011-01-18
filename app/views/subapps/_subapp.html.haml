@@ -67,14 +67,14 @@
     This is the HTML code fragment which builds the settings tab of launch editing.
     
 #files.tabpanel
-  -files = @subapp.application_files.find(:all, :select => "id, name, version, is_executable, created_at")
+  -files = @subapp.application_files.find(:all, :select => "id, name, comment, is_executable, created_at")
   -if files && files.count > 0
     %table
       %tr
         %th
           name 
         %th
-          version
+          comment
         %th
           created at
         %th
@@ -83,12 +83,12 @@
         %tr{:class => ((idx % 2 == 0)? 'even' : 'odd')}
           %td
             =link_to file.name, {:controller => :application_files, :action => :bytes, :id => file.id}, :target => '_blank'
-          %td=file.version
+          %td=file.comment
           %td=file.created_at.to_s(:db)
           
           %td=file.is_executable
           %td
-            =link_to "Unlink", :action => :unlink, :application_file_id => file.id, :id => @subapp.id
+            =link_to "Unlink", url_for({:action => :unlink, :application_file_id => file.id, :id => @subapp.id}),  :confirm => "Are you sure?"
     
   
 

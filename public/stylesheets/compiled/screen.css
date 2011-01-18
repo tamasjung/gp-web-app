@@ -1218,6 +1218,11 @@ body a.help_off {
   color: #555555;
 }
 
+/* line 540, ../../../app/stylesheets/partials/_main.sass */
+.inline_title {
+  font-weight: bold;
+}
+
 /* line 1, ../../../app/stylesheets/partials/_new_main.scss */
 #control_overlay {
   background-color: #000;

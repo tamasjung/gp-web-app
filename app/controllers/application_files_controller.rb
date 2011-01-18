@@ -61,11 +61,13 @@ class ApplicationFilesController < ApplicationController
     if save_ok
       begin
         ApplicationFile.transaction do 
+          save_ok = false
           save_ok = @application_file.save!
           subapp = subapp
           @application_file.subapps << subapp
         end
       rescue ActiveResource::ResourceInvalid
+      rescue ActiveRecord::RecordInvalid
       end
     end
 

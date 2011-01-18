@@ -9,11 +9,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110118171450) do
+ActiveRecord::Schema.define(:version => 20110118180241) do
 
   create_table "application_files", :force => true do |t|
     t.string   "name"
-    t.string   "version"
+    t.string   "comment"
     t.boolean  "is_executable"
     t.binary   "bytes",         :limit => 2147483647
     t.datetime "created_at"

@@ -1,9 +1,12 @@
-%h1 Editing sub-application
+%h1 
+  Editing 
+  %span.inline_title 
+    =@subapp.name
+  sub-application
 - form_for(@subapp) do |f|
   = render :partial => 'subapp', :locals =>{:f => f}
   -if can?(:update, @subapp) && !@subapp.has_launches
     = f.submit 'Update'
   
-= link_to 'Show', @subapp
-|
-= link_to 'Select', subapps_path
+
+= link_to 'List sub-applications', subapps_path
