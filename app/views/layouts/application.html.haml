@@ -94,12 +94,12 @@
 
   function checkHelp(){
     if(sessStorage.helpIsOn == 1){
-      $$('.long_desc').invoke('appear', { duration: 1});
+      $$('.long_desc').invoke('appear', { duration: 0.5});
       $('help_button').removeClassName('help_off').addClassName('help')
       
     }
     else{
-      $$('.long_desc').invoke('fade');
+      $$('.long_desc').invoke('fade', { duration: 0.5});
       $('help_button').removeClassName('help').addClassName('help_off')
     }
   }
