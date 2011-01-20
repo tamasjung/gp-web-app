@@ -47,7 +47,12 @@ class JobExecutor
     clean_dir job
     job.state = Job::CREATED
     job.save!
+    launch = job.launch
+    launch.state = Launch::SENDING
+    launch.save!
     start
+    launch.state = Launch::SENT
+    launch.save!
   end
 
   def stop
