@@ -46,6 +46,7 @@ class JobExecutor
     job = Job.find @job_id
     clean_dir job
     job.state = Job::CREATED
+    job.remote_state = nil
     job.save!
     launch = job.launch
     launch.state = Launch::SENDING
