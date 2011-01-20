@@ -31,4 +31,4 @@ iterate_parallel args do |values, args|
 end
 
 
-system('tar cf outputs.tar ' + outputs.join(' '))
+exit system('tar cf outputs.tar ' + outputs.join(' '))
