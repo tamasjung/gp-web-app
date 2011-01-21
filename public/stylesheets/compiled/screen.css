@@ -1223,6 +1223,39 @@ body a.help_off {
   font-weight: bold;
 }
 
+/* line 543, ../../../app/stylesheets/partials/_main.sass */
+#connection_error {
+  position: fixed;
+  left: 0;
+  top: 40%;
+  min-width: 100%;
+  color: red;
+  text-align: center;
+  font-size: 3em;
+  background-color: white;
+  border: solid 1px white;
+  border-radius: 15px;
+  -moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
+  z-index: 1000;
+}
+
+/* line 557, ../../../app/stylesheets/partials/_main.sass */
+.click_to_hide {
+  float: right;
+  position: relative;
+  font-size: 0.7em;
+  padding-right: 0.5em;
+  cursor: pointer;
+}
+
+/* line 564, ../../../app/stylesheets/partials/_main.sass */
+#ajax_indicator {
+  position: fixed;
+  color: lightblue;
+  padding: 10px;
+}
+
 /* line 1, ../../../app/stylesheets/partials/_new_main.scss */
 #control_overlay {
   background-color: #000;

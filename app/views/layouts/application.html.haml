@@ -3,8 +3,42 @@
   %head
     =render :partial => 'layouts/common_head' 
 
+
     
   %body.bp.three-col.gridportal
+    #ajax_indicator{:style => 'display: none'}
+      loading...
+    #connection_error{:style => 'display: none'}
+      Network error, please check your connection
+      .click_to_hide
+        X
+    :javascript
+    
+
+      
+      Ajax.Responders.register({ 
+        onCreate: function() {
+          $('ajax_indicator').show();
+        },
+        onException: function(requester, exception){
+          //alert(exception);
+          $('ajax_indicator').hide();
+        },
+        onComplete: function(requester, request){
+          if(request.status == 0){
+            $('connection_error').show()
+          }
+          if(true || Ajax.activeRequestCount <= 0){
+            $('ajax_indicator').hide();
+          }
+        }
+      });
+      $$('.click_to_hide').each(function(x){x.observe('click', function(event){
+        event.target.parentNode.hide()
+      })});
+      ///$('connection_error').innerHTML = 'ERROR'
+      //$('connection_error').show()
+    
     #container
       #header
         =link_to "", {:controller => :dashboard}, {:class => 'logo'}
