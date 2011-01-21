@@ -1,14 +1,18 @@
--if @jobs.count > 0
+-if @launch.jobs.count > 0
   -if @launch.single
     -job = @launch.the_only_job
     .group_title
       Job
+    
     .prop_row
       .label
-        remote directory
+        remote directory/id
       .field
-        %a{:href => "#{job.proxied_address}", :target => "_blank"}
-          =job.proxied_address
+        -if [Job::SENT].include? job.state
+          %a{:href => "#{job.proxied_address}", :target => "_blank"}
+            =job.proxied_address
+        -else
+          =job.id_in_address
     .prop_row
       .label
         state
@@ -70,10 +74,7 @@
             -else
               =job.id_in_address
           %td
-            -r_state_display = job.remote_state
-            -r_state_display = ".do" if r_state_display == job.state
-            -r_state_display = "/" + r_state_display.to_s if r_state_display
-            =job.state + r_state_display.to_s
+            =state_display(job)
           %td
             -job.available_actions.each do |action|
               .action_link= link_to_remote action.to_s, params.merge({:url => {:action => action, :id => job.id,}})
