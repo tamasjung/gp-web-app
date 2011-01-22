@@ -3,7 +3,7 @@
 module ApplicationHelper
   
   include CommonMethods
-  
+    
   def ordering_link(label, name, params, default_dir = 'ASC') 
     name = name.to_s
     ordering = OrderingParams.new params[:orders]

@@ -1,27 +1,13 @@
 class Person < ActiveRecord::Base
-  acts_as_authentic do |conf|
-    conf.session_class = UserSession
-    [
-      :merge_validates_length_of_email_field_options,
-      :merge_validates_format_of_email_field_options,
-      :merge_validates_format_of_login_field_options,
-      :merge_validates_length_of_login_field_options,
-      :merge_validates_length_of_password_field_options,
-      :merge_validates_confirmation_of_password_field_options
-      ].each do |meth|
-      conf.send meth, {:unless => :has_remote_id?}
-    end
-  end
   
   ROLES = %w/researcher senior admin/
-
   
   attr_protected :remote_id
-  attr_readonly :login, :remote_id
+  attr_readonly :remote_id
   has_many :subapps
   has_many :launches
   has_one :preference
-  validates_uniqueness_of :remote_id, :allow_nil => true
+  validates_uniqueness_of :remote_id, :allow_nil => false
   
   def display_name
     self.nickname || "invalid user: id = #{self.id}!"

@@ -1,7 +1,5 @@
 class PeopleController < ApplicationController
-  
-  load_and_authorize_resource
-  
+    
   before_filter :require_no_user, :only => [:new, :create]
   skip_before_filter :require_user, :only => [:new, :create]
   skip_before_filter :require_nickname, :only => [:edit, :update]
@@ -32,21 +30,6 @@ class PeopleController < ApplicationController
     render :partial => '/layouts/search_autocomplete'
   end
 
-  def new
-    @person = Person.new
-  end
-
-  def create
-    @person = Person.new(params[:person])
-    @person.password = params[:person][:password]
-    if @person.save
-      flash[:notice] = "Account registered!"
-      redirect_back_or_default account_url
-    else
-      render :action => :new
-    end
-  end
-
   def show
     @person = Person.find(params[:id])
   end
@@ -58,18 +41,9 @@ class PeopleController < ApplicationController
   def update
     @person = Person.find(params[:person][:id])
     update_roles(@person)
-    if params[:for_remote]
-      @person.nickname = params[:person][:nickname]
-      @person.save
-      render :action => :edit
-    else
-      if @person.update_attributes(params[:person])
-        flash[:notice] = "Account updated!"
-        redirect_to account_url
-      else
-        render :action => :edit
-      end
-    end
+    @person.nickname = params[:person][:nickname]
+    @person.save
+    render :action => :edit
   end
   
   private

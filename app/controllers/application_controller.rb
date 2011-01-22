@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
   
   include CommonMethods
   
+  dependencies :remote_logout_url
+  
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
   
@@ -14,8 +16,7 @@ class ApplicationController < ActionController::Base
     redirect_to ''
   end
   
-  filter_parameter_logging :password, :password_confirmation
-  helper_method :current_user_session, :current_user
+  helper_method :current_user, :remote_logout_url
   before_filter :require_user, :require_nickname
   skip_before_filter :require_nickname, :only => [:pool_broadcast]
 
@@ -29,29 +30,17 @@ class ApplicationController < ActionController::Base
           person = Person.new
           person.remote_id = remote_user
           person.save!
-          UserSession.create(@person)
         end
         result = person
-      else
-        #TBD raising an exception?
       end
     end
     result        
   end
 
   def current_user
-    return @current_user if defined?(@current_user)
-        
-    @current_user = remote_user || (current_user_session && current_user_session.person)
-  end
-  
-  
-  
-  def current_user_session
-    return @current_user_session if defined?(@current_user_session)
-    @current_user_session = UserSession.find
-  end
-  
+    return @current_user if defined?(@current_user)       
+    @current_user = remote_user 
+  end  
   
   def require_nickname
     user = current_user

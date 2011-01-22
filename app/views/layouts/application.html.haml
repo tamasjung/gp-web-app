@@ -48,7 +48,7 @@
             
             =(current_user ? "logged in as " + current_user.display_name.to_s : "") rescue ""
             #logout{:style => 'display: none'}
-              =link_to "logout", logout_url
+              =link_to "logout", remote_logout_url
         #static_header_panel
           %a.clickable.help#help_button
         

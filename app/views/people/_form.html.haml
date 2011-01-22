@@ -1,38 +1,14 @@
--if @person.has_remote_id?
-  = hidden_field_tag 'for_remote', 'true'
-  =form.hidden_field :id
-  .prop_row
-    .label
-      nickname
-    .field
-      = form.text_field :nickname
-    .label
-      roles
-    .field
-      -Person::ROLES.each do |role|
-        .role
-          = check_box_tag role, role, @person.has_role?(role), :disabled => cannot?(('appoint_' + role).to_sym, @person)
-          =role 
-        
-  %br/
-  
--else#TODO remove
-  = form.label :login
-  %br/
-  = form.text_field :login
-  %br/
-  %br/
-  = form.label :email
-  %br/
-  = form.text_field :email
-  %br/
-  %br/
-  = form.label :password, form.object.new_record? ? nil : "Change password"
-  %br/
-  = form.password_field :password
-  %br/
-  %br/
-  = form.label :password_confirmation
-  %br/
-  = form.password_field :password_confirmation
-  %br/
+=form.hidden_field :id
+.prop_row
+  .label
+    nickname
+  .field
+    = form.text_field :nickname
+  .label
+    roles
+  .field
+    -Person::ROLES.each do |role|
+      .role
+        = check_box_tag role, role, @person.has_role?(role), :disabled => cannot?(('appoint_' + role).to_sym, @person)
+        =role 
+      
