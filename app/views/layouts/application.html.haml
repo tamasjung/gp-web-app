@@ -46,7 +46,10 @@
           ="::Grid::Portál"
           #login{:onmouseover => "$('logout').show()", :onmouseout => "$('logout').hide()"}
             
-            =(current_user ? "logged in as " + current_user.display_name.to_s : "") rescue ""
+            -if current_user
+              "logged in as " 
+              =link_to current_user.display_name, edit_person_path(current_user)
+            
             #logout{:style => 'display: none'}
               =link_to "logout", remote_logout_url
         #static_header_panel
