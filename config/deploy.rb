@@ -14,8 +14,9 @@
 
 # be sure to change these
 set :user, 'griduser' 
-set :domain, 'sl-grid.interface.hu' 
+#set :domain, 'sl-grid.interface.hu' 
 #set :domain, 'sl-grid-jt'
+set :domain, 'gridportal.interface.hu'; ssh_options[:port] = 9002
 
 set :application, 'gp-web-app'
 # file paths

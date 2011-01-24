@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110118180241) do
+ActiveRecord::Schema.define(:version => 20110124093205) do
 
   create_table "application_files", :force => true do |t|
     t.string   "name"
@@ -98,13 +98,7 @@ ActiveRecord::Schema.define(:version => 20110118180241) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "roles"
-    t.string   "login"
     t.string   "email"
-    t.string   "crypted_password"
-    t.string   "password_salt"
-    t.string   "persistence_token",   :null => false
-    t.string   "single_access_token", :null => false
-    t.string   "perishable_token",    :null => false
     t.string   "remote_id"
   end
 
