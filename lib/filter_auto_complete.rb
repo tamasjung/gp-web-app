@@ -44,7 +44,7 @@ class FilterAutoComplete
           :conditions => ["#{field} LIKE ?", '%' + value_prefix + '%'], \
           :order => "#{field} ASC", :limit => 10 )
         result.map! do |obj|
-          " " + obj.send(field).to_s
+          obj.send(field).to_s
         end        
       end
     end
