@@ -47,8 +47,11 @@
           #login{:onmouseover => "$('logout').show()", :onmouseout => "$('logout').hide()"}
             
             -if current_user
-              logged in as 
-              =link_to current_user.display_name, edit_person_path(current_user)
+              -unless current_user.nickname.blank?
+                logged in as 
+                =link_to current_user.display_name, edit_person_path(current_user)
+              -else
+                \?
             
             #logout{:style => 'display: none'}
               =link_to "logout", remote_logout_url

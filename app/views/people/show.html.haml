@@ -1,7 +1,7 @@
 %p
   %b Nickname:
   = h @person.nickname
--if can? :read_remote_id
+-if can? :read_remote_id, @person
   %p
     %b Remote id:
     = h @person.remote_id

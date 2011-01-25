@@ -8,6 +8,7 @@ class Person < ActiveRecord::Base
   has_many :launches
   has_one :preference
   validates_uniqueness_of :remote_id, :allow_nil => false
+  validates_presence_of :nickname, :on => :update
   
   def display_name
     self.nickname || "invalid user: id = #{self.id}!"
