@@ -5,6 +5,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :preferences
 
+  map.connect 'subapps/select', :controller => 'subapps', :action => 'select'#TODO
   
   map.resources :subapps  do |subapp|
     subapp.resources :launches
