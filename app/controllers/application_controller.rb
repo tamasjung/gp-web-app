@@ -12,8 +12,8 @@ class ApplicationController < ActionController::Base
   
   before_filter :init#TODO clean
   rescue_from CanCan::AccessDenied do |exception|
-    flash.now[:error] = exception.message 
-    redirect_to ''
+    flash[:error] = exception.message 
+    redirect_to :back
   end
   
   helper_method :current_user, :remote_logout_url

@@ -47,7 +47,7 @@
           #login{:onmouseover => "$('logout').show()", :onmouseout => "$('logout').hide()"}
             
             -if current_user
-              "logged in as " 
+              logged in as 
               =link_to current_user.display_name, edit_person_path(current_user)
             
             #logout{:style => 'display: none'}
@@ -72,7 +72,7 @@
           
           -if last_subapp || last_launch
             .title
-              Shotcuts
+              Shortcuts
             .list
               -if last_subapp
                 .item          

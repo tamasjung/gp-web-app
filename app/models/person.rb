@@ -28,8 +28,9 @@ class Person < ActiveRecord::Base
   
   def add_role(role)
     list = role_list
-    unless role_list.include? role
-      self.roles = "|#{role_list.join('|')}|#{role}|"
+    unless list.include? role
+      list << role
+      self.roles = "|" + list.join('|') + "|"
     end
   end
   

@@ -17,4 +17,13 @@ class PersonTest < ActiveSupport::TestCase
     end
     Person.find(2).destroy
   end
+  
+  test "add role" do
+    p = Person.find(1)
+    p.add_role 'admin'
+    assert_equal "|admin|", p.roles
+  end
+  
+
+    
 end
