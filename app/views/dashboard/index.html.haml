@@ -17,11 +17,12 @@
 
   
     
-  .remote_module 
-    =link_to "List sub-applications and start new launch", subapps_path
-    
-  .remote_module
-    =link_to "Manage users", people_path
+  -if can? :select, Subapp
+    .remote_module
+      =link_to "List sub-applications and start new launch", subapps_path
+  -if can? :select, Person  
+    .remote_module
+      =link_to "Manage users", people_path
       
   
 

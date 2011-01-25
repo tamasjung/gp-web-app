@@ -8,6 +8,7 @@ class UploadController < ApplicationController
   end
   
   def create
+    authorize! :call, UploadController
     @input_file ||= InputFile.new
     #@input_file.update_attributes(params[:input_file])
     @upload_result = ActiveSupport::JSON.encode(params[:input_file][:bytes].read)

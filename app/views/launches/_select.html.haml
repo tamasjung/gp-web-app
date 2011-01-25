@@ -82,7 +82,7 @@
       %td= h launch.state
       %td= h launch.person.display_name
       %td
-        -if can? :create, launch
+        -if can? :create, Launch
           .action_link
             = link_to 'clone', :controller => 'launches', :action => 'clone_action', :id => launch.id, :method => :put
         -if can? :delete, launch
