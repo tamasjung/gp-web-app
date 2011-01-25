@@ -72,8 +72,6 @@ class SubappsController < ApplicationController
   # GET /subapps
   # GET /subapps.xml
   def index
-    @subapps = Subapp.all
-
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @subapps }
