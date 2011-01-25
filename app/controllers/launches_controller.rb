@@ -185,9 +185,8 @@ class LaunchesController < ApplicationController
   def destroy
     @launch = Launch.find(params[:id])
     @launch.destroy
-    p url_for(:controller => :launches, :action => :select, :orders => params[:orders], :launch_search => params[:launch_search])
     respond_to do |format|
-      format.html { redirect_to(launches_url) }
+      #format.html { redirect_to(launches_url) }
       format.xml  { head :ok }
       format.js {redirect_to(:action => :select, :orders => params[:orders], :launch_search => params[:launch_search])}
     end

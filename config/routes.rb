@@ -12,6 +12,8 @@ ActionController::Routing::Routes.draw do |map|
   end
   
   map.resources :subapps
+  
+  map.connect 'people/select', :controller => 'people', :action => 'select'
 
   map.resources :people
   

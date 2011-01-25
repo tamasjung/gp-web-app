@@ -6,7 +6,7 @@ class Person < ActiveRecord::Base
   attr_readonly :remote_id
   has_many :subapps
   has_many :launches
-  has_one :preference
+  has_one :preference, :dependent => :destroy
   validates_uniqueness_of :remote_id, :allow_nil => false
   validates_presence_of :nickname, :on => :update
   
@@ -46,7 +46,7 @@ class Person < ActiveRecord::Base
   end
   
   def current_dependents
-    result = [Subapp, Launch, Preference].reduce(0) do |memo, model|
+    result = [Subapp, Launch].reduce(0) do |memo, model|
       count = model.count :conditions => {:person_id => self.id}
       logger.debug "#{model} has #{count} dependent(s)" if count > 0
       memo + count

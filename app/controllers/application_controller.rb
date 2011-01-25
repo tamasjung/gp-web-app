@@ -94,7 +94,7 @@ class ApplicationController < ActionController::Base
     self.class.save_broadcast bm if bm 
     if (ENV['RAILS_ENV'] == 'development') || ENV['GP_BACKDOOR'] == 'yes'#TODO remove this or comment out at least
       request.env['HTTPS'] = 'onnn'
-      request.env['REMOTE_USER'] = '123457@vho.aai.niif.hu'
+      request.env['REMOTE_USER'] = '123456@vho.aai.niif.hu'
     end
   end
   

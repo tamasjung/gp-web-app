@@ -50,6 +50,15 @@ class PeopleController < ApplicationController
     render :action => :edit
   end
   
+  def destroy
+    @person = Person.find(params[:id])
+    authorize! :destroy, @person
+    @person.destroy
+    respond_to do |format|
+      format.js {redirect_to(:action => :select, :orders => params[:orders])}
+    end
+  end
+  
   private
   
   def update_roles(person)
@@ -66,4 +75,6 @@ class PeopleController < ApplicationController
       end
     end
   end
+  
+
 end
