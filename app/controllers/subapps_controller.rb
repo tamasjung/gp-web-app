@@ -49,7 +49,7 @@ class SubappsController < ApplicationController
     
     save_ok = clone.save
     if save_ok
-      flash.now[:notice] = 'Sub-application was successfully cloned' if save_ok
+      flash.now[:notice] = 'Sub-application was successfully cloned'
     end
     
     @subapp = clone
