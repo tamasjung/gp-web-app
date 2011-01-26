@@ -1,17 +1,6 @@
 class ApplicationFilesController < ApplicationController
   
   load_and_authorize_resource
-  
-  # GET /application_files
-  # GET /application_files.xml
-  def index
-    @application_files = ApplicationFile.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @application_files }
-    end
-  end
 
   # GET /application_files/1
   # GET /application_files/1.xml
