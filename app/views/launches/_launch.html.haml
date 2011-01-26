@@ -25,7 +25,7 @@
         .label
           name 
         .field
-          = f.text_field :name, :size => 40
+          = f.text_field :name, :size => 40, :onKeyPress => "return noEnterKey(event)"
         .long_desc{:style => 'display: none'}
           It must be unique although it is not necessary to fill it out. In case you leave it empty the portal generate
           a proper name. 
@@ -56,7 +56,7 @@
             -subappname = sent_subappname if sent_subappname
             
             
-            %input#subapp_lookup{:type => 'text', :name => 'subapp_lookup', :value => subappname, :size => 40}
+            %input#subapp_lookup{:type => 'text', :name => 'subapp_lookup', :value => subappname, :size => 40, :onKeyPress => "return noEnterKey(event)"}
             #subapp_name_choices.autocomplete
             :javascript
               new Ajax.Autocompleter("subapp_lookup", "subapp_name_choices", "#{url_for(:controller => :subapps, :action => :subapp_name_autocomplete)}", {

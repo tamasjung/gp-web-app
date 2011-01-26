@@ -1,5 +1,16 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
+function noEnterKey(e)
+{
+     var key;      
+     if(window.event)
+          key = window.event.keyCode; //IE
+     else
+          key = e.which; //firefox      
+
+     return (key != 13);
+}
+
 function jsonResource(url, onSuccessFunction){
   options = {
     method: 'get',  
@@ -327,8 +338,8 @@ function isInteger(n){
 }
 
 function whichKey(event){
-  
-  return (event.which ? String.fromCharCode(event.which) : null);//TODO IE
+  var result = undefined;
+  return (event.which ? String.fromCharCode(event.which) : event.keyCode);//TODO IE
 }
 
 function radio_value(group_name){
