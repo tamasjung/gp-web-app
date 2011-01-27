@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user, :remote_logout_url
   before_filter :require_user, :require_nickname
   skip_before_filter :require_nickname, :only => [:pool_broadcast]
-
+  
   def remote_user
     result = nil
     if request.env['HTTPS']

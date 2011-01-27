@@ -3,7 +3,6 @@ class Ability
   
 
   def initialize(user)
-    can :create, Person,
     
     unless user.nil?
       can [:read, :select], [Launch, Job, ApplicationFile, Subapp]
