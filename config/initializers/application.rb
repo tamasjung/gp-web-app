@@ -66,7 +66,7 @@ $dependency_context = DependencyContext.new({
   :reverse_proxy_prefix => '/arex/',
   #:sync_or_async => :send
   :launch_expiring => 1.month,
-  :subapp_expiring => 1.day
+  :subapp_expiring => 1.year
 })
 
 
