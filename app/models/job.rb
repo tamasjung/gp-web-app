@@ -54,7 +54,7 @@ class Job < ActiveRecord::Base
   end
   
   def stable?
-    [:STOPPED, :FINISHED, :UNSENT].include? state
+    [STOPPED, FINISHED, UNSENT].include? state
   end
   
   #callbacks
