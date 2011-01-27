@@ -46,10 +46,10 @@ class SettingsAdapter
 end
 
 class Launch < ActiveRecord::Base
-  
+    
   include SerialName
   
-  dependencies :sync_or_async
+  dependencies :sync_or_async, :launch_expiring
   
   validates_uniqueness_of :name, :allow_nil => true
   
@@ -228,6 +228,11 @@ class Launch < ActiveRecord::Base
   def before_destroy
     #parent rewrite for children
     Launch.update_all(['parent_id = ?', parent.id], ["parent_id = ?", self.id]) if parent
+  end
+  
+  
+  def expired?
+    ([FINISHED, FAILED].include? state) && (updated_at < (Time.now - launch_expiring))
   end
   
 end

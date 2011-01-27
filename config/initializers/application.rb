@@ -63,8 +63,10 @@ $dependency_context = DependencyContext.new({
   :launch_dir_mod => 0755,
   :local_sequence_limit => 10,
   :sync_or_async => :send_later,
-  :reverse_proxy_prefix => '/arex/'
+  :reverse_proxy_prefix => '/arex/',
   #:sync_or_async => :send
+  :launch_expiring => 1.month,
+  :subapp_expiring => 1.day
 })
 
 

@@ -28,3 +28,10 @@ end
 every 1.minute do
   runner 'Refresher.new.execute', :output => 'log/refresher.log'
 end
+
+
+#comment out the following only if you know what are you doing, it is dangerously destructive
+# every 1.day, :at => '4:30 am' do
+#   runner 'CleanUpCommand.new(false).execute'
+# end
+
