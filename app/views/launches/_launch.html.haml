@@ -25,7 +25,10 @@
         .label
           name 
         .field
-          = f.text_field :name, :size => 40, :onKeyPress => "return noEnterKey(event)"
+          -if @launch.editable?
+            = f.text_field :name, :size => 40, :onKeyPress => "return noEnterKey(event)"
+          -else
+            =@launch.name
         .long_desc{:style => 'display: none'}
           It must be unique although it is not necessary to fill it out. In case you leave it empty the portal generate
           a proper name. 

@@ -27,7 +27,11 @@ class Subapp < ActiveRecord::Base
   
   def is_permitted?
     self.state == PERMITTED
-  end 
+  end
+  
+  def editable?
+    !has_launches 
+  end
   
   def has_launches
     Launch.count(:conditions => {:subapp_id => self.id}) > 0

@@ -1,5 +1,9 @@
 .page_title
-  Editing launch:
+  -if @launch.editable?
+    Editing 
+  -else
+    Viewing
+  launch:
   %span.subapp_name
     =@launch.name || @launch.subapp.name
   
