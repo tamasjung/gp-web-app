@@ -77,7 +77,7 @@
   - @launches.each_with_index do |launch, idx|
     %tr{:class => (idx % 2 == 0) ? "even" : "odd"}
       %td
-        .launch_link= link_to(h(launch.name), edit_launch_path(launch))
+        .launch_link= link_to(h(launch.name.blank? ? "#BLANK NAME, PLEASE CHANGE IT" : launch.name), edit_launch_path(launch))
       %td= h launch.created_at.to_s(:db)
       %td= h launch.state
       %td= h launch.person.display_name

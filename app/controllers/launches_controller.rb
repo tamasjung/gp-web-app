@@ -136,9 +136,10 @@ class LaunchesController < ApplicationController
   def clone_action
     orig_launch = Launch.find(params[:id])
     clone = orig_launch.clone
-    clone.state = Launch::NEW
+    clone.state = Launch::CREATED
     clone.person = current_user
     clone.parent = orig_launch
+    
     [:name, :created_at, :updated_at, :start_time, :finish_time].each do |method|
       clone.send((method.to_s + "="), nil)
     end
@@ -148,7 +149,11 @@ class LaunchesController < ApplicationController
       clone.name = clone.generated_name
       clone.state = Launch::CREATED
       save_ok = clone.save
-      flash.now[:notice] = 'Launch was successfully cloned' if save_ok
+      unless save_ok
+        clone.name += (rand(1<<64).to_s(16) + "_change_it")#
+        clone.save!
+        flash.now[:notice] = 'Launch was successfully cloned'
+      end
     end
     
     @launch = clone
