@@ -15,23 +15,23 @@ class UploadController < ApplicationController
     render(:layout => 'layouts/clear', :action => 'index')
   end
   
-  TEMP_DIR = 'public/tmp'
-  
-  def create_temp
-    ext = params[:ext] || ''
-    FileUtils.mkdir_p TEMP_DIR
-    content = params[:temp_upload_input] 
-    file_id = nil
-    Tempfile.open(['temp', ext], TEMP_DIR) do |f| 
-      f.chmod(0644)#TODO
-      f.write content
-      file_id = File.basename f.path
-       
-    end
-    render :update do |page| 
-      page.call 'addDownloadLink', file_id
-    end
-  end
+  # TEMP_DIR = 'public/tmp'
+  # 
+  # def create_temp
+  #   ext = params[:ext] || ''
+  #   FileUtils.mkdir_p TEMP_DIR
+  #   content = params[:temp_upload_input] 
+  #   file_id = nil
+  #   Tempfile.open(['temp', ext], TEMP_DIR) do |f| 
+  #     f.chmod(0644)#TODO
+  #     f.write content
+  #     file_id = File.basename f.path
+  #      
+  #   end
+  #   render :update do |page| 
+  #     page.call 'addDownloadLink', file_id
+  #   end
+  # end
   
   #TODO useless if file in the public dir, only the mimetype should be set.
   # def get_temp
