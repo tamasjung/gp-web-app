@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110124093205) do
+ActiveRecord::Schema.define(:version => 20110128123046) do
 
   create_table "application_files", :force => true do |t|
     t.string   "name"
@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(:version => 20110124093205) do
     t.string   "state"
     t.integer  "person_id"
     t.integer  "parent_id"
+    t.string   "input_partial_markup"
   end
 
   add_index "subapps", ["created_at"], :name => "index_subapps_on_created_at"

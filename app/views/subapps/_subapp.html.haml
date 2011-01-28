@@ -59,6 +59,17 @@
       Cloning is copying every attribute to a new instance except the state and the name which will be generated.
   
 #partial.tabpanel
+  .prop_row
+    .label
+      Haml markup
+    .field
+      =f.radio_button :input_partial_markup, 'haml'
+  .prop_row
+    .label
+      HTML markup
+    .field
+      =f.radio_button :input_partial_markup, 'HTML'
+      
   .label
     input partial
   .field

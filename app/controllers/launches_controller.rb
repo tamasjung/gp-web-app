@@ -212,8 +212,12 @@ class LaunchesController < ApplicationController
       end
     end
     @embedded_css = input_page[/EMBEDDED_STYLE(.*)EMBEDDED_STYLE/m, 1] rescue ""
-    engine = Haml::Engine.new(input_page, :suppress_eval => false)
-    @input_html = engine.render
+    if @launch.subapp.input_partial_markup = 'haml'
+      engine = Haml::Engine.new(input_page, :suppress_eval => false)
+      @input_html = engine.render
+    else
+      input_page
+    end
   end
   
   
