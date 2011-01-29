@@ -1,12 +1,14 @@
 require 'active_support'
 class FilterParser
   
+  attr_accessor :default_field
   
   OPERATORS = %w{= <> < >  like} #<< 'not like'
   
   def initialize(self_assoc, fields, substitutions = {})
     @fields = fields + substitutions.keys
     @fields.map! {|f| f.to_s}
+    @default_field = @field.first
     @subs = substitutions
     @self_assoc = self_assoc.to_s
   end
@@ -22,9 +24,11 @@ class FilterParser
     result
   end
   
-  def parse(str)
-    if str.split.size == 1#if there is only on word, it is a 'like'  for the default field, which is the first one
-      return {:conditions => ["#{@fields.first} like ?", '%' + str.to_s + '%'], :include => []}
+  def parse(the_str)
+    if the_str.split.size == 1#if there is only on word, it is a 'like'  for the default field
+      str = @default_field + " like " + the_str
+    else
+      str = the_str 
     end
     exps = str.split /(\s+(?:and|or)\s+)/
     result_str = ""
@@ -48,8 +52,7 @@ class FilterParser
           value = "%#{value}%" if parts[2] == 'like'
           params[param_name] = value
         else
-          reason = ''
-          raise "cannot parse:|#{str}|, parts.size = #{parts.size}, @fields=#{@fields}, parts[0]=#{parts[0]}, parts[2]=#{parts[2]}"
+          raise "cannot parse:|#{the_str}|, parts.size = #{parts.size}, @fields=#{@fields}, parts[0]=#{parts[0]}, parts[2]=#{parts[2]}"
         end
       else
         result_str << exp
