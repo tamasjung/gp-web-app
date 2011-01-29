@@ -23,6 +23,9 @@ class FilterParser
   end
   
   def parse(str)
+    if str.split.size == 1#if there is only on word, it is a 'like'  for the default field, which is the first one
+      return {:conditions => ["#{@fields.first} like ?", '%' + str.to_s + '%'], :include => []}
+    end
     exps = str.split /(\s+(?:and|or)\s+)/
     result_str = ""
     params = {}
@@ -46,7 +49,6 @@ class FilterParser
           params[param_name] = value
         else
           reason = ''
-          
           raise "cannot parse:|#{str}|, parts.size = #{parts.size}, @fields=#{@fields}, parts[0]=#{parts[0]}, parts[2]=#{parts[2]}"
         end
       else
