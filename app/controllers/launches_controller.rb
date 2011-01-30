@@ -152,8 +152,9 @@ class LaunchesController < ApplicationController
       unless save_ok
         clone.name += (rand(1<<64).to_s(16) + "_change_it")#
         clone.save!
-        flash.now[:notice] = 'Launch was successfully cloned'
       end
+      flash.now[:notice] = 'Launch was successfully cloned'
+      current_pref.set_value(:last_launch_id, clone.id) if clone.id
     end
     
     @launch = clone

@@ -8,11 +8,11 @@
       .label
         remote directory/id
       .field
-        -if [Job::SENT].include? job.state
-          %a{:href => "#{job.proxied_address}", :target => "_blank"}
-            =job.proxied_address
-        -else
-          =job.id_in_address
+        -#-if [Job::SENT].include? job.state
+        -#  %a{:href => "#{job.proxied_address}", :target => "_blank"}
+        -#    =job.proxied_address
+        -#else
+        =job.id_in_address
     .prop_row
       .label
         state
@@ -31,29 +31,25 @@
       %span.paginate_info
         =page_entries_info(@jobs, {})
         , filtered by
-      -form_remote_tag :html => { :id => 'job_search_form', :action => url_for(:controller => :jobs , :action => :select )} do
-        -params.each do |key, value|
-          %input{:type => 'hidden', :name => key, :value => value}
-        %input#job_search.search_field{:type => 'text', :name => 'job_search', :value => params[:job_search]}
-        %input{:type => 'hidden', :name=>'page', :value => '1'}
-        #job_choices.autocomplete
-    :javascript
-      new Ajax.Autocompleter("job_search", "job_choices", "#{url_for(:controller => :jobs, :action => :search_autocomplete)}", {
-        paramName: "value",
-        callback: function (input, query){
-          return $H({value: input.value}).toQueryString()
-        }
-      });
 
-      $('job_search').observe("keydown", function(event){
-        if(whichKey(event) == 13){
-          even.element().up('form').submit()
-        }
-      });
+      %input#job_search.search_field{:type => 'text', :name => 'job_search', :value => params[:job_search], :onKeyPress => 'return job_search(event);'}
+      #job_choices.autocomplete
+      :javascript
+        
+        new Ajax.Autocompleter("job_search", "job_choices", "#{url_for(:controller => :jobs, :action => :search_autocomplete)}", {
+          paramName: "value",
+          callback: function (input, query){
+            return $H({value: input.value}).toQueryString()
+          }
+        });
+        
+
+        
+
     %table
       %tr
         %th
-          Portal
+          = ordering_link "Portal", :id, params
         %th
           Remote
         %th
@@ -68,11 +64,11 @@
             %a{:href => "#{url}", :target => "_blank"}
               =job.id
           %td
-            -if [Job::SENT].include? job.state
-              %a{:href => "#{job.proxied_address}", :target => "_blank"}
-                =job.id_in_address
-            -else
-              =job.id_in_address
+            -#-if [Job::SENT].include? job.state
+            -#//   %a{:href => "#{job.proxied_address}", :target => "_blank"}
+            -#//     =job.id_in_address
+            -#// -else
+            =job.id_in_address
           %td
             =state_display(job)
           %td
@@ -82,4 +78,4 @@
             
     =will_paginate(@jobs, :renderer => RemoteLinkRenderer, :params => params)
 :javascript
-  document.fire("gp:new_panel")  
+  document.fire("gp:new_panel") 

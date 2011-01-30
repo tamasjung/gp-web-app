@@ -8,7 +8,7 @@ class FilterParser
   def initialize(self_assoc, fields, substitutions = {})
     @fields = fields + substitutions.keys
     @fields.map! {|f| f.to_s}
-    @default_field = @field.first
+    @default_field = @fields.first
     @subs = substitutions
     @self_assoc = self_assoc.to_s
   end

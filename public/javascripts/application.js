@@ -1,15 +1,22 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
-function noEnterKey(e)
-{
-     var key;      
-     if(window.event)
-          key = window.event.keyCode; //IE
-     else
-          key = e.which; //firefox      
+function isEnterKey(e){
+  
+  var key;      
+  if(window.event){
+      key = window.event.keyCode; //IE
+  }
+  else{
+      key = e.which; //firefox  
+  }    
 
-     return (key != 13);
+  return (key == 13);
 }
+
+function noEnterKey(e){
+  return !isEnter(e);
+}
+
 
 function jsonResource(url, onSuccessFunction){
   options = {

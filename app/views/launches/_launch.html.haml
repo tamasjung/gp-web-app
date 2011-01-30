@@ -4,9 +4,6 @@
     %a{ :href => "#settings" }
       settings
   %li.tab
-    %a{ :href => "#options" }
-      options
-  %li.tab
     %a{ :id => "control_tab", :href => "#control"}
       control
   %li.tab
@@ -14,19 +11,21 @@
       information
 #settings.tabpanel
   =@input_html
--form_for @launch do |f|
-  #options.tabpanel
-    .panel_in_tab
+
+#control.tabpanel
+  .panel_in_tab
+    -form_for @launch do |f|
       = f.error_messages
       =f.hidden_field :subapp_id
       =f.hidden_field :settings
+      =hidden_field_tag 'commit'
       %input{:type => 'hidden', :name => 'default_tab', :value => 'control'}
       .prop_row
         .label
           name 
         .field
           -if @launch.editable?
-            = f.text_field :name, :size => 40, :onKeyPress => "return noEnterKey(event)"
+            = f.text_field :name, :size => 40, :onKeyPress => "return false"
           -else
             =@launch.name
         .long_desc{:style => 'display: none'}
@@ -41,7 +40,7 @@
             -if @launch.state == Launch::CREATED
               -link_options ={:confirm => "Modifications will be lost, are you sure?"}
             =link_to @launch.parent.name, @launch.parent, link_options
-            
+          
           -else
             \-
         .long_desc{:style => 'display: none'}
@@ -51,44 +50,40 @@
           sub-application
           #subapp_id{:style => 'display:none'}<
             =@launch.subapp.id
-          
+        
         .field
           -if @launch.state == Launch::CREATED
             -subappname = @launch.subapp ? @launch.subapp.name : ""
             -sent_subappname = params[:subapp_lookup]
             -subappname = sent_subappname if sent_subappname
-            
-            
+          
+          
             %input#subapp_lookup{:type => 'text', :name => 'subapp_lookup', :value => subappname, :size => 40, :onKeyPress => "return noEnterKey(event)"}
             #subapp_name_choices.autocomplete
             :javascript
               new Ajax.Autocompleter("subapp_lookup", "subapp_name_choices", "#{url_for(:controller => :subapps, :action => :subapp_name_autocomplete)}", {
                 paramName: "value",
                 callback: function (input, query){
-                  return $H({value: input.value}).toQueryString()
+                  return $H({value: input.value}).toQueryString() 
                 }
               });
-            =f.submit "Transpose", :onclick=> 'collect_and_submit();'
+            =link_to_function "Transpose", 'collect_and_submit(event)', :class=> 'action_link'
             =link_to "Show",  edit_subapp_path(@launch.subapp), :confirm => "Modifications will be lost, are you sure?"
-            
+          
             .long_desc{:style => 'display: none'}
               Transpose is available only if the launch is created but not started. It tries to reapply your
               launch settings to another sub-application, for example after a sub-application upgrade happened.
           -else
             =link_to @launch.subapp.name,  edit_subapp_path(@launch.subapp)
-            
+          
 
         .long_desc{:style => 'display: none'}
           The sub-application describes the name of the executables, the files you want to get uploaded by the 
           portal and other technical options. Click 'show' for more details.
-    
-      =f.submit "Clone", :onclick=> 'collect_and_submit();' if (@launch.id && @launch.state != Launch::DESTROYING) 
-      .long_desc{:style => 'display: none'}
-        Cloning is a creation of new launch based on this launch.
-    
+  
 
-  #control.tabpanel
-    .panel_in_tab
+  
+
       .prop_row
         .label
           current state
@@ -96,17 +91,20 @@
           %span
             =@launch.state.to_s.humanize
             -if @launch.available_actions.include? :refresh_state
-              =f.submit :refresh_state.to_s.humanize, :onclick => 'collect_and_submit()'
+              =link_to_function :refresh_state.to_s.humanize, 'collect_and_submit(event)', :class=> 'action_link'
         .long_desc{:style => 'display: none'}
           The state of the launch is the aggregation of the jobs' states belong to it.
 
-          
+        
       .prop_row
         .label
           actions
         .field
           -(@launch.available_actions - [:refresh_state]).each do |action|
-            =f.submit action.to_s.humanize, :onclick => 'collect_and_submit()'
+            =link_to_function action.to_s.humanize, 'collect_and_submit(event)', :confirm => "Are you sure?", :class=> 'action_link'
+          =link_to_function "Clone", 'collect_and_submit(event)', :class=> 'action_link' if (@launch.id && @launch.state != Launch::DESTROYING) 
+        .long_desc{:style => 'display: none'}
+          Cloning is a creation of new launch based on this launch.
         .long_desc{:style => 'display: none'}
           Be aware that these actions are started asynchronously, do not expect immediate result.
       -unless @launch.new_record?
@@ -129,7 +127,7 @@
               open in new window
           .long_desc{:style => 'display: none'}
             Click to the link to see the publish directory.        
-      #jobs.group
+    #jobs.group
   
 #info.tabpanel
   .panel_in_tab
@@ -175,7 +173,8 @@
   });
 
   
-  function collect_and_submit(){
+  function collect_and_submit(event){
+    $('commit').value = Element.collectTextNodes(Event.element(event)).strip()
     
     var launch_params = prepareSubmit()
     nameFromId($('partial_form'))
@@ -193,6 +192,7 @@
     }
     var serString = Object.toJSON(settings)
     $('launch_settings').value = serString
+    Event.element(event).up('form').submit();
     return true
     
   }     
@@ -227,6 +227,18 @@
   
   if(#{!@launch.editable?}){
     readonlyMode();
+  }
+  
+  function job_search(event){
+    if(isEnterKey(event)){
+      new Ajax.Request("#{url_for(:controller => :jobs, :action => :select, :launch_id => @launch.id)}", {
+        parameters: {'job_search': $F('job_search')}
+          
+        }
+      );
+      return false;
+    }
+    return true;
   }
 
 = render :partial => 'info_tab'  
