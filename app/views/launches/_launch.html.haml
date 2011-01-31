@@ -25,7 +25,7 @@
           name 
         .field
           -if @launch.editable?
-            = f.text_field :name, :size => 40, :onKeyPress => "return false"
+            = f.text_field :name, :size => 40, :onKeyPress => "return !isEnterKey(event)"
           -else
             =@launch.name
         .long_desc{:style => 'display: none'}
